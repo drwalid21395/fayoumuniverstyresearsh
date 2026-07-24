@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - كلية علوم الرياضة | الدراسات العليا</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../js/admin.css">
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+    <style>
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --ap:#1a73e8;--apl:#4a9af5;--apd:#1557b0;--apr:26,115,232;
+            --as:#00c853;--asl:#5efc82;--asr:0,200,83;
+            --aw:#ff6d00;--awl:#ff9e40;--awr:255,109,0;
+            --ad:#e53935;--adl:#ff6f60;--adr:229,57,53;
+            --ai:#00bcd4;--air:0,188,212;
+            --abg:#f0f2f5;--asbg:#ffffff;--asw:270px;--asc:70px;
+            --ath:64px;--acbg:#ffffff;--acb:#e9ecef;
+            --atx:#1a1a2e;--ats:#6c757d;--atsx:#495057;
+            --atsa:#1a73e8;--ahbg:#f0f4ff;--atsr:#f8f9fa;
+            --ashs:0 1px 3px rgba(0,0,0,.08);--ashm:0 4px 12px rgba(0,0,0,.08);
+            --ashl:0 8px 30px rgba(0,0,0,.1);--ashx:0 12px 40px rgba(0,0,0,.12);
+            --ars:8px;--arm:12px;--arl:16px;
+            --atrans:.3s cubic-bezier(.4,0,.2,1);
+            --af:'Cairo','Tajawal',sans-serif
+        }
+        body.dark-mode{
+            --abg:#0d1117;--asbg:#161b22;--acbg:#1c2128;--acb:#30363d;
+            --atx:#e6edf3;--ats:#8b949e;--atsx:#8b949e;
+            --atsa:#58a6ff;--ahbg:#1c2128;--atsr:#161b22;
+            --ashs:0 1px 3px rgba(0,0,0,.3);--ashm:0 4px 12px rgba(0,0,0,.3);
+            --ashl:0 8px 30px rgba(0,0,0,.4);--ashx:0 12px 40px rgba(0,0,0,.5)
+        }
+        body{font-family:var(--af);background:var(--abg);color:var(--atx);line-height:1.6;overflow-x:hidden;transition:background var(--atrans),color var(--atrans)}
+        .admin-wrapper{display:flex;min-height:100vh}
+
+        /* ===== SIDEBAR ===== */
+        .admin-sidebar{position:fixed;top:0;right:0;width:var(--asw);height:100vh;background:var(--asbg);border-left:1px solid var(--acb);z-index:1000;display:flex;flex-direction:column;transition:all var(--atrans);box-shadow:var(--ashm);overflow:hidden}
+        .admin-sidebar.collapsed{width:var(--asc)}
+        .sidebar-brand{display:flex;align-items:center;gap:12px;padding:20px 18px;border-bottom:1px solid var(--acb);min-height:var(--ath);white-space:nowrap;overflow:hidden}
+        .sidebar-brand .brand-icon{width:36px;height:36px;min-width:36px;background:linear-gradient(135deg,var(--ap),var(--as));border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px}
+        .sidebar-brand .brand-text{opacity:1;transition:opacity var(--atrans)}
+        .admin-sidebar.collapsed .brand-text{opacity:0;pointer-events:none}
+        .sidebar-brand .brand-text .brand-title{display:block;font-size:14px;font-weight:700;color:var(--atx);line-height:1.3}
+        .sidebar-brand .brand-text .brand-subtitle{display:block;font-size:11px;color:var(--ats);font-weight:500}
+        .sidebar-nav{flex:1;overflow-y:auto;padding:12px 0}
+        .sidebar-nav::-webkit-scrollbar{width:4px}
+        .sidebar-nav::-webkit-scrollbar-thumb{background:var(--acb);border-radius:4px}
+        .sidebar-nav .nav-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ats);padding:12px 20px 6px;white-space:nowrap;overflow:hidden}
+        .admin-sidebar.collapsed .nav-label{text-align:center;padding:12px 5px 6px}
+        .admin-sidebar.collapsed .nav-label span{display:none}
+        .sidebar-nav a{display:flex;align-items:center;gap:12px;padding:10px 20px;color:var(--atsx);text-decoration:none;font-size:14px;font-weight:500;transition:all var(--atrans);position:relative;white-space:nowrap;margin:2px 8px;border-radius:var(--ars)}
+        .sidebar-nav a i{font-size:18px;min-width:20px;text-align:center}
+        .sidebar-nav a .nav-text{opacity:1;transition:opacity var(--atrans)}
+        .admin-sidebar.collapsed .nav-text{opacity:0;pointer-events:none}
+        .sidebar-nav a:hover{background:var(--ahbg);color:var(--ap)}
+        .sidebar-nav a.active{background:rgba(var(--apr),.1);color:var(--ap);font-weight:600}
+        .sidebar-nav a.active::before{content:'';position:absolute;right:-8px;top:50%;transform:translateY(-50%);width:3px;height:60%;background:var(--ap);border-radius:0 3px 3px 0}
+        .sidebar-nav a .badge{margin-right:auto;margin-left:0;font-size:11px;padding:2px 8px;border-radius:var(--ars);font-weight:600}
+        .badge-primary{background:rgba(var(--apr),.12);color:var(--ap)}
+        .badge-warning{background:rgba(var(--awr),.12);color:var(--aw)}
+
+        .sidebar-footer{padding:12px;border-top:1px solid var(--acb)}
+        .sidebar-user{display:flex;align-items:center;gap:10px;padding:8px;border-radius:var(--ars);transition:background var(--atrans);overflow:hidden;white-space:nowrap}
+        .sidebar-user:hover{background:var(--ahbg)}
+        .sidebar-user .user-avatar{width:36px;height:36px;min-width:36px;border-radius:50%;background:linear-gradient(135deg,var(--ap),var(--apd));display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700}
+        .sidebar-user .user-info{opacity:1;transition:opacity var(--atrans)}
+        .admin-sidebar.collapsed .user-info{opacity:0;pointer-events:none}
+        .sidebar-user .user-info .user-name{display:block;font-size:13px;font-weight:600;color:var(--atx)}
+        .sidebar-user .user-info .user-role{display:block;font-size:11px;color:var(--ats)}
+
+        .sidebar-dark-toggle{display:flex;align-items:center;gap:10px;padding:8px 12px;margin:8px 0;cursor:pointer;border-radius:var(--ars);transition:background var(--atrans);overflow:hidden;white-space:nowrap}
+        .sidebar-dark-toggle:hover{background:var(--ahbg)}
+        .sidebar-dark-toggle .toggle-track{width:40px;min-width:40px;height:22px;background:var(--acb);border-radius:11px;position:relative;transition:background var(--atrans)}
+        .sidebar-dark-toggle .toggle-track.active{background:var(--ap)}
+        .sidebar-dark-toggle .toggle-thumb{width:18px;height:18px;background:#fff;border-radius:50%;position:absolute;top:2px;right:2px;transition:transform var(--atrans);box-shadow:0 1px 3px rgba(0,0,0,.2)}
+        .sidebar-dark-toggle .toggle-track.active .toggle-thumb{transform:translateX(-18px)}
+        .sidebar-dark-toggle .toggle-label{font-size:13px;font-weight:500;color:var(--ats)}
+        .sidebar-dark-toggle .toggle-icon{font-size:16px;min-width:20px;text-align:center;color:var(--ats)}
+        .admin-sidebar.collapsed .toggle-label{opacity:0;pointer-events:none}
+
+        /* ===== MAIN ===== */
+        .admin-main{flex:1;margin-right:var(--asw);min-height:100vh;transition:margin var(--atrans);display:flex;flex-direction:column}
+        .admin-main.sidebar-collapsed{margin-right:var(--asc)}
+
+        /* ===== TOPBAR ===== */
+        .admin-topbar{position:sticky;top:0;height:var(--ath);background:var(--acbg);border-bottom:1px solid var(--acb);display:flex;align-items:center;justify-content:space-between;padding:0 24px;z-index:900;transition:background var(--atrans)}
+        .topbar-right{display:flex;align-items:center;gap:16px}
+        .topbar-toggle{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;color:var(--ats);font-size:20px;cursor:pointer;border-radius:var(--ars);transition:all var(--atrans)}
+        .topbar-toggle:hover{background:var(--ahbg);color:var(--ap)}
+        .topbar-title{font-size:18px;font-weight:700;color:var(--atx)}
+        .topbar-breadcrumb{font-size:12px;color:var(--ats);margin-top:-2px}
+        .topbar-left{display:flex;align-items:center;gap:8px}
+        .topbar-search{position:relative;display:flex;align-items:center}
+        .topbar-search input{width:240px;height:38px;border:1px solid var(--acb);border-radius:var(--ars);padding:0 14px 0 36px;font-family:var(--af);font-size:13px;background:var(--abg);color:var(--atx);transition:all var(--atrans)}
+        .topbar-search input::placeholder{color:var(--ats)}
+        .topbar-search input:focus{outline:none;border-color:var(--ap);box-shadow:0 0 0 3px rgba(var(--apr),.1);width:300px}
+        .topbar-search i{position:absolute;left:12px;color:var(--ats);font-size:14px}
+        .topbar-icon-btn{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;color:var(--ats);font-size:18px;cursor:pointer;border-radius:var(--ars);transition:all var(--atrans);position:relative}
+        .topbar-icon-btn:hover{background:var(--ahbg);color:var(--ap)}
+        .topbar-icon-btn .notification-badge{position:absolute;top:6px;left:6px;width:18px;height:18px;background:var(--ad);color:#fff;font-size:10px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--acbg)}
+        .topbar-avatar{position:relative}
+        .topbar-avatar-btn{display:flex;align-items:center;gap:10px;padding:4px 8px;border:none;background:transparent;cursor:pointer;border-radius:var(--ars);transition:background var(--atrans);font-family:var(--af)}
+        .topbar-avatar-btn:hover{background:var(--ahbg)}
+        .topbar-avatar-btn .avatar-img{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--ap),var(--as));display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700}
+        .topbar-avatar-btn .avatar-name{font-size:13px;font-weight:600;color:var(--atx)}
+        .topbar-avatar-btn .avatar-role{font-size:11px;color:var(--ats)}
+        .topbar-avatar-btn .fa-chevron-down{font-size:10px;color:var(--ats)}
+
+        /* ===== DROPDOWNS ===== */
+        .dropdown-menu{position:absolute;top:calc(100% + 8px);left:0;min-width:220px;background:var(--acbg);border:1px solid var(--acb);border-radius:var(--arm);box-shadow:var(--ashx);padding:6px;opacity:0;visibility:hidden;transform:translateY(-10px);transition:all var(--atrans);z-index:9999}
+        .dropdown-menu.show{opacity:1;visibility:visible;transform:translateY(0)}
+        .dropdown-menu a,.dropdown-menu button{display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:13px;color:var(--atx);text-decoration:none;border-radius:var(--ars);transition:background var(--atrans);width:100%;border:none;background:none;cursor:pointer;font-family:var(--af);text-align:right}
+        .dropdown-menu a:hover,.dropdown-menu button:hover{background:var(--ahbg);color:var(--ap)}
+        .dropdown-menu a i,.dropdown-menu button i{font-size:16px;min-width:20px;text-align:center;color:var(--ats)}
+        .dropdown-menu a:hover i,.dropdown-menu button:hover i{color:var(--ap)}
+        .dropdown-divider{height:1px;background:var(--acb);margin:4px 10px}
+        .dropdown-menu .danger-item{color:var(--ad)}
+        .dropdown-menu .danger-item i{color:var(--ad)}
+        .dropdown-menu .danger-item:hover{background:rgba(var(--adr),.08);color:var(--ad)}
+
+        .notifications-dropdown{width:360px;max-height:400px;overflow-y:auto}
+        .notifications-dropdown .notif-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--acb)}
+        .notifications-dropdown .notif-header h4{font-size:14px;font-weight:700}
+        .notifications-dropdown .notif-header a{font-size:12px;color:var(--ap);padding:0;background:none;border:none;cursor:pointer;font-family:var(--af)}
+        .notif-item{display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--acb);transition:background var(--atrans);cursor:pointer}
+        .notif-item:hover{background:var(--ahbg)}
+        .notif-item.unread{background:rgba(var(--apr),.04)}
+        .notif-item .notif-icon{width:36px;height:36px;min-width:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px}
+        .notif-item .notif-icon.notif-primary{background:rgba(var(--apr),.12);color:var(--ap)}
+        .notif-item .notif-icon.notif-success{background:rgba(var(--asr),.12);color:var(--as)}
+        .notif-item .notif-icon.notif-warning{background:rgba(var(--awr),.12);color:var(--aw)}
+        .notif-item .notif-icon.notif-danger{background:rgba(var(--adr),.12);color:var(--ad)}
+        .notif-item .notif-content{flex:1}
+        .notif-item .notif-text{font-size:13px;color:var(--atx);line-height:1.5}
+        .notif-item .notif-text strong{font-weight:600}
+        .notif-item .notif-time{font-size:11px;color:var(--ats);margin-top:2px}
+
+        /* ===== CONTENT ===== */
+        .admin-content{flex:1;padding:24px}
+        .content-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+        .content-header h1{font-size:24px;font-weight:800}
+        .content-header .header-actions{display:flex;align-items:center;gap:10px}
+
+        /* ===== BUTTONS ===== */
+        .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;font-family:var(--af);font-size:13px;font-weight:600;border:none;border-radius:var(--ars);cursor:pointer;transition:all var(--atrans);text-decoration:none;white-space:nowrap}
+        .btn i{font-size:14px}
+        .btn-primary{background:var(--ap);color:#fff}
+        .btn-primary:hover{background:var(--apd);box-shadow:0 4px 12px rgba(var(--apr),.35)}
+        .btn-success{background:var(--as);color:#fff}
+        .btn-success:hover{background:#00a844;box-shadow:0 4px 12px rgba(var(--asr),.35)}
+        .btn-danger{background:var(--ad);color:#fff}
+        .btn-danger:hover{background:#c62828}
+        .btn-outline{background:transparent;color:var(--ats);border:1px solid var(--acb)}
+        .btn-outline:hover{border-color:var(--ap);color:var(--ap);background:rgba(var(--apr),.04)}
+        .btn-sm{padding:5px 12px;font-size:12px}
+        .btn-sm i{font-size:12px}
+        .btn-icon{width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:var(--ars)}
+        .btn-group{display:flex;gap:4px}
+
+        /* ===== STATS ===== */
+        .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:24px}
+        .stat-card{background:var(--acbg);border:1px solid var(--acb);border-radius:var(--arm);padding:20px;transition:all var(--atrans);position:relative;overflow:hidden}
+        .stat-card:hover{box-shadow:var(--ashl);transform:translateY(-2px)}
+        .stat-card::before{content:'';position:absolute;top:0;right:0;width:100%;height:3px}
+        .stat-card.stat-primary::before{background:var(--ap)}
+        .stat-card.stat-warning::before{background:var(--aw)}
+        .stat-card.stat-success::before{background:var(--as)}
+        .stat-card.stat-danger::before{background:var(--ad)}
+        .stat-card .stat-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+        .stat-card .stat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px}
+        .stat-card.stat-primary .stat-icon{background:rgba(var(--apr),.12);color:var(--ap)}
+        .stat-card.stat-warning .stat-icon{background:rgba(var(--awr),.12);color:var(--aw)}
+        .stat-card.stat-success .stat-icon{background:rgba(var(--asr),.12);color:var(--as)}
+        .stat-card.stat-danger .stat-icon{background:rgba(var(--adr),.12);color:var(--ad)}
+        .stat-card .stat-change{font-size:12px;font-weight:600;padding:2px 8px;border-radius:20px}
+        .stat-change.up{color:var(--as);background:rgba(var(--asr),.1)}
+        .stat-change.down{color:var(--ad);background:rgba(var(--adr),.1)}
+        .stat-card .stat-value{font-size:32px;font-weight:800;color:var(--atx);line-height:1;margin-bottom:4px}
+        .stat-card .stat-label{font-size:13px;color:var(--ats);font-weight:500}
+        .stat-card .stat-progress{margin-top:12px;height:4px;background:var(--acb);border-radius:2px;overflow:hidden}
+        .stat-card .stat-progress .progress-bar{height:100%;border-radius:2px;transition:width 1s ease}
+        .stat-card.stat-primary .progress-bar{background:var(--ap)}
+        .stat-card.stat-warning .progress-bar{background:var(--aw)}
+        .stat-card.stat-success .progress-bar{background:var(--as)}
+        .stat-card.stat-danger .progress-bar{background:var(--ad)}
+
+        /* ===== GRIDS ===== */
+        .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px}
+        .grid-3-1{display:grid;grid-template-columns:2fr 1fr;gap:24px;margin-bottom:24px}
+
+        /* ===== CARDS ===== */
+        .admin-card{background:var(--acbg);border:1px solid var(--acb);border-radius:var(--arm);overflow:hidden;transition:background var(--atrans),border var(--atrans)}
+        .admin-card .card-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--acb)}
+        .admin-card .card-header h3{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px}
+        .admin-card .card-header h3 i{color:var(--ap);font-size:16px}
+        .admin-card .card-body{padding:20px}
+        .admin-card .card-body.no-padding{padding:0}
+
+        /* ===== TABLES ===== */
+        .admin-table{width:100%;border-collapse:collapse}
+        .admin-table thead th{padding:12px 16px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:var(--ats);background:var(--atsr);border-bottom:1px solid var(--acb);text-align:right;white-space:nowrap;cursor:pointer;user-select:none}
+        .admin-table thead th:hover{color:var(--ap)}
+        .admin-table thead th .sort-icon{margin-right:4px;font-size:10px;opacity:.5}
+        .admin-table tbody tr{border-bottom:1px solid var(--acb);transition:background var(--atrans)}
+        .admin-table tbody tr:last-child{border-bottom:none}
+        .admin-table tbody tr:hover{background:var(--ahbg)}
+        .admin-table tbody td{padding:12px 16px;font-size:13px;color:var(--atx);vertical-align:middle}
+        .admin-table .user-cell{display:flex;align-items:center;gap:10px}
+        .admin-table .user-cell .user-avatar-sm{width:34px;height:34px;min-width:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
+        .admin-table .user-cell .user-name{font-weight:600}
+        .admin-table .user-cell .user-email{font-size:12px;color:var(--ats)}
+
+        /* ===== BADGES ===== */
+        .status-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap}
+        .status-badge i{font-size:8px}
+        .status-pending{background:rgba(var(--awr),.12);color:var(--aw)}
+        .status-approved{background:rgba(var(--asr),.12);color:var(--as)}
+        .status-rejected{background:rgba(var(--adr),.12);color:var(--ad)}
+        .status-review{background:rgba(var(--apr),.12);color:var(--ap)}
+        .status-new{background:rgba(var(--air),.12);color:var(--ai)}
+
+        /* ===== PAGINATION ===== */
+        .table-footer{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-top:1px solid var(--acb)}
+        .table-footer .table-info{font-size:13px;color:var(--ats)}
+        .pagination{display:flex;align-items:center;gap:4px}
+        .pagination button{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:1px solid var(--acb);background:var(--acbg);color:var(--ats);border-radius:var(--ars);font-size:13px;font-weight:500;cursor:pointer;transition:all var(--atrans);font-family:var(--af)}
+        .pagination button:hover{border-color:var(--ap);color:var(--ap)}
+        .pagination button.active{background:var(--ap);color:#fff;border-color:var(--ap)}
+        .pagination button:disabled{opacity:.4;cursor:not-allowed}
+
+        /* ===== CHARTS ===== */
+        .chart-container{position:relative;width:100%;min-height:280px;display:flex;align-items:center;justify-content:center}
+
+        /* ===== TIMELINE ===== */
+        .activity-timeline{padding:0 4px}
+        .timeline-item{display:flex;gap:14px;padding:14px 0;position:relative}
+        .timeline-item:not(:last-child)::before{content:'';position:absolute;right:14px;top:42px;bottom:0;width:2px;background:var(--acb)}
+        .timeline-item .timeline-dot{width:32px;height:32px;min-width:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;z-index:1}
+        .timeline-dot.dot-primary{background:rgba(var(--apr),.12);color:var(--ap)}
+        .timeline-dot.dot-success{background:rgba(var(--asr),.12);color:var(--as)}
+        .timeline-dot.dot-warning{background:rgba(var(--awr),.12);color:var(--aw)}
+        .timeline-dot.dot-danger{background:rgba(var(--adr),.12);color:var(--ad)}
+        .timeline-item .timeline-content{flex:1}
+        .timeline-item .timeline-text{font-size:13px;color:var(--atx);line-height:1.5}
+        .timeline-item .timeline-text strong{font-weight:600}
+        .timeline-item .timeline-time{font-size:11px;color:var(--ats);margin-top:2px}
+
+        /* ===== QUICK ACTIONS ===== */
+        .quick-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+        .quick-action-btn{display:flex;align-items:center;gap:10px;padding:14px;border:1px solid var(--acb);background:var(--acbg);border-radius:var(--ars);cursor:pointer;transition:all var(--atrans);font-family:var(--af);text-align:right}
+        .quick-action-btn:hover{border-color:var(--ap);background:rgba(var(--apr),.04);transform:translateY(-1px);box-shadow:var(--ashs)}
+        .quick-action-btn .qa-icon{width:36px;height:36px;min-width:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+        .quick-action-btn .qa-icon.qa-primary{background:rgba(var(--apr),.12);color:var(--ap)}
+        .quick-action-btn .qa-icon.qa-success{background:rgba(var(--asr),.12);color:var(--as)}
+        .quick-action-btn .qa-icon.qa-warning{background:rgba(var(--awr),.12);color:var(--aw)}
+        .quick-action-btn .qa-icon.qa-danger{background:rgba(var(--adr),.12);color:var(--ad)}
+        .quick-action-btn .qa-text{font-size:13px;font-weight:600;color:var(--atx)}
+        .quick-action-btn .qa-desc{font-size:11px;color:var(--ats);margin-top:1px}
+
+        /* ===== FILTER BAR ===== */
+        .filter-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px;padding:16px 20px;background:var(--acbg);border:1px solid var(--acb);border-radius:var(--arm)}
+        .filter-bar .filter-group{display:flex;align-items:center;gap:6px}
+        .filter-bar label{font-size:12px;font-weight:600;color:var(--ats);white-space:nowrap}
+        .filter-bar select,.filter-bar input[type="date"]{height:36px;padding:0 12px;border:1px solid var(--acb);border-radius:var(--ars);font-family:var(--af);font-size:13px;background:var(--abg);color:var(--atx);cursor:pointer;transition:all var(--atrans)}
+        .filter-bar select:focus,.filter-bar input[type="date"]:focus{outline:none;border-color:var(--ap);box-shadow:0 0 0 3px rgba(var(--apr),.1)}
+        .filter-separator{width:1px;height:28px;background:var(--acb)}
+        .bulk-actions{display:none;align-items:center;gap:8px;padding:8px 14px;background:rgba(var(--apr),.08);border-radius:var(--ars);font-size:13px;color:var(--ap);font-weight:600}
+        .bulk-actions.visible{display:flex}
+        .admin-checkbox{width:18px;height:18px;accent-color:var(--ap);cursor:pointer}
+
+        .view-section{display:none}
+        .view-section.active{display:block}
+
+        /* ===== COMMITTEES ===== */
+        .committee-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:24px}
+        .committee-card{background:var(--acbg);border:1px solid var(--acb);border-radius:var(--arm);padding:20px;transition:all var(--atrans)}
+        .committee-card:hover{box-shadow:var(--ashm);transform:translateY(-2px)}
+        .committee-card .committee-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+        .committee-card .committee-name{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px}
+        .committee-card .committee-name i{color:var(--ap)}
+        .committee-card .member-count{font-size:12px;padding:3px 10px;border-radius:20px;background:rgba(var(--apr),.1);color:var(--ap);font-weight:600}
+        .committee-card .committee-members{display:flex;align-items:center;margin-bottom:14px}
+        .committee-card .committee-members .member-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;margin-left:-8px;border:2px solid var(--acbg)}
+        .committee-card .committee-members .member-avatar:first-child{margin-left:0}
+        .committee-card .committee-members .member-more{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;background:var(--acb);color:var(--ats);margin-left:-8px}
+        .committee-card .committee-stats{display:flex;gap:16px;padding-top:14px;border-top:1px solid var(--acb)}
+        .committee-card .committee-stats .cs-item{text-align:center;flex:1}
+        .committee-card .committee-stats .cs-value{font-size:18px;font-weight:800;color:var(--atx)}
+        .committee-card .committee-stats .cs-label{font-size:11px;color:var(--ats)}
+        .committee-card .committee-actions{display:flex;gap:6px;margin-top:14px}
+
+        /* ===== SCHOLARSHIPS ===== */
+        .scholarship-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-bottom:24px}
+        .scholarship-card{background:var(--acbg);border:1px solid var(--acb);border-radius:var(--arm);overflow:hidden;transition:all var(--atrans)}
+        .scholarship-card:hover{box-shadow:var(--ashm);transform:translateY(-2px)}
+        .scholarship-card .scholarship-banner{height:6px}
+        .scholarship-card .scholarship-body{padding:20px}
+        .scholarship-card .scholarship-title{font-size:16px;font-weight:700;margin-bottom:6px}
+        .scholarship-card .scholarship-desc{font-size:13px;color:var(--ats);margin-bottom:14px;line-height:1.5}
+        .scholarship-card .scholarship-meta{display:flex;gap:20px;margin-bottom:14px;flex-wrap:wrap}
+        .scholarship-card .scholarship-meta .meta-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ats)}
+        .scholarship-card .scholarship-meta .meta-item i{color:var(--ap)}
+        .scholarship-card .scholarship-footer{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--acb)}
+        .scholarship-card .scholarship-footer .recipient-avatars{display:flex;align-items:center}
+        .scholarship-card .scholarship-footer .recipient-avatars .r-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;margin-left:-6px;border:2px solid var(--acbg)}
+        .scholarship-card .scholarship-footer .recipient-avatars .r-avatar:first-child{margin-left:0}
+        .scholarship-card .scholarship-footer .r-count{font-size:12px;color:var(--ats);margin-right:8px}
+
+        /* ===== MODALS ===== */
+        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);z-index:10000;display:none;align-items:center;justify-content:center}
+        .modal-overlay.show{display:flex}
+        .modal-overlay.show .modal{opacity:1 !important;visibility:visible !important;transform:none !important;position:static !important}
+        .modal{background:var(--acbg);border-radius:var(--arl);width:100%;max-width:520px;max-height:85vh;overflow-y:auto;box-shadow:var(--ashx);margin:16px;padding:0}
+        .permissions-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+        .permission-item{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--acb);border-radius:var(--ars);cursor:pointer;transition:all var(--atrans);font-size:13px}
+        .permission-item:hover{border-color:var(--ap);background:var(--ahbg)}
+        .permission-item input[type="checkbox"]{width:16px;height:16px;accent-color:var(--ap);cursor:pointer}
+        .permission-item.checked{border-color:var(--ap);background:rgba(var(--apr),.08)}
+        .permission-badges{display:flex;flex-wrap:wrap;gap:4px}
+        .permission-badge{font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(var(--apr),.1);color:var(--ap);white-space:nowrap}
+        .modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--acb)}
+        .modal-header h3{font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px}
+        .modal-header h3 i{color:var(--ap)}
+        .modal-close{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;color:var(--ats);font-size:18px;cursor:pointer;border-radius:var(--ars);transition:all var(--atrans)}
+        .modal-close:hover{background:rgba(var(--adr),.1);color:var(--ad)}
+        .modal-body{padding:24px}
+        .modal-footer{display:flex;align-items:center;justify-content:flex-start;gap:10px;padding:16px 24px;border-top:1px solid var(--acb)}
+
+        .form-group{margin-bottom:18px}
+        .form-group:last-child{margin-bottom:0}
+        .form-group label{display:block;font-size:13px;font-weight:600;color:var(--atx);margin-bottom:6px}
+        .form-group .form-control{width:100%;height:40px;padding:0 14px;border:1px solid var(--acb);border-radius:var(--ars);font-family:var(--af);font-size:13px;background:var(--abg);color:var(--atx);transition:all var(--atrans)}
+        .form-group .form-control:focus{outline:none;border-color:var(--ap);box-shadow:0 0 0 3px rgba(var(--apr),.1)}
+        .form-group textarea.form-control{height:auto;padding:10px 14px;resize:vertical;min-height:80px}
+
+        .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999}
+        .sidebar-overlay.show{display:block}
+
+        @media(max-width:1024px){.stats-grid{grid-template-columns:repeat(2,1fr)}.grid-2,.grid-3-1{grid-template-columns:1fr}.topbar-search{display:none}.topbar-avatar-btn .avatar-name,.topbar-avatar-btn .avatar-role,.topbar-avatar-btn .fa-chevron-down{display:none}}
+        @media(max-width:768px){.admin-sidebar{transform:translateX(100%);width:var(--asw)}.admin-sidebar.mobile-open{transform:translateX(0)}.admin-main{margin-right:0}.admin-main.sidebar-collapsed{margin-right:0}.admin-content{padding:16px}.stats-grid{grid-template-columns:1fr}.content-header{flex-direction:column;align-items:flex-start;gap:12px}.filter-bar{flex-direction:column;align-items:stretch}.filter-separator{width:100%;height:1px}.admin-table{font-size:12px}.admin-table thead th,.admin-table tbody td{padding:8px 10px}.committee-grid,.scholarship-grid{grid-template-columns:1fr}.quick-actions{grid-template-columns:1fr}.topbar-breadcrumb{display:none}.notifications-dropdown{width:300px}.modal{margin:10px}.permissions-grid{grid-template-columns:1fr}.table-footer{flex-direction:column;gap:12px}.hide-mobile{display:none !important}}
+        @media(max-width:480px){.admin-topbar{padding:0 14px}.topbar-title{font-size:15px}.stat-card{padding:16px}.stat-card .stat-value{font-size:26px}}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+        .animate-in{animation:fadeInUp .4s ease forwards}
+        .animate-delay-1{animation-delay:.1s;opacity:0}
+        .animate-delay-2{animation-delay:.2s;opacity:0}
+        .animate-delay-3{animation-delay:.3s;opacity:0}
+        .animate-delay-4{animation-delay:.4s;opacity:0}
+        ::-webkit-scrollbar{width:6px;height:6px}
+        ::-webkit-scrollbar-track{background:transparent}
+        ::-webkit-scrollbar-thumb{background:var(--acb);border-radius:3px}
+        ::-webkit-scrollbar-thumb:hover{background:var(--ats)}
+        @media print{.admin-sidebar,.admin-topbar,.sidebar-overlay{display:none !important}.admin-main{margin-right:0 !important}}
+    </style>
+</head>
+<body>
+    <!-- STAFF LOGIN -->
+    <div id="staffLoginSection" style="display:none;min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--abg);">
+        <div style="width:100%;max-width:420px;padding:16px;">
+            <div style="text-align:center;margin-bottom:32px;">
+                <div style="width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,var(--ap),var(--as));display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:28px;margin-bottom:16px;"><i class="fas fa-graduation-cap"></i></div>
+                <h1 style="font-size:24px;font-weight:800;color:var(--atx);margin-bottom:4px;">لوحة التحكم</h1>
+                <p style="font-size:14px;color:var(--ats);">كلية علوم الرياضة - الدراسات العليا</p>
+            </div>
+            <div style="background:var(--asbg);border:1px solid var(--acb);border-radius:var(--arl);padding:32px;box-shadow:var(--ashm);">
+                <h2 style="font-size:18px;font-weight:700;text-align:center;margin-bottom:24px;color:var(--atx);">تسجيل الدخول</h2>
+                <div id="staffLoginError" style="display:none;padding:10px 14px;background:rgba(229,57,53,.08);border:1px solid rgba(229,57,53,.2);border-radius:var(--ars);color:var(--ad);font-size:13px;margin-bottom:16px;text-align:center;"></div>
+                <form id="staffLoginForm">
+                    <div class="form-group">
+                        <label>البريد الإلكتروني</label>
+                        <input type="email" class="form-control" id="staffLoginEmail" placeholder="أدخل البريد الإلكتروني" required>
+                    </div>
+                    <div class="form-group">
+                        <label>كلمة المرور</label>
+                        <input type="password" class="form-control" id="staffLoginPassword" placeholder="أدخل كلمة المرور" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width:100%;height:44px;font-size:15px;margin-top:8px;"><i class="fas fa-sign-in-alt"></i> تسجيل الدخول</button>
+                </form>
+            </div>
+            <p style="text-align:center;font-size:12px;color:var(--ats);margin-top:20px;"><a href="../index.html" style="color:var(--ap);text-decoration:none;">العودة للموقع الرئيسي</a></p>
+        </div>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="admin-wrapper" id="adminWrapper" style="display:none;">
+        <!-- SIDEBAR -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-brand">
+                <div class="brand-icon"><i class="fas fa-graduation-cap"></i></div>
+                <div class="brand-text">
+                    <span class="brand-title">كلية علوم الرياضة</span>
+                    <span class="brand-subtitle">لوحة التحكم - الدراسات العليا</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav" id="sidebarNav">
+                <div class="nav-label"><span>القائمة الرئيسية</span></div>
+                <a href="#" class="active" data-view="dashboard" onclick="switchView('dashboard',this)"><i class="fas fa-th-large"></i><span class="nav-text">لوحة التحكم</span></a>
+                <a href="#" data-view="applications" onclick="switchView('applications',this)"><i class="fas fa-file-alt"></i><span class="nav-text">الطلبات</span><span class="badge badge-warning">42</span></a>
+                <a href="#" data-view="committees" onclick="switchView('committees',this)"><i class="fas fa-users-cog"></i><span class="nav-text">اللجان</span></a>
+                <a href="#" data-view="documents" onclick="switchView('documents',this)"><i class="fas fa-folder-open"></i><span class="nav-text">المستندات</span><span class="badge badge-primary">12</span></a>
+                <a href="#" data-view="scholarships" onclick="switchView('scholarships',this)"><i class="fas fa-award"></i><span class="nav-text">المنح الدراسية</span></a>
+                <div class="nav-label"><span>النظام</span></div>
+                <a href="#" data-view="permissions" class="admin-only" onclick="switchView('permissions',this)"><i class="fas fa-user-shield"></i><span class="nav-text">إدارة الصلاحيات</span></a>
+                <a href="#" data-view="settings" onclick="switchView('settings',this)"><i class="fas fa-cog"></i><span class="nav-text">الإعدادات</span></a>
+                <a href="../index.html"><i class="fas fa-external-link-alt"></i><span class="nav-text">الموقع الرئيسي</span></a>
+            </nav>
+            <div class="sidebar-dark-toggle" id="darkModeToggle" onclick="toggleDarkMode()">
+                <div class="toggle-icon"><i class="fas fa-moon"></i></div>
+                <div class="toggle-track" id="darkToggleTrack"><div class="toggle-thumb"></div></div>
+                <span class="toggle-label">الوضع الليلي</span>
+            </div>
+            <div class="sidebar-footer">
+                <div class="sidebar-user">
+                    <div class="user-avatar">م أ</div>
+                    <div class="user-info">
+                        <span class="user-name">د. محمد أحمد</span>
+                        <span class="user-role">مدير النظام</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="admin-main" id="adminMain">
+            <!-- TOPBAR -->
+            <header class="admin-topbar" id="adminTopbar">
+                <div class="topbar-right">
+                    <button class="topbar-toggle" id="sidebarToggle" title="إظهار/إخفاء القائمة"><i class="fas fa-bars"></i></button>
+                    <div>
+                        <div class="topbar-title" id="pageTitle">لوحة التحكم</div>
+                        <div class="topbar-breadcrumb" id="pageBreadcrumb">الرئيسية / لوحة التحكم</div>
+                    </div>
+                </div>
+                <div class="topbar-left">
+                    <div class="topbar-search"><input type="text" placeholder="بحث سريع..." id="globalSearch"><i class="fas fa-search"></i></div>
+                    <div class="topbar-avatar" style="position:relative;">
+                        <button class="topbar-icon-btn" id="notifBtn" title="الإشعارات"><i class="fas fa-bell"></i><span class="notification-badge" id="notifBadge">5</span></button>
+                        <div class="dropdown-menu notifications-dropdown" id="notifDropdown">
+                            <div class="notif-header"><h4>الإشعارات</h4><a href="#">تحديد الكل كمقروء</a></div>
+                            <div class="notif-item unread"><div class="notif-icon notif-primary"><i class="fas fa-file-alt"></i></div><div class="notif-content"><div class="notif-text"><strong>طلب جديد</strong> من أحمد محمد للماجستير في التدريب الرياضي</div><div class="notif-time">منذ 5 دقائق</div></div></div>
+                            <div class="notif-item unread"><div class="notif-icon notif-success"><i class="fas fa-check-circle"></i></div><div class="notif-content"><div class="notif-text">تم <strong>اعتماد</strong> طلب سعيد عبدالله #GS-2026-0089</div><div class="notif-time">منذ 15 دقيقة</div></div></div>
+                            <div class="notif-item unread"><div class="notif-icon notif-warning"><i class="fas fa-exclamation-triangle"></i></div><div class="notif-content"><div class="notif-text"><strong>تنبيه:</strong> موعد تقديم المستندات لـ 8 طلبات ينتهي غداً</div><div class="notif-time">منذ 30 دقيقة</div></div></div>
+                            <div class="notif-item"><div class="notif-icon notif-primary"><i class="fas fa-users"></i></div><div class="notif-content"><div class="notif-text">تم إضافة <strong>د. خالد عمر</strong> إلى لجنة المراجعة العلمية</div><div class="notif-time">منذ ساعة</div></div></div>
+                            <div class="notif-item"><div class="notif-icon notif-danger"><i class="fas fa-times-circle"></i></div><div class="notif-content"><div class="notif-text">تم <strong>رفض</strong> طلب فاطمة علي #GS-2026-0076 - مستندات ناقصة</div><div class="notif-time">منذ ساعتين</div></div></div>
+                        </div>
+                    </div>
+                    <div class="topbar-avatar" id="userDropdownWrapper" style="position:relative;">
+                        <button class="topbar-avatar-btn" id="userDropdownBtn">
+                            <div class="avatar-img">م أ</div>
+                            <div class="hide-mobile"><div class="avatar-name">د. محمد أحمد</div><div class="avatar-role">مدير النظام</div></div>
+                            <i class="fas fa-chevron-down hide-mobile"></i>
+                        </button>
+                        <div class="dropdown-menu" id="userDropdown">
+                            <a href="#"><i class="fas fa-user"></i>الملف الشخصي</a>
+                            <a href="#"><i class="fas fa-cog"></i>الإعدادات</a>
+                            <a href="#"><i class="fas fa-chart-bar"></i>التقارير</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="danger-item"><i class="fas fa-sign-out-alt"></i>تسجيل الخروج</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTENT -->
+            <div class="admin-content">
+
+                <!-- DASHBOARD VIEW -->
+                <div class="view-section active" id="view-dashboard">
+                    <div class="stats-grid">
+                        <div class="stat-card stat-primary animate-in animate-delay-1"><div class="stat-header"><div class="stat-icon"><i class="fas fa-file-alt"></i></div><span class="stat-change up"><i class="fas fa-arrow-up"></i> 12%</span></div><div class="stat-value">156</div><div class="stat-label">إجمالي الطلبات</div><div class="stat-progress"><div class="progress-bar" style="width:100%"></div></div></div>
+                        <div class="stat-card stat-warning animate-in animate-delay-2"><div class="stat-header"><div class="stat-icon"><i class="fas fa-clock"></i></div><span class="stat-change up"><i class="fas fa-arrow-up"></i> 8%</span></div><div class="stat-value">42</div><div class="stat-label">قيد المراجعة</div><div class="stat-progress"><div class="progress-bar" style="width:27%"></div></div></div>
+                        <div class="stat-card stat-success animate-in animate-delay-3"><div class="stat-header"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><span class="stat-change up"><i class="fas fa-arrow-up"></i> 15%</span></div><div class="stat-value">89</div><div class="stat-label">مقبولة</div><div class="stat-progress"><div class="progress-bar" style="width:57%"></div></div></div>
+                        <div class="stat-card stat-danger animate-in animate-delay-4"><div class="stat-header"><div class="stat-icon"><i class="fas fa-times-circle"></i></div><span class="stat-change down"><i class="fas fa-arrow-down"></i> 3%</span></div><div class="stat-value">25</div><div class="stat-label">مرفوضة</div><div class="stat-progress"><div class="progress-bar" style="width:16%"></div></div></div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="admin-card animate-in animate-delay-2">
+                            <div class="card-header"><h3><i class="fas fa-chart-pie"></i> توزيع حالات الطلبات</h3><button class="btn btn-sm btn-outline"><i class="fas fa-download"></i> تصدير</button></div>
+                            <div class="card-body"><div class="chart-container" id="pieChartContainer"><canvas id="pieChart"></canvas></div></div>
+                        </div>
+                        <div class="admin-card animate-in animate-delay-3">
+                            <div class="card-header"><h3><i class="fas fa-chart-bar"></i> حمل عمل اللجان</h3><button class="btn btn-sm btn-outline"><i class="fas fa-download"></i> تصدير</button></div>
+                            <div class="card-body"><div class="chart-container" id="barChartContainer"><canvas id="barChart"></canvas></div></div>
+                        </div>
+                    </div>
+
+                    <div class="grid-3-1">
+                        <div class="admin-card animate-in animate-delay-3">
+                            <div class="card-header"><h3><i class="fas fa-file-alt"></i> أحدث الطلبات</h3><button class="btn btn-sm btn-primary" onclick="switchView('applications',document.querySelector('[data-view=applications]'))">عرض الكل</button></div>
+                            <div class="card-body no-padding">
+                                <div style="overflow-x:auto;">
+                                    <table class="admin-table">
+                                        <thead><tr><th>رقم الطلب</th><th>اسم الباحث</th><th>البرنامج</th><th>الحالة</th><th>التاريخ</th><th>إجراءات</th></tr></thead>
+                                        <tbody>
+                                            <tr><td><strong>#GS-2026-0156</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#1a73e8,#1557b0);">أ ح</div><div><div class="user-name">أحمد حسن</div><div class="user-email">ahmed@email.com</div></div></div></td><td>ماجستير تدريب رياضي</td><td><span class="status-badge status-new"><i class="fas fa-circle"></i> جديد</span></td><td>2026-07-20</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-edit"></i></button></div></td></tr>
+                                            <tr><td><strong>#GS-2026-0155</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#00c853,#009624);">س ع</div><div><div class="user-name">سارة علي</div><div class="user-email">sara@email.com</div></div></div></td><td>دكتوراه علوم الرياضة</td><td><span class="status-badge status-review"><i class="fas fa-circle"></i> قيد المراجعة</span></td><td>2026-07-19</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-edit"></i></button></div></td></tr>
+                                            <tr><td><strong>#GS-2026-0154</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#ff6d00,#c43e00);">خ م</div><div><div class="user-name">خالد محمد</div><div class="user-email">khaled@email.com</div></div></div></td><td>ماجستير علم التغذية</td><td><span class="status-badge status-approved"><i class="fas fa-circle"></i> مقبولا</span></td><td>2026-07-18</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-edit"></i></button></div></td></tr>
+                                            <tr><td><strong>#GS-2026-0153</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#e53935,#c62828);">ف ع</div><div><div class="user-name">فاطمة عبدالله</div><div class="user-email">fatma@email.com</div></div></div></td><td>ماجستير تأهيل رياضي</td><td><span class="status-badge status-rejected"><i class="fas fa-circle"></i> مرفوض</span></td><td>2026-07-17</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-edit"></i></button></div></td></tr>
+                                            <tr><td><strong>#GS-2026-0152</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#00bcd4,#0097a7);">ع ر</div><div><div class="user-name">عمر رشدي</div><div class="user-email">omar@email.com</div></div></div></td><td>دكتوراه تدريب رياضي</td><td><span class="status-badge status-pending"><i class="fas fa-circle"></i> معلق</span></td><td>2026-07-16</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-edit"></i></button></div></td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="admin-card animate-in animate-delay-4" style="margin-bottom:24px;">
+                                <div class="card-header"><h3><i class="fas fa-bolt"></i> إجراءات سريعة</h3></div>
+                                <div class="card-body">
+                                    <div class="quick-actions">
+                                        <button class="quick-action-btn" onclick="switchView('applications',document.querySelector('[data-view=applications]'))"><div class="qa-icon qa-primary"><i class="fas fa-plus-circle"></i></div><div><div class="qa-text">طلب جديد</div><div class="qa-desc">إضافة طلب بحثي</div></div></button>
+                                        <button class="quick-action-btn" onclick="openModal('assignReviewerModal')"><div class="qa-icon qa-success"><i class="fas fa-user-check"></i></div><div><div class="qa-text">تكليف مراجع</div><div class="qa-desc">إسناد طلب لمراجع</div></div></button>
+                                        <button class="quick-action-btn" onclick="exportToExcel()"><div class="qa-icon qa-warning"><i class="fas fa-file-export"></i></div><div><div class="qa-text">تصدير البيانات</div><div class="qa-desc">تحميل كـ CSV</div></div></button>
+                                        <button class="quick-action-btn" onclick="printResearcherReport()"><div class="qa-icon qa-primary"><i class="fas fa-print"></i></div><div><div class="qa-text">طباعة تقرير</div><div class="qa-desc">تقرير الباحثين</div></div></button>
+                                        <button class="quick-action-btn" onclick="switchView('committees',document.querySelector('[data-view=committees]'))"><div class="qa-icon qa-danger"><i class="fas fa-users-cog"></i></div><div><div class="qa-text">إدارة اللجان</div><div class="qa-desc">عرض وإدارة</div></div></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="admin-card animate-in animate-delay-4">
+                                <div class="card-header"><h3><i class="fas fa-history"></i> النشاط الأخير</h3></div>
+                                <div class="card-body">
+                                    <div class="activity-timeline">
+                                        <div class="timeline-item"><div class="timeline-dot dot-primary"><i class="fas fa-file-alt"></i></div><div class="timeline-content"><div class="timeline-text">تم إضافة طلب جديد من <strong>أحمد حسن</strong></div><div class="timeline-time">منذ 5 دقائق</div></div></div>
+                                        <div class="timeline-item"><div class="timeline-dot dot-success"><i class="fas fa-check"></i></div><div class="timeline-content"><div class="timeline-text">تم اعتماد طلب <strong>خالد محمد</strong> من لجنة المراجعة</div><div class="timeline-time">منذ 30 دقيقة</div></div></div>
+                                        <div class="timeline-item"><div class="timeline-dot dot-warning"><i class="fas fa-user-plus"></i></div><div class="timeline-content"><div class="timeline-text">تم تعيين <strong>د. سعد الراشد</strong> كمراجع للطلب #0155</div><div class="timeline-time">منذ ساعة</div></div></div>
+                                        <div class="timeline-item"><div class="timeline-dot dot-danger"><i class="fas fa-times"></i></div><div class="timeline-content"><div class="timeline-text">تم رفض طلب <strong>فاطمة عبدالله</strong> - مستندات ناقصة</div><div class="timeline-time">منذ ساعتين</div></div></div>
+                                        <div class="timeline-item"><div class="timeline-dot dot-primary"><i class="fas fa-award"></i></div><div class="timeline-content"><div class="timeline-text">تم تعيين منحة دراسية لـ <strong>عمر رشدي</strong></div><div class="timeline-time">منذ 3 ساعات</div></div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- APPLICATIONS VIEW -->
+                <div class="view-section" id="view-applications">
+                    <div class="content-header"><div><h1>إدارة الطلبات</h1></div><div class="header-actions"><button class="btn btn-outline" onclick="exportToExcel()"><i class="fas fa-file-export"></i> تصدير</button><button class="btn btn-outline" onclick="printResearcherReport()"><i class="fas fa-print"></i> طباعة تقرير</button></div></div>
+                    <div class="filter-bar">
+                        <div class="bulk-actions" id="bulkActions"><span>تم تحديد <strong id="selectedCount">0</strong> طلبات</span><button class="btn btn-sm btn-success"><i class="fas fa-check"></i> قبول</button><button class="btn btn-sm btn-danger"><i class="fas fa-times"></i> رفض</button><button class="btn btn-sm btn-outline"><i class="fas fa-trash"></i> حذف</button></div>
+                        <div class="filter-separator"></div>
+                        <div class="filter-group"><label>الحالة:</label><select id="filterStatus"><option value="">جميع الحالات</option><option value="new">جديد</option><option value="pending">معلق</option><option value="review">قيد المراجعة</option><option value="approved">مقبول</option><option value="rejected">مرفوض</option></select></div>
+                        <div class="filter-group"><label>البرنامج:</label><select id="filterProgram"><option value="">جميع البرامج</option><option value="master-training">ماجستير تدريب رياضي</option><option value="master-nutrition">ماجستير علم التغذية</option><option value="master-rehab">ماجستير تأهيل رياضي</option><option value="phd-training">دكتوراه تدريب رياضي</option><option value="phd-sports">دكتوراه علوم الرياضة</option></select></div>
+                        <div class="filter-group"><label>من:</label><input type="date" id="filterDateFrom"></div>
+                        <div class="filter-group"><label>إلى:</label><input type="date" id="filterDateTo"></div>
+                        <button class="btn btn-sm btn-primary" id="applyFilters"><i class="fas fa-filter"></i> تطبيق</button>
+                        <button class="btn btn-sm btn-outline" id="clearFilters"><i class="fas fa-times"></i> مسح</button>
+                    </div>
+                    <div class="admin-card">
+                        <div class="card-body no-padding">
+                            <div style="overflow-x:auto;">
+                                <table class="admin-table" id="applicationsTable">
+                                    <thead><tr><th style="width:40px;"><input type="checkbox" class="admin-checkbox" id="selectAll"></th><th onclick="sortTable(1)">رقم الطلب <i class="fas fa-sort sort-icon"></i></th><th onclick="sortTable(2)">اسم الباحث <i class="fas fa-sort sort-icon"></i></th><th onclick="sortTable(3)">البرنامج <i class="fas fa-sort sort-icon"></i></th><th onclick="sortTable(4)">الحالة <i class="fas fa-sort sort-icon"></i></th><th onclick="sortTable(5)">التاريخ <i class="fas fa-sort sort-icon"></i></th><th>إجراءات</th></tr></thead>
+                                    <tbody id="applicationsBody">
+                                        <tr><td><input type="checkbox" class="admin-checkbox row-check"></td><td><strong>#GS-2026-0156</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#1a73e8,#1557b0);">أ ح</div><div><div class="user-name">أحمد حسن</div><div class="user-email">ahmed@email.com</div></div></div></td><td>ماجستير تدريب رياضي</td><td><span class="status-badge status-new"><i class="fas fa-circle"></i> جديد</span></td><td>2026-07-20</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض" onclick="openModal('viewApplicationModal')"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة" onclick="openModal('assignReviewerModal')"><i class="fas fa-clipboard-check"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button><button class="btn btn-icon btn-outline" title="حذف" style="color:var(--ad);" onclick="confirmDelete(this)"><i class="fas fa-trash"></i></button></div></td></tr>
+                                        <tr><td><input type="checkbox" class="admin-checkbox row-check"></td><td><strong>#GS-2026-0155</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#00c853,#009624);">س ع</div><div><div class="user-name">سارة علي</div><div class="user-email">sara@email.com</div></div></div></td><td>دكتوراه علوم الرياضة</td><td><span class="status-badge status-review"><i class="fas fa-circle"></i> قيد المراجعة</span></td><td>2026-07-19</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض" onclick="openModal('viewApplicationModal')"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-clipboard-check"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button><button class="btn btn-icon btn-outline" title="حذف" style="color:var(--ad);" onclick="confirmDelete(this)"><i class="fas fa-trash"></i></button></div></td></tr>
+                                        <tr><td><input type="checkbox" class="admin-checkbox row-check"></td><td><strong>#GS-2026-0154</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#ff6d00,#c43e00);">خ م</div><div><div class="user-name">خالد محمد</div><div class="user-email">khaled@email.com</div></div></div></td><td>ماجستير علم التغذية</td><td><span class="status-badge status-approved"><i class="fas fa-circle"></i> مقبولا</span></td><td>2026-07-18</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-clipboard-check"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button><button class="btn btn-icon btn-outline" title="حذف" style="color:var(--ad);" onclick="confirmDelete(this)"><i class="fas fa-trash"></i></button></div></td></tr>
+                                        <tr><td><input type="checkbox" class="admin-checkbox row-check"></td><td><strong>#GS-2026-0153</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#e53935,#c62828);">ف ع</div><div><div class="user-name">فاطمة عبدالله</div><div class="user-email">fatma@email.com</div></div></div></td><td>ماجستير تأهيل رياضي</td><td><span class="status-badge status-rejected"><i class="fas fa-circle"></i> مرفوض</span></td><td>2026-07-17</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-clipboard-check"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button><button class="btn btn-icon btn-outline" title="حذف" style="color:var(--ad);" onclick="confirmDelete(this)"><i class="fas fa-trash"></i></button></div></td></tr>
+                                        <tr><td><input type="checkbox" class="admin-checkbox row-check"></td><td><strong>#GS-2026-0152</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#00bcd4,#0097a7);">ع ر</div><div><div class="user-name">عمر رشدي</div><div class="user-email">omar@email.com</div></div></div></td><td>دكتوراه تدريب رياضي</td><td><span class="status-badge status-pending"><i class="fas fa-circle"></i> معلق</span></td><td>2026-07-16</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-clipboard-check"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button><button class="btn btn-icon btn-outline" title="حذف" style="color:var(--ad);" onclick="confirmDelete(this)"><i class="fas fa-trash"></i></button></div></td></tr>
+                                        <tr><td><input type="checkbox" class="admin-checkbox row-check"></td><td><strong>#GS-2026-0151</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#9c27b0,#7b1fa2);">ن ح</div><div><div class="user-name">نورة حسين</div><div class="user-email">noura@email.com</div></div></div></td><td>ماجستير تدريب رياضي</td><td><span class="status-badge status-approved"><i class="fas fa-circle"></i> مقبولا</span></td><td>2026-07-15</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-clipboard-check"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button><button class="btn btn-icon btn-outline" title="حذف" style="color:var(--ad);" onclick="confirmDelete(this)"><i class="fas fa-trash"></i></button></div></td></tr>
+                                        <tr><td><input type="checkbox" class="admin-checkbox row-check"></td><td><strong>#GS-2026-0150</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#795548,#5d4037);">ي س</div><div><div class="user-name">يوسف سعيد</div><div class="user-email">youssef@email.com</div></div></div></td><td>دكتوراه علوم الرياضة</td><td><span class="status-badge status-review"><i class="fas fa-circle"></i> قيد المراجعة</span></td><td>2026-07-14</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-clipboard-check"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button><button class="btn btn-icon btn-outline" title="حذف" style="color:var(--ad);" onclick="confirmDelete(this)"><i class="fas fa-trash"></i></button></div></td></tr>
+                                        <tr><td><input type="checkbox" class="admin-checkbox row-check"></td><td><strong>#GS-2026-0149</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#3f51b5,#303f9f);">م ب</div><div><div class="user-name">مريم بنت علي</div><div class="user-email">mariam@email.com</div></div></div></td><td>ماجستير تأهيل رياضي</td><td><span class="status-badge status-pending"><i class="fas fa-circle"></i> معلق</span></td><td>2026-07-13</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-clipboard-check"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button><button class="btn btn-icon btn-outline" title="حذف" style="color:var(--ad);" onclick="confirmDelete(this)"><i class="fas fa-trash"></i></button></div></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="table-footer"><div class="table-info">عرض 1-8 من 156 طلب</div><div class="pagination"><button disabled><i class="fas fa-chevron-right"></i></button><button class="active">1</button><button>2</button><button>3</button><button>...</button><button>20</button><button><i class="fas fa-chevron-left"></i></button></div></div>
+                    </div>
+                </div>
+
+                <!-- COMMITTEES VIEW -->
+                <div class="view-section" id="view-committees">
+                    <div class="content-header"><div><h1>إدارة اللجان</h1></div><div class="header-actions"><button class="btn btn-primary"><i class="fas fa-plus"></i> إضافة لجنة</button></div></div>
+                    <div class="committee-grid">
+                        <div class="committee-card">
+                            <div class="committee-header"><div class="committee-name"><i class="fas fa-users-cog"></i> لجنة المراجعة العلمية</div><span class="member-count">5 أعضاء</span></div>
+                            <div class="committee-members"><div class="member-avatar" style="background:#1a73e8;">م أ</div><div class="member-avatar" style="background:#00c853;">س ر</div><div class="member-avatar" style="background:#ff6d00;">خ ع</div><div class="member-avatar" style="background:#e53935;">ف ح</div><div class="member-avatar" style="background:#9c27b0;">ع م</div><div class="member-more">+2</div></div>
+                            <div class="committee-stats"><div class="cs-item"><div class="cs-value">32</div><div class="cs-label">طلبات مسندة</div></div><div class="cs-item"><div class="cs-value">18</div><div class="cs-label">قيد المراجعة</div></div><div class="cs-item"><div class="cs-value">14</div><div class="cs-label">مكتملة</div></div></div>
+                            <div class="committee-actions"><button class="btn btn-sm btn-primary" onclick="openModal('assignReviewerModal')"><i class="fas fa-user-plus"></i> تعيين مراجع</button><button class="btn btn-sm btn-outline"><i class="fas fa-cog"></i> إدارة</button></div>
+                        </div>
+                        <div class="committee-card">
+                            <div class="committee-header"><div class="committee-name"><i class="fas fa-clipboard-check"></i> لجنة القبول</div><span class="member-count">4 أعضاء</span></div>
+                            <div class="committee-members"><div class="member-avatar" style="background:#00bcd4;">خ م</div><div class="member-avatar" style="background:#795548;">ن ع</div><div class="member-avatar" style="background:#3f51b5;">ع ر</div><div class="member-avatar" style="background:#ff9800;">س ب</div></div>
+                            <div class="committee-stats"><div class="cs-item"><div class="cs-value">28</div><div class="cs-label">طلبات مسندة</div></div><div class="cs-item"><div class="cs-value">12</div><div class="cs-label">قيد المراجعة</div></div><div class="cs-item"><div class="cs-value">16</div><div class="cs-label">مكتملة</div></div></div>
+                            <div class="committee-actions"><button class="btn btn-sm btn-primary"><i class="fas fa-user-plus"></i> تعيين مراجع</button><button class="btn btn-sm btn-outline"><i class="fas fa-cog"></i> إدارة</button></div>
+                        </div>
+                        <div class="committee-card">
+                            <div class="committee-header"><div class="committee-name"><i class="fas fa-gavel"></i> لجنة المناقشة</div><span class="member-count">6 أعضاء</span></div>
+                            <div class="committee-members"><div class="member-avatar" style="background:#e53935;">أ س</div><div class="member-avatar" style="background:#4caf50;">م ح</div><div class="member-avatar" style="background:#2196f3;">ن ف</div><div class="member-avatar" style="background:#ff5722;">س ع</div><div class="member-more">+3</div></div>
+                            <div class="committee-stats"><div class="cs-item"><div class="cs-value">15</div><div class="cs-label">طلبات مسندة</div></div><div class="cs-item"><div class="cs-value">5</div><div class="cs-label">قيد المراجعة</div></div><div class="cs-item"><div class="cs-value">10</div><div class="cs-label">مكتملة</div></div></div>
+                            <div class="committee-actions"><button class="btn btn-sm btn-primary"><i class="fas fa-user-plus"></i> تعيين مراجع</button><button class="btn btn-sm btn-outline"><i class="fas fa-cog"></i> إدارة</button></div>
+                        </div>
+                        <div class="committee-card">
+                            <div class="committee-header"><div class="committee-name"><i class="fas fa-file-contract"></i> لجنة المستندات</div><span class="member-count">3 أعضاء</span></div>
+                            <div class="committee-members"><div class="member-avatar" style="background:#9c27b0;">ل ح</div><div class="member-avatar" style="background:#607d8b;">ر م</div><div class="member-avatar" style="background:#009688;">ي ع</div></div>
+                            <div class="committee-stats"><div class="cs-item"><div class="cs-value">42</div><div class="cs-label">طلبات مسندة</div></div><div class="cs-item"><div class="cs-value">15</div><div class="cs-label">قيد المراجعة</div></div><div class="cs-item"><div class="cs-value">27</div><div class="cs-label">مكتملة</div></div></div>
+                            <div class="committee-actions"><button class="btn btn-sm btn-primary"><i class="fas fa-user-plus"></i> تعيين مراجع</button><button class="btn btn-sm btn-outline"><i class="fas fa-cog"></i> إدارة</button></div>
+                        </div>
+                    </div>
+                    <div class="admin-card">
+                        <div class="card-header"><h3><i class="fas fa-list"></i> آخر التعيينات</h3></div>
+                        <div class="card-body no-padding">
+                            <div style="overflow-x:auto;">
+                                <table class="admin-table">
+                                    <thead><tr><th>رقم الطلب</th><th>الباحث</th><th>اللجنة</th><th>المراجع</th><th>التاريخ</th><th>الحالة</th></tr></thead>
+                                    <tbody>
+                                        <tr><td><strong>#GS-2026-0156</strong></td><td>أحمد حسن</td><td>لجنة المراجعة العلمية</td><td>د. سعد الراشد</td><td>2026-07-20</td><td><span class="status-badge status-pending"><i class="fas fa-circle"></i> معلق</span></td></tr>
+                                        <tr><td><strong>#GS-2026-0155</strong></td><td>سارة علي</td><td>لجنة القبول</td><td>د. نورة العتيبي</td><td>2026-07-19</td><td><span class="status-badge status-review"><i class="fas fa-circle"></i> قيد المراجعة</span></td></tr>
+                                        <tr><td><strong>#GS-2026-0154</strong></td><td>خالد محمد</td><td>لجنة المراجعة العلمية</td><td>د. فاطمة الحربي</td><td>2026-07-18</td><td><span class="status-badge status-approved"><i class="fas fa-circle"></i> مكتمل</span></td></tr>
+                                        <tr><td><strong>#GS-2026-0152</strong></td><td>عمر رشدي</td><td>لجنة المناقشة</td><td>د. عادل مشعل</td><td>2026-07-17</td><td><span class="status-badge status-review"><i class="fas fa-circle"></i> قيد المراجعة</span></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DOCUMENTS VIEW -->
+                <div class="view-section" id="view-documents">
+                    <div class="content-header"><div><h1>إدارة المستندات</h1></div><div class="header-actions"><button class="btn btn-outline" onclick="exportToExcel()"><i class="fas fa-file-export"></i> تصدير</button></div></div>
+                    <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);">
+                        <div class="stat-card stat-primary"><div class="stat-header"><div class="stat-icon"><i class="fas fa-file-alt"></i></div></div><div class="stat-value" id="totalFilesCount">0</div><div class="stat-label">إجمالي المستندات</div></div>
+                        <div class="stat-card stat-warning"><div class="stat-header"><div class="stat-icon"><i class="fas fa-file-pdf"></i></div></div><div class="stat-value" id="pdfFilesCount">0</div><div class="stat-label">ملفات PDF</div></div>
+                        <div class="stat-card stat-success"><div class="stat-header"><div class="stat-icon"><i class="fas fa-folder-open"></i></div></div><div class="stat-value" id="researchersFilesCount">0</div><div class="stat-label">باحثين لديهم مستندات</div></div>
+                    </div>
+                    <div class="admin-card">
+                        <div class="card-header"><h3><i class="fas fa-folder-open"></i> المستندات المرفوعة</h3>
+                            <div style="display:flex;gap:8px;align-items:center;">
+                                <select id="docFilterStage" class="form-control" style="height:34px;font-size:12px;padding:0 10px;" onchange="loadDocuments()">
+                                    <option value="">جميع المراحل</option>
+                                    <option value="التسجيل">التسجيل</option>
+                                    <option value="التشكيل">التشكيل</option>
+                                    <option value="المنح">المنح</option>
+                                </select>
+                                <button class="btn btn-sm btn-outline" onclick="loadDocuments()"><i class="fas fa-sync-alt"></i> تحديث</button>
+                            </div>
+                        </div>
+                        <div class="card-body no-padding">
+                            <div style="overflow-x:auto;">
+                                <table class="admin-table">
+                                    <thead><tr><th>المستند</th><th>الباحث</th><th>المرحلة</th><th>الحجم</th><th>التاريخ</th><th>إجراءات</th></tr></thead>
+                                    <tbody id="documentsTableBody">
+                                        <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--ats);"><i class="fas fa-spinner fa-spin" style="margin-left:8px;"></i> جاري تحميل المستندات...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SCHOLARSHIPS VIEW -->
+                <div class="view-section" id="view-scholarships">
+                    <div class="content-header"><div><h1>المنح الدراسية</h1></div><div class="header-actions"><button class="btn btn-primary" onclick="openModal('assignScholarshipModal')"><i class="fas fa-plus"></i> إضافة منحة</button></div></div>
+                    <div class="stats-grid">
+                        <div class="stat-card stat-primary"><div class="stat-header"><div class="stat-icon"><i class="fas fa-award"></i></div></div><div class="stat-value">12</div><div class="stat-label">إجمالي المنح</div></div>
+                        <div class="stat-card stat-success"><div class="stat-header"><div class="stat-icon"><i class="fas fa-user-check"></i></div></div><div class="stat-value">38</div><div class="stat-label">مستفيدون</div></div>
+                        <div class="stat-card stat-warning"><div class="stat-header"><div class="stat-icon"><i class="fas fa-clock"></i></div></div><div class="stat-value">7</div><div class="stat-label">أماكن متاحة</div></div>
+                        <div class="stat-card stat-danger"><div class="stat-header"><div class="stat-icon"><i class="fas fa-hourglass-half"></i></div></div><div class="stat-value">3</div><div class="stat-label">تنتهي قريباً</div></div>
+                    </div>
+                    <div class="scholarship-grid">
+                        <div class="scholarship-card">
+                            <div class="scholarship-banner" style="background:linear-gradient(90deg,#1a73e8,#4a9af5);"></div>
+                            <div class="scholarship-body">
+                                <div class="scholarship-title">منحة الملك عبدالله للتميز الأكاديمي</div>
+                                <div class="scholarship-desc">منحة كاملة للطلاب المتميزين في برامج الدكتوراه تشمل الرسوم الدراسية والمعيشة.</div>
+                                <div class="scholarship-meta"><div class="meta-item"><i class="fas fa-money-bill-wave"></i> 50,000 ر.س/سنة</div><div class="meta-item"><i class="fas fa-calendar"></i> حتى 2027-06-30</div><div class="meta-item"><i class="fas fa-users"></i> 8/12</div></div>
+                                <div class="scholarship-footer"><div style="display:flex;align-items:center;"><div class="recipient-avatars"><div class="r-avatar" style="background:#1a73e8;">أ ح</div><div class="r-avatar" style="background:#00c853;">س ع</div><div class="r-avatar" style="background:#ff6d00;">خ م</div></div><span class="r-count">+5 مستفيد</span></div><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="openModal('assignScholarshipModal')"><i class="fas fa-user-plus"></i> تعيين</button><button class="btn btn-sm btn-outline"><i class="fas fa-cog"></i></button></div></div>
+                            </div>
+                        </div>
+                        <div class="scholarship-card">
+                            <div class="scholarship-banner" style="background:linear-gradient(90deg,#00c853,#5efc82);"></div>
+                            <div class="scholarship-body">
+                                <div class="scholarship-title">منحة البحث العلمي - كلية علوم الرياضة</div>
+                                <div class="scholarship-desc">دعم مالي للباحثين في مجالات التدريب الرياضي والتأهيل والعلوم التربوية.</div>
+                                <div class="scholarship-meta"><div class="meta-item"><i class="fas fa-money-bill-wave"></i> 30,000 ر.س/سنة</div><div class="meta-item"><i class="fas fa-calendar"></i> حتى 2027-12-31</div><div class="meta-item"><i class="fas fa-users"></i> 15/20</div></div>
+                                <div class="scholarship-footer"><div style="display:flex;align-items:center;"><div class="recipient-avatars"><div class="r-avatar" style="background:#9c27b0;">ن ح</div><div class="r-avatar" style="background:#00bcd4;">ع ر</div></div><span class="r-count">+13 مستفيد</span></div><div class="btn-group"><button class="btn btn-sm btn-primary"><i class="fas fa-user-plus"></i> تعيين</button><button class="btn btn-sm btn-outline"><i class="fas fa-cog"></i></button></div></div>
+                            </div>
+                        </div>
+                        <div class="scholarship-card">
+                            <div class="scholarship-banner" style="background:linear-gradient(90deg,#ff6d00,#ff9e40);"></div>
+                            <div class="scholarship-body">
+                                <div class="scholarship-title">منحة الابتعاث الدولي</div>
+                                <div class="scholarship-desc">منح للدراسات العليا في أرقى الجامعات العالمية في مجالات علوم الرياضة والتغذية.</div>
+                                <div class="scholarship-meta"><div class="meta-item"><i class="fas fa-money-bill-wave"></i> 80,000 ر.س/سنة</div><div class="meta-item"><i class="fas fa-calendar"></i> حتى 2028-06-30</div><div class="meta-item"><i class="fas fa-users"></i> 3/5</div></div>
+                                <div class="scholarship-footer"><div style="display:flex;align-items:center;"><div class="recipient-avatars"><div class="r-avatar" style="background:#e53935;">ف ع</div></div><span class="r-count">+2 مستفيد</span></div><div class="btn-group"><button class="btn btn-sm btn-primary"><i class="fas fa-user-plus"></i> تعيين</button><button class="btn btn-sm btn-outline"><i class="fas fa-cog"></i></button></div></div>
+                            </div>
+                        </div>
+                        <div class="scholarship-card">
+                            <div class="scholarship-banner" style="background:linear-gradient(90deg,#e53935,#ff6f60);"></div>
+                            <div class="scholarship-body">
+                                <div class="scholarship-title">منحة الطالب المتفوق</div>
+                                <div class="scholarship-desc">حوافز مالية للطلاب الحاصلين على معدل تراكمي أعلى من 3.75 في برامج الماجستير.</div>
+                                <div class="scholarship-meta"><div class="meta-item"><i class="fas fa-money-bill-wave"></i> 15,000 ر.س/فصل</div><div class="meta-item"><i class="fas fa-calendar"></i> مستمر</div><div class="meta-item"><i class="fas fa-users"></i> 12/15</div></div>
+                                <div class="scholarship-footer"><div style="display:flex;align-items:center;"><div class="recipient-avatars"><div class="r-avatar" style="background:#3f51b5;">م ب</div><div class="r-avatar" style="background:#795548;">ي س</div></div><span class="r-count">+10 مستفيد</span></div><div class="btn-group"><button class="btn btn-sm btn-primary"><i class="fas fa-user-plus"></i> تعيين</button><button class="btn btn-sm btn-outline"><i class="fas fa-cog"></i></button></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="admin-card">
+                        <div class="card-header"><h3><i class="fas fa-list"></i> المستفيدون من المنح</h3><button class="btn btn-sm btn-outline" onclick="exportToExcel()"><i class="fas fa-file-export"></i> تصدير</button></div>
+                        <div class="card-body no-padding">
+                            <div style="overflow-x:auto;">
+                                <table class="admin-table">
+                                    <thead><tr><th>الباحث</th><th>البرنامج</th><th>المنحة</th><th>المبلغ السنوي</th><th>تاريخ البدء</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+                                    <tbody>
+                                        <tr><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#1a73e8,#1557b0);">أ ح</div><div><div class="user-name">أحمد حسن</div><div class="user-email">ماجستير تدريب رياضي</div></div></div></td><td>ماجستير تدريب رياضي</td><td>منحة الملك عبدالله</td><td>50,000 ر.س</td><td>2026-09-01</td><td><span class="status-badge status-approved"><i class="fas fa-circle"></i> نشطة</span></td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button></div></td></tr>
+                                        <tr><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#00c853,#009624);">س ع</div><div><div class="user-name">سارة علي</div><div class="user-email">دكتوراه علوم الرياضة</div></div></div></td><td>دكتوراه علوم الرياضة</td><td>منحة البحث العلمي</td><td>30,000 ر.س</td><td>2026-09-01</td><td><span class="status-badge status-approved"><i class="fas fa-circle"></i> نشطة</span></td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button></div></td></tr>
+                                        <tr><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#e53935,#c62828);">ف ع</div><div><div class="user-name">فاطمة عبدالله</div><div class="user-email">ماجستير تأهيل رياضي</div></div></div></td><td>ماجستير تأهيل رياضي</td><td>منحة الابتعاث الدولي</td><td>80,000 ر.س</td><td>2027-01-15</td><td><span class="status-badge status-pending"><i class="fas fa-circle"></i> بانتظار البدء</span></td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button></div></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SETTINGS VIEW -->
+                <div class="view-section" id="view-settings">
+                    <div class="content-header"><div><h1>الإعدادات</h1></div></div>
+                    <div class="grid-2">
+                        <div class="admin-card">
+                            <div class="card-header"><h3><i class="fas fa-cog"></i> إعدادات عامة</h3></div>
+                            <div class="card-body">
+                                <div class="form-group"><label>اسم الكلية</label><input type="text" class="form-control" value="كلية علوم الرياضة"></div>
+                                <div class="form-group"><label>اسم الجامعة</label><input type="text" class="form-control" value="جامعة الفيوم"></div>
+                                <div class="form-group"><label>البريد الإلكتروني</label><input type="email" class="form-control" value="waa11@fayoum.edu.eg"></div>
+                                <div class="form-group"><label>الهاتف</label><input type="tel" class="form-control" value="+20 100 288 2441"></div>
+                                <button class="btn btn-primary"><i class="fas fa-save"></i> حفظ التغييرات</button>
+                            </div>
+                        </div>
+                        <div class="admin-card">
+                            <div class="card-header"><h3><i class="fas fa-bell"></i> إعدادات الإشعارات</h3></div>
+                            <div class="card-body">
+                                <div class="form-group"><label>إشعارات البريد الإلكتروني</label><select class="form-control"><option>مفعّلة</option><option>معطّلة</option></select></div>
+                                <div class="form-group"><label>تنبيهات المواعيد النهائية</label><select class="form-control"><option>قبل 7 أيام</option><option>قبل 3 أيام</option><option>قبل يوم واحد</option></select></div>
+                                <div class="form-group"><label>تقرير أسبوعي</label><select class="form-control"><option>مفعّل</option><option>معطّل</option></select></div>
+                                <button class="btn btn-primary"><i class="fas fa-save"></i> حفظ التغييرات</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PERMISSIONS MANAGEMENT (ADMIN ONLY) -->
+                <div class="view-section" id="view-permissions">
+                    <div class="content-header"><div><h1>إدارة الصلاحيات</h1><p style="font-size:13px;color:var(--ats);margin-top:4px;">إضافة وتعديل وحذف مستخدمي النظام</p></div><div class="header-actions"><button class="btn btn-outline" onclick="printResearcherReport()"><i class="fas fa-print"></i> طباعة تقرير</button><button class="btn btn-primary" id="addStaffBtn"><i class="fas fa-plus"></i> إضافة مستخدم</button></div></div>
+                    <div class="stats-grid" style="grid-template-columns:repeat(2,1fr);">
+                        <div class="stat-card stat-primary"><div class="stat-header"><div class="stat-icon"><i class="fas fa-users"></i></div></div><div class="stat-value" id="totalStaffCount">0</div><div class="stat-label">إجمالي المستخدمين</div></div>
+                        <div class="stat-card stat-success"><div class="stat-header"><div class="stat-icon"><i class="fas fa-user-shield"></i></div></div><div class="stat-value" id="adminCount">0</div><div class="stat-label">مدراء النظام</div></div>
+                    </div>
+                    <div class="admin-card">
+                        <div class="card-header"><h3><i class="fas fa-list"></i> قائمة المستخدمين</h3></div>
+                        <div class="card-body no-padding">
+                            <div style="overflow-x:auto;">
+                                <table class="admin-table">
+                                    <thead><tr><th>المستخدم</th><th>البريد الإلكتروني</th><th>اسم الصلاحية</th><th>الصلاحيات</th><th>إجراءات</th></tr></thead>
+                                    <tbody id="staffTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- MODALS -->
+    <div class="modal-overlay" id="viewApplicationModal">
+        <div class="modal">
+            <div class="modal-header"><h3><i class="fas fa-file-alt"></i> تفاصيل الطلب #GS-2026-0156</h3><button class="modal-close" onclick="closeModal('viewApplicationModal')"><i class="fas fa-times"></i></button></div>
+            <div class="modal-body">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                    <div class="form-group"><label>رقم الطلب</label><input type="text" class="form-control" value="#GS-2026-0156" readonly></div>
+                    <div class="form-group"><label>تاريخ التقديم</label><input type="text" class="form-control" value="2026-07-20" readonly></div>
+                    <div class="form-group"><label>اسم الباحث</label><input type="text" class="form-control" value="أحمد حسن" readonly></div>
+                    <div class="form-group"><label>البريد الإلكتروني</label><input type="text" class="form-control" value="ahmed@email.com" readonly></div>
+                    <div class="form-group" style="grid-column:span 2;"><label>البرنامج المطلوب</label><input type="text" class="form-control" value="ماجستير تدريب رياضي" readonly></div>
+                    <div class="form-group" style="grid-column:span 2;"><label>المستندات المرفقة</label><div style="display:flex;gap:8px;flex-wrap:wrap;"><span style="padding:6px 12px;background:var(--ahbg);border-radius:6px;font-size:12px;"><i class="fas fa-file-pdf" style="color:#e53935;margin-left:4px;"></i> شهادة البكالوريس</span><span style="padding:6px 12px;background:var(--ahbg);border-radius:6px;font-size:12px;"><i class="fas fa-file-pdf" style="color:#e53935;margin-left:4px;"></i> السيرة الذاتية</span><span style="padding:6px 12px;background:var(--ahbg);border-radius:6px;font-size:12px;"><i class="fas fa-file-word" style="color:#1a73e8;margin-left:4px;"></i> رسالة البحث</span><span style="padding:6px 12px;background:var(--ahbg);border-radius:6px;font-size:12px;"><i class="fas fa-file-image" style="color:#ff6d00;margin-left:4px;"></i> الصورة الشخصية</span></div></div>
+                    <div class="form-group" style="grid-column:span 2;"><label>ملاحظات</label><textarea class="form-control" rows="3" placeholder="إضافة ملاحظات..."></textarea></div>
+                </div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-success"><i class="fas fa-check"></i> قبول</button><button class="btn btn-danger"><i class="fas fa-times"></i> رفض</button><button class="btn btn-primary" onclick="closeModal('viewApplicationModal')"><i class="fas fa-times"></i> إغلاق</button></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="assignReviewerModal">
+        <div class="modal">
+            <div class="modal-header"><h3><i class="fas fa-user-check"></i> تكليف مراجع</h3><button class="modal-close" onclick="closeModal('assignReviewerModal')"><i class="fas fa-times"></i></button></div>
+            <div class="modal-body">
+                <div class="form-group"><label>رقم الطلب</label><select class="form-control"><option value="">اختر الطلب...</option><option>#GS-2026-0156 - أحمد حسن</option><option>#GS-2026-0155 - سارة علي</option><option>#GS-2026-0152 - عمر رشدي</option></select></div>
+                <div class="form-group"><label>اللجنة</label><select class="form-control"><option value="">اختر اللجنة...</option><option>لجنة المراجعة العلمية</option><option>لجنة القبول</option><option>لجنة المناقشة</option><option>لجنة المستندات</option></select></div>
+                <div class="form-group"><label>المراجع</label><select class="form-control"><option value="">اختر المراجع...</option><option>د. سعد الراشد</option><option>د. نورة العتيبي</option><option>د. فاطمة الحربي</option><option>د. عادل مشعل</option><option>د. خالد عمر</option></select></div>
+                <div class="form-group"><label>ملاحظات</label><textarea class="form-control" rows="3" placeholder="إضافة تعليمات أو ملاحظات للمراجع..."></textarea></div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-primary" onclick="closeModal('assignReviewerModal')"><i class="fas fa-check"></i> تأكيد التعيين</button><button class="btn btn-outline" onclick="closeModal('assignReviewerModal')"><i class="fas fa-times"></i> إلغاء</button></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="assignScholarshipModal">
+        <div class="modal">
+            <div class="modal-header"><h3><i class="fas fa-award"></i> تعيين منحة دراسية</h3><button class="modal-close" onclick="closeModal('assignScholarshipModal')"><i class="fas fa-times"></i></button></div>
+            <div class="modal-body">
+                <div class="form-group"><label>الباحث</label><select class="form-control"><option value="">اختر الباحث...</option><option>أحمد حسن - ماجستير تدريب رياضي</option><option>سارة علي - دكتوراه علوم الرياضة</option><option>خالد محمد - ماجستير علم التغذية</option><option>فاطمة عبدالله - ماجستير تأهيل رياضي</option><option>عمر رشدي - دكتوراه تدريب رياضي</option></select></div>
+                <div class="form-group"><label>المنحة</label><select class="form-control"><option value="">اختر المنحة...</option><option>منحة الملك Abdullah للتميز الأكاديمي</option><option>منحة البحث العلمي</option><option>منحة الابتعاث الدولي</option><option>منحة الطالب المتفوق</option></select></div>
+                <div class="form-group"><label>المبلغ السنوي (ر.س)</label><input type="number" class="form-control" placeholder="أدخل المبلغ"></div>
+                <div class="form-group"><label>تاريخ البدء</label><input type="date" class="form-control"></div>
+                <div class="form-group"><label>ملاحظات</label><textarea class="form-control" rows="3" placeholder="إضافة ملاحظات..."></textarea></div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-primary" onclick="closeModal('assignScholarshipModal')"><i class="fas fa-check"></i> تأكيد التعيين</button><button class="btn btn-outline" onclick="closeModal('assignScholarshipModal')"><i class="fas fa-times"></i> إلغاء</button></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="deleteConfirmModal">
+        <div class="modal" style="max-width:400px;">
+            <div class="modal-header"><h3><i class="fas fa-exclamation-triangle" style="color:var(--ad);"></i> تأكيد الحذف</h3><button class="modal-close" onclick="closeModal('deleteConfirmModal')"><i class="fas fa-times"></i></button></div>
+            <div class="modal-body">
+                <p style="font-size:14px;text-align:center;">هل أنت متأكد من حذف هذا العنصر؟ لا يمكن التراجع عن هذا الإجراء.</p>
+            </div>
+            <div class="modal-footer" style="justify-content:center;"><button class="btn btn-danger" id="confirmDeleteBtn"><i class="fas fa-trash"></i> نعم، حذف</button><button class="btn btn-outline" onclick="closeModal('deleteConfirmModal')"><i class="fas fa-times"></i> إلغاء</button></div>
+        </div>
+    </div>
+
+    <!-- ADD/EDIT STAFF MODAL -->
+    <div class="modal-overlay" id="staffModal">
+        <div class="modal" style="max-width:560px;">
+            <div class="modal-header"><h3><i class="fas fa-user-plus"></i> <span id="staffModalTitle">إضافة مستخدم جديد</span></h3><button class="modal-close" onclick="closeModal('staffModal')"><i class="fas fa-times"></i></button></div>
+            <div class="modal-body">
+                <div class="form-group"><label>الاسم الكامل</label><input type="text" class="form-control" id="staffName" placeholder="أدخل الاسم"></div>
+                <div class="form-group"><label>البريد الإلكتروني</label><input type="email" class="form-control" id="staffEmail" placeholder="أدخل البريد الإلكتروني"></div>
+                <div class="form-group"><label>كلمة المرور <span style="font-weight:400;color:var(--ats);font-size:12px;">(اتركها فاضية للاحتفاظ بالقديمة عند التعديل)</span></label><input type="password" class="form-control" id="staffPassword" placeholder="أدخل كلمة المرور"></div>
+                <div class="form-group"><label>اسم الصلاحية (تختاره أنت)</label><input type="text" class="form-control" id="staffRoleName" placeholder="مثال: مدير قسم المستندات"></div>
+                <div class="form-group">
+                    <label>الصلاحيات</label>
+                    <div class="permissions-grid">
+                        <label class="permission-item"><input type="checkbox" value="upload_pdfs"> تحميل ملفات PDF للباحثين</label>
+                        <label class="permission-item"><input type="checkbox" value="download_excel"> تحميل ملف Excel</label>
+                        <label class="permission-item"><input type="checkbox" value="view_excel"> عرض ملف Excel</label>
+                        <label class="permission-item"><input type="checkbox" value="view_pdfs"> عرض ملفات PDF</label>
+                        <label class="permission-item"><input type="checkbox" value="view_messages"> عرض الرسائل</label>
+                        <label class="permission-item"><input type="checkbox" value="reply_messages"> الرد على الرسائل</label>
+                        <label class="permission-item"><input type="checkbox" value="generate_reports"> إصدار تقارير</label>
+                        <label class="permission-item"><input type="checkbox" value="manage_users"> إدارة المستخدمين</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-primary" id="saveStaffBtn"><i class="fas fa-save"></i> حفظ</button><button class="btn btn-outline" onclick="closeModal('staffModal')"><i class="fas fa-times"></i> إلغاء</button></div>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة الباحث - كلية علوم الرياضة</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        .page-hero{background:var(--gradient-primary);color:#fff;padding:140px 0 80px;text-align:center;position:relative;overflow:hidden}
+        .page-hero::before{content:'';position:absolute;top:-50%;right:-20%;width:500px;height:500px;border-radius:50%;background:rgba(255,255,255,.05)}
+        .page-hero::after{content:'';position:absolute;bottom:-30%;left:-10%;width:400px;height:400px;border-radius:50%;background:rgba(255,255,255,.03)}
+        .page-hero h1{font-size:2.8rem;font-weight:800;margin-bottom:12px;position:relative;z-index:1}
+        .page-hero p{font-size:1.15rem;opacity:.9;max-width:600px;margin:0 auto;position:relative;z-index:1}
+
+        .portal-wrap{padding:60px 0 80px}
+
+        .auth-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:960px;margin:0 auto}
+
+        .portal-card{background:var(--bg-card);border:1px solid var(--card-border);border-radius:var(--border-radius-xl);box-shadow:var(--shadow-md);overflow:hidden;transition:all .3s}
+        .portal-card:hover{box-shadow:var(--shadow-xl)}
+
+        .portal-card-header{text-align:center;padding:28px 24px 18px;background:rgba(var(--color-primary-rgb),.04);border-bottom:1px solid var(--card-border)}
+        .portal-card-header .portal-logo{width:52px;height:52px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.3rem;margin:0 auto 12px}
+        .portal-card-header h2{font-size:1.25rem;font-weight:700;color:var(--text-primary);margin-bottom:4px}
+        .portal-card-header p{font-size:.82rem;color:var(--text-secondary)}
+
+        .portal-card-body{padding:24px}
+
+        .form-group{margin-bottom:14px}
+        .form-group label{display:block;font-size:.8rem;font-weight:600;color:var(--text-primary);margin-bottom:4px}
+        .input-icon{position:relative;display:flex;align-items:center}
+        .input-icon>i{position:absolute;right:12px;color:var(--text-muted);font-size:.8rem}
+        .input-icon input{width:100%;padding:10px 36px 10px 12px;border:1px solid var(--card-border);border-radius:var(--border-radius-md);background:var(--bg-primary);color:var(--text-primary);font-size:.85rem;font-family:inherit;transition:border-color .2s}
+        .input-icon input:focus{outline:none;border-color:var(--color-primary)}
+        .toggle-password{position:absolute;left:12px;background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:.8rem}
+
+        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+        .form-options{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;font-size:.78rem}
+        .checkbox-label{display:flex;align-items:center;gap:5px;color:var(--text-secondary);cursor:pointer}
+        .checkbox-label input{cursor:pointer}
+        .forgot-password{color:var(--color-primary);text-decoration:none;font-weight:500}
+        .forgot-password:hover{text-decoration:underline}
+
+        .btn-submit{width:100%;padding:11px;border:none;border-radius:var(--border-radius-md);background:var(--gradient-primary);color:#fff;font-size:.9rem;font-weight:700;font-family:inherit;cursor:pointer;transition:opacity .2s,transform .2s}
+        .btn-submit:hover{opacity:.9;transform:translateY(-1px)}
+
+        .form-divider{text-align:center;margin:16px 0;position:relative}
+        .form-divider::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:var(--card-border)}
+        .form-divider span{position:relative;background:var(--bg-card);padding:0 14px;font-size:.78rem;color:var(--text-muted)}
+
+        .btn-alt{width:100%;padding:10px;border:2px solid var(--card-border);border-radius:var(--border-radius-md);background:transparent;color:var(--text-primary);font-size:.85rem;font-weight:600;font-family:inherit;cursor:pointer;transition:all .2s}
+        .btn-alt:hover{border-color:var(--color-primary);color:var(--color-primary)}
+
+        .agreement-label{display:flex;align-items:flex-start;gap:6px;font-size:.78rem;color:var(--text-secondary);cursor:pointer}
+        .agreement-label input{margin-top:2px;cursor:pointer}
+        .agreement-label a{color:var(--color-primary);text-decoration:none}
+
+        /* Dashboard */
+        .dash-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;margin-bottom:24px}
+        .dash-card{background:var(--bg-card);border:1px solid var(--card-border);border-radius:var(--border-radius-lg);padding:20px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-sm)}
+        .dash-card-icon{width:44px;height:44px;min-width:44px;border-radius:50%;background:rgba(var(--color-primary-rgb),.1);display:flex;align-items:center;justify-content:center;color:var(--color-primary);font-size:1rem}
+        .dash-card-info h4{font-size:.75rem;color:var(--text-muted);margin-bottom:4px;font-weight:500}
+        .dash-card-info p{font-size:.95rem;font-weight:700;color:var(--text-primary);margin:0}
+
+        .status-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.72rem;font-weight:600}
+        .status-review{background:rgba(243,156,18,.1);color:#f39c12}
+
+        .dash-row{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+        .dash-box{background:var(--bg-card);border:1px solid var(--card-border);border-radius:var(--border-radius-lg);overflow:hidden;box-shadow:var(--shadow-sm)}
+        .dash-box-header{padding:16px 20px;border-bottom:1px solid var(--card-border);font-size:.95rem;font-weight:700;color:var(--text-primary)}
+        .dash-box-body{padding:16px 20px}
+
+        .activity-list{display:flex;flex-direction:column}
+        .activity-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(var(--color-primary-rgb),.06)}
+        .activity-item:last-child{border-bottom:none}
+        .activity-icon{width:34px;height:34px;min-width:34px;border-radius:50%;background:rgba(var(--color-primary-rgb),.1);display:flex;align-items:center;justify-content:center;color:var(--color-primary);font-size:.75rem}
+        .activity-info p{font-size:.85rem;color:var(--text-primary);margin:0}
+        .activity-info span{font-size:.72rem;color:var(--text-muted)}
+
+        .msg-item{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid rgba(var(--color-primary-rgb),.06)}
+        .msg-item:last-child{border-bottom:none}
+        .msg-icon{width:36px;height:36px;min-width:36px;border-radius:50%;background:rgba(var(--color-primary-rgb),.1);display:flex;align-items:center;justify-content:center;color:var(--color-primary);font-size:.8rem}
+        .msg-content h5{font-size:.85rem;font-weight:600;color:var(--text-primary);margin-bottom:2px}
+        .msg-content p{font-size:.78rem;color:var(--text-secondary);margin:0}
+        .msg-date{font-size:.7rem;color:var(--text-muted)}
+
+        /* Sidebar */
+        .dashboard-layout{display:grid;grid-template-columns:200px 1fr;gap:0;border:1px solid var(--card-border);border-radius:var(--border-radius-xl);overflow:hidden;background:var(--bg-card);box-shadow:var(--shadow-md)}
+        .dashboard-sidebar{border-left:1px solid var(--card-border);background:rgba(var(--color-primary-rgb),.02)}
+        .sidebar-menu{list-style:none;padding:12px 0;margin:0}
+        .sidebar-item{display:flex;align-items:center;gap:8px;padding:11px 20px;font-size:.85rem;color:var(--text-secondary);cursor:pointer;transition:all .2s;border-right:3px solid transparent}
+        .sidebar-item:hover{background:rgba(var(--color-primary-rgb),.05);color:var(--text-primary)}
+        .sidebar-item.active{background:rgba(var(--color-primary-rgb),.08);color:var(--color-primary);font-weight:600;border-right-color:var(--color-primary)}
+        .sidebar-item i{font-size:.85rem;min-width:18px;text-align:center}
+
+        .dashboard-content{padding:24px}
+        .dashboard-tab{display:none}
+        .dashboard-tab.active{display:block}
+        .dashboard-tab h3{font-size:1.1rem;font-weight:700;margin-bottom:18px;color:var(--text-primary)}
+
+        .dash-header{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;background:rgba(var(--color-primary-rgb),.04);border-bottom:1px solid var(--card-border)}
+        .dash-header h2{font-size:1.15rem;font-weight:700;color:var(--text-primary)}
+        .dash-header p{font-size:.78rem;color:var(--text-muted);margin-top:2px}
+        .btn-logout{display:flex;align-items:center;gap:5px;padding:7px 14px;border:1px solid #e74c3c;border-radius:var(--border-radius-md);background:transparent;color:#e74c3c;font-size:.8rem;font-family:inherit;cursor:pointer;transition:all .2s}
+        .btn-logout:hover{background:#e74c3c;color:#fff}
+
+        /* Tables */
+        .dash-table{width:100%;border-collapse:collapse;font-size:.82rem}
+        .dash-table th{padding:10px 14px;text-align:right;font-weight:600;color:var(--text-muted);border-bottom:2px solid var(--card-border);font-size:.75rem}
+        .dash-table td{padding:10px 14px;border-bottom:1px solid rgba(var(--color-primary-rgb),.06);color:var(--text-secondary)}
+        .table-badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.7rem;font-weight:600}
+        .badge-completed{background:rgba(39,174,96,.1);color:#27ae60}
+        .badge-pending{background:rgba(243,156,18,.1);color:#f39c12}
+
+        .upload-zone{border:2px dashed var(--card-border);border-radius:var(--border-radius-lg);padding:28px;text-align:center;cursor:pointer;transition:border-color .2s}
+        .upload-zone:hover{border-color:var(--color-primary)}
+        .upload-zone i{font-size:2rem;color:var(--color-primary);margin-bottom:8px}
+        .upload-zone p{font-size:.85rem;color:var(--text-secondary);margin-bottom:4px}
+        .upload-zone span{font-size:.72rem;color:var(--text-muted)}
+
+        .settings-form .form-group{margin-bottom:14px}
+        .settings-form input{width:100%;padding:10px 14px;border:1px solid var(--card-border);border-radius:var(--border-radius-md);background:var(--bg-primary);color:var(--text-primary);font-size:.85rem;font-family:inherit}
+        .settings-form input:focus{outline:none;border-color:var(--color-primary)}
+        .btn-save{padding:10px 28px;border:none;border-radius:var(--border-radius-md);background:var(--gradient-primary);color:#fff;font-size:.85rem;font-weight:700;font-family:inherit;cursor:pointer}
+        .settings-section{margin-bottom:24px}
+        .settings-section h4{font-size:.95rem;font-weight:700;margin-bottom:12px;color:var(--text-primary)}
+        .danger-zone{padding:20px;background:rgba(231,76,60,.05);border:1px solid rgba(231,76,60,.2);border-radius:var(--border-radius-lg)}
+        .danger-zone h4{color:#e74c3c}
+
+        @media(max-width:900px){
+            .auth-grid{grid-template-columns:1fr}
+            .dash-grid{grid-template-columns:1fr 1fr}
+            .dash-row{grid-template-columns:1fr}
+            .dashboard-layout{grid-template-columns:1fr}
+            .dashboard-sidebar{border-left:none;border-bottom:1px solid var(--card-border)}
+            .sidebar-menu{display:flex;overflow-x:auto;padding:0}
+            .sidebar-item{white-space:nowrap;border-right:none;border-bottom:3px solid transparent}
+            .sidebar-item.active{border-bottom-color:var(--color-primary)}
+        }
+        @media(max-width:480px){
+            .page-hero h1{font-size:2rem}
+            .dash-grid{grid-template-columns:1fr}
+            .form-row{grid-template-columns:1fr}
+        }
+
+        /* Tracking Stepper */
+        .tracking-stepper{display:flex;align-items:flex-start;justify-content:center;gap:0;margin-bottom:32px;padding:28px 24px;background:var(--bg-card);border:1px solid var(--card-border);border-radius:var(--border-radius-xl)}
+        .stepper-item{display:flex;flex-direction:column;align-items:center;gap:10px;min-width:130px}
+        .stepper-circle{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.05rem;font-weight:700;border:3px solid;transition:all .3s}
+        .stepper-item.completed .stepper-circle{background:#27ae60;border-color:#27ae60;color:#fff}
+        .stepper-item.active .stepper-circle{background:var(--color-primary);border-color:var(--color-primary);color:#fff;box-shadow:0 0 0 5px rgba(var(--color-primary-rgb),.15)}
+        .stepper-item.pending .stepper-circle{background:transparent;border-color:#e53935;color:#e53935}
+        .stepper-label{font-size:.82rem;font-weight:600;color:var(--text-primary);text-align:center;max-width:120px}
+        .stepper-line{flex:1;height:4px;min-width:50px;max-width:120px;border-radius:2px;margin-top:24px}
+        .stepper-line.completed{background:#27ae60}
+        .stepper-line.pending{background:#e53935}
+        .stage-section{background:var(--bg-card);border:1px solid var(--card-border);border-radius:var(--border-radius-lg);margin-bottom:20px;overflow:hidden}
+        .stage-section-header{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--card-border)}
+        .stage-name{display:flex;align-items:center;gap:10px;font-size:.95rem;font-weight:700;color:var(--text-primary)}
+        .stage-icon{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+        .stage-icon.done{background:rgba(39,174,96,.1);color:#27ae60}
+        .stage-icon.current{background:rgba(var(--color-primary-rgb),.1);color:var(--color-primary)}
+        .stage-icon.pending{background:rgba(229,57,53,.1);color:#e53935}
+        .stage-status-tag{font-size:.75rem;font-weight:600;padding:4px 14px;border-radius:20px}
+        .stage-status-tag.done{background:rgba(39,174,96,.1);color:#27ae60}
+        .stage-status-tag.current{background:rgba(var(--color-primary-rgb),.1);color:var(--color-primary)}
+        .stage-status-tag.pending{background:rgba(229,57,53,.1);color:#e53935}
+        .stage-progress-bar{height:4px;background:var(--color-gray-200)}
+        .stage-progress-fill{height:100%;border-radius:2px;transition:width .8s ease}
+        .stage-progress-fill.done{background:#27ae60}
+        .stage-progress-fill.current{background:var(--color-primary)}
+        .stage-progress-fill.pending{background:#e53935}
+        .stage-table{margin:0}
+        .stage-table thead th{background:rgba(var(--color-primary-rgb),.04)}
+        .badge-step-done{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:600;background:rgba(39,174,96,.1);color:#27ae60}
+        .badge-step-current{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:600;background:rgba(var(--color-primary-rgb),.1);color:var(--color-primary)}
+        .badge-step-pending{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:600;background:rgba(229,57,53,.1);color:#e53935}
+        .tracking-app-number{background:var(--bg-card);border:1px solid var(--card-border);border-radius:var(--border-radius-lg);padding:14px 20px;margin-bottom:20px;font-size:.9rem;color:var(--text-primary)}
+        .tracking-app-number strong{color:var(--color-primary)}
+        @media(max-width:768px){
+            .tracking-stepper{flex-direction:column;align-items:center;padding:20px}
+            .stepper-line{width:4px;height:30px;min-width:4px;max-width:4px;margin-top:0}
+            .stepper-item{flex-direction:row;gap:14px;min-width:auto}
+            .stepper-label{text-align:right}
+            .stage-section-header{flex-direction:column;align-items:flex-start;gap:10px}
+            .doc-row{flex-direction:column;align-items:flex-start;gap:10px}
+            .doc-row-actions{width:100%}
+        }
+
+        .doc-stage-block{background:var(--bg-card);border:1px solid var(--card-border);border-radius:var(--border-radius-lg);margin-bottom:20px;overflow:hidden}
+        .doc-stage-header{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--card-border)}
+        .doc-stage-title{display:flex;align-items:center;gap:10px;font-size:.95rem;font-weight:700;color:var(--text-primary)}
+        .doc-stage-title i{font-size:.85rem}
+        .doc-stage-progress{height:4px;background:var(--color-gray-200)}
+        .doc-stage-progress-fill{height:100%;border-radius:2px;transition:width .8s ease;background:var(--color-primary)}
+
+        .doc-row{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid rgba(var(--color-primary-rgb),.06);gap:12px}
+        .doc-row:last-child{border-bottom:none}
+        .doc-row-info{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+        .doc-row-info i{min-width:20px;font-size:.85rem;color:var(--color-primary)}
+        .doc-row-info span{font-size:.9rem;color:var(--text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .doc-row-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+        .doc-btn-upload{display:inline-flex;align-items:center;gap:5px;padding:5px 14px;border-radius:8px;font-size:.75rem;font-weight:600;border:1px solid var(--color-primary);color:var(--color-primary);background:rgba(var(--color-primary-rgb),.05);cursor:pointer;transition:all .2s}
+        .doc-btn-upload:hover{background:var(--color-primary);color:#fff}
+        .doc-btn-upload.uploaded{border-color:#f39c12;color:#f39c12;background:rgba(243,156,18,.08);cursor:pointer}
+        .doc-btn-upload.uploaded:hover{background:#f39c12;color:#fff}
+        .doc-status{font-size:.75rem;font-weight:600;padding:4px 12px;border-radius:20px;white-space:nowrap}
+        .doc-status.done{background:rgba(39,174,96,.1);color:#27ae60}
+        .doc-status.pending{background:rgba(229,57,53,.1);color:#e53935}
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div id="preloader">
+            <div class="loader"><div class="loader-ring"></div><div class="loader-ring"></div><div class="loader-ring"></div>
+                <div class="loader-text">الدراسات العليا</div><div class="loader-subtext">كلية علوم الرياضة - جامعة الفيوم</div>
+            </div>
+        </div>
+        <div class="page-transition" id="pageTransition">
+            <div class="loader"><div class="loader-ring"></div><div class="loader-ring"></div><div class="loader-ring"></div></div>
+            <div class="loader-text">الدراسات العليا</div><div class="loader-subtext">كلية علوم الرياضة - جامعة الفيوم</div>
+        </div>
+
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <div class="brand-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <div class="brand-text"><span class="brand-title">كلية علوم الرياضة</span><span class="brand-subtitle">الدراسات العليا</span></div>
+                </div>
+                <div class="nav-menu" id="navMenu">
+                    <a href="../index.html" class="nav-link">الرئيسية</a>
+                    <a href="about.html" class="nav-link">عن الكلية</a>
+                    <a href="documents.html" class="nav-link">الأوراق المطلوبة</a>
+                    <a href="portal.html" class="nav-link active">بوابة الباحث</a>
+                </div>
+                <div class="nav-actions">
+                    <button class="btn-nav-action" id="themeToggle"><i class="fas fa-moon"></i></button>
+                    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="page-hero">
+            <div class="container"><h1>بوابة الباحث</h1><p>سجّل الدخول لمتابعة طلبك أو إنشاء حساب جديد</p></div>
+        </div>
+
+        <section class="portal-wrap container">
+
+            <!-- Auth: Login + Register side by side -->
+            <div id="loginForm">
+                <div class="auth-grid">
+                    <!-- Login -->
+                    <div class="portal-card">
+                        <div class="portal-card-header">
+                            <div class="portal-logo"><i class="fas fa-sign-in-alt"></i></div>
+                            <h2>تسجيل الدخول</h2>
+                            <p>سجّل الدخول للوصول إلى حسابك</p>
+                        </div>
+                        <div class="portal-card-body">
+                            <form id="portalLoginForm">
+                                <div class="form-group">
+                                    <label for="loginEmail">البريد الإلكتروني</label>
+                                    <div class="input-icon"><i class="fas fa-envelope"></i><input type="email" id="loginEmail" name="loginEmail" placeholder="أدخل بريدك الإلكتروني" required></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="loginPassword">كلمة المرور</label>
+                                    <div class="input-icon"><i class="fas fa-lock"></i><input type="password" id="loginPassword" name="loginPassword" placeholder="أدخل كلمة المرور" required><button type="button" class="toggle-password"><i class="fas fa-eye"></i></button></div>
+                                </div>
+                                <div class="form-options">
+                                    <label class="checkbox-label"><input type="checkbox" id="rememberMe" name="rememberMe"><span>تذكرني</span></label>
+                                    <a href="#" class="forgot-password" onclick="document.getElementById('forgotPasswordModal').style.display='flex';return false;">نسيت كلمة المرور؟</a>
+                                </div>
+                                <button type="submit" class="btn-submit">تسجيل الدخول</button>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- Register -->
+                    <div class="portal-card">
+                        <div class="portal-card-header">
+                            <div class="portal-logo"><i class="fas fa-user-plus"></i></div>
+                            <h2>إنشاء حساب جديد</h2>
+                            <p>سجّل حسابك للبدء في التقديم</p>
+                        </div>
+                        <div class="portal-card-body">
+                            <form id="portalRegisterForm">
+                                <div class="form-row">
+                                    <div class="form-group"><label for="regFirstName">الاسم الأول</label><div class="input-icon"><i class="fas fa-user"></i><input type="text" id="regFirstName" name="regFirstName" placeholder="الاسم الأول" required></div></div>
+                                    <div class="form-group"><label for="regLastName">اسم العائلة</label><div class="input-icon"><i class="fas fa-user"></i><input type="text" id="regLastName" name="regLastName" placeholder="اسم العائلة" required></div></div>
+                                </div>
+                                <div class="form-group"><label for="regEmail">البريد الإلكتروني</label><div class="input-icon"><i class="fas fa-envelope"></i><input type="email" id="regEmail" name="regEmail" placeholder="أدخل بريدك الإلكتروني" required></div></div>
+                                <div class="form-row">
+                                    <div class="form-group"><label for="regPhone">رقم الجوال</label><div class="input-icon"><i class="fas fa-phone"></i><input type="tel" id="regPhone" name="regPhone" placeholder="01XXXXXXXXX" required></div></div>
+                                    <div class="form-group"><label for="regNationalId">الرقم القومي</label><div class="input-icon"><i class="fas fa-id-card"></i><input type="text" id="regNationalId" name="regNationalId" placeholder="14 رقم" required></div></div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group"><label for="regPassword">كلمة المرور</label><div class="input-icon"><i class="fas fa-lock"></i><input type="password" id="regPassword" name="regPassword" placeholder="كلمة المرور" required><button type="button" class="toggle-password"><i class="fas fa-eye"></i></button></div></div>
+                                    <div class="form-group"><label for="regConfirmPassword">تأكيد كلمة المرور</label><div class="input-icon"><i class="fas fa-lock"></i><input type="password" id="regConfirmPassword" name="regConfirmPassword" placeholder="أعد الإدخال" required><button type="button" class="toggle-password"><i class="fas fa-eye"></i></button></div></div>
+                                </div>
+                                <div class="form-group"><label class="agreement-label"><input type="checkbox" id="regAgree" name="regAgree" required><span>أوافق على <a href="#">الشروط والأحكام</a></span></label></div>
+                                <button type="submit" class="btn-submit">إنشاء الحساب</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Forgot Password Modal -->
+            <div id="forgotPasswordModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);z-index:10000;align-items:center;justify-content:center;">
+                <div style="background:var(--bg-card);border-radius:var(--border-radius-xl);width:90%;max-width:420px;padding:0;box-shadow:var(--shadow-2xl);">
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--card-border);">
+                        <h3 style="font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px;"><i class="fas fa-key" style="color:var(--primary);"></i> إعادة تعيين كلمة المرور</h3>
+                        <button onclick="document.getElementById('forgotPasswordModal').style.display='none'" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border:none;background:transparent;color:var(--text-muted);font-size:18px;cursor:pointer;border-radius:8px;"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div style="padding:24px;">
+                        <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px;text-align:center;">أدخل بريدك الإلكتروني والرقم القومي لإعادة تعيين كلمة المرور</p>
+                        <div class="form-group"><label>البريد الإلكتروني</label><div class="input-icon"><i class="fas fa-envelope"></i><input type="email" id="forgotEmail" placeholder="أدخل البريد الإلكتروني"></div></div>
+                        <div class="form-group"><label>الرقم القومي</label><div class="input-icon"><i class="fas fa-id-card"></i><input type="text" id="forgotNationalId" placeholder="14 رقم" maxlength="14"></div></div>
+                        <div id="forgotStep2" style="display:none;">
+                            <div class="form-group"><label>كلمة المرور الجديدة</label><div class="input-icon"><i class="fas fa-lock"></i><input type="password" id="forgotNewPassword" placeholder="6 أحرف على الأقل"></div></div>
+                            <div class="form-group"><label>تأكيد كلمة المرور</label><div class="input-icon"><i class="fas fa-lock"></i><input type="password" id="forgotConfirmPassword" placeholder="أعد الإدخال"></div></div>
+                        </div>
+                        <div id="forgotError" style="display:none;padding:10px 14px;background:rgba(229,57,53,.08);border:1px solid rgba(229,57,53,.2);border-radius:8px;color:#e53935;font-size:13px;margin-bottom:16px;text-align:center;"></div>
+                        <div id="forgotSuccess" style="display:none;padding:10px 14px;background:rgba(0,200,83,.08);border:1px solid rgba(0,200,83,.2);border-radius:8px;color:#00c853;font-size:13px;margin-bottom:16px;text-align:center;"></div>
+                        <button class="btn-submit" id="forgotSubmitBtn" onclick="handleForgotPassword()" style="width:100%;">التحقق</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard -->
+            <div id="portalDashboard" style="display:none;">
+                <div class="dash-header" style="border-radius:var(--border-radius-xl) var(--border-radius-xl) 0 0;border:1px solid var(--card-border);border-bottom:none;background:var(--bg-card);">
+                    <div><h2>مرحباً، <span id="dashboardUserName">أحمد محمد العلي</span></h2><p>آخر دخول: <span id="lastLogin">2026-07-20 10:30 صباحاً</span></p></div>
+                    <button class="btn-logout" onclick="localStorage.removeItem('gs_portal_user');showPortalSection('loginForm');"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
+                </div>
+
+                <div class="dashboard-layout">
+                    <div class="dashboard-sidebar">
+                        <ul class="sidebar-menu">
+                            <li class="sidebar-item active" data-tab="dashboard-overview"><i class="fas fa-tachometer-alt"></i><span>نظرة عامة</span></li>
+                            <li class="sidebar-item" data-tab="dashboard-apply"><i class="fas fa-paper-plane"></i><span>تقديم الطلب</span></li>
+                            <li class="sidebar-item" data-tab="dashboard-documents"><i class="fas fa-file-alt"></i><span>المستندات</span></li>
+                            <li class="sidebar-item" data-tab="dashboard-messages"><i class="fas fa-envelope"></i><span>الرسائل</span></li>
+                        </ul>
+                    </div>
+                    <div class="dashboard-content">
+
+                        <!-- Overview -->
+                        <div class="dashboard-tab active" id="dashboard-overview">
+                            <h3>نظرة عامة</h3>
+                            <div class="dash-grid">
+                                <div class="dash-card"><div class="dash-card-icon"><i class="fas fa-file-alt"></i></div><div class="dash-card-info"><h4>حالة الطلب</h4><p class="status-badge status-review">قيد المراجعة</p></div></div>
+                                <div class="dash-card"><div class="dash-card-icon"><i class="fas fa-percent"></i></div><div class="dash-card-info"><h4>نسبة الإكمال</h4><p>75%</p></div></div>
+                                <div class="dash-card"><div class="dash-card-icon"><i class="fas fa-award"></i></div><div class="dash-card-info"><h4>المنحة</h4><p>بانتظار المراجعة</p></div></div>
+                                <div class="dash-card"><div class="dash-card-icon"><i class="fas fa-envelope"></i></div><div class="dash-card-info"><h4>الرسائل</h4><p>3 جديدة</p></div></div>
+                            </div>
+                            <div class="dash-row">
+                                <div class="dash-box">
+                                    <div class="dash-box-header">النشاط الأخير</div>
+                                    <div class="dash-box-body">
+                                        <div class="activity-list">
+                                            <div class="activity-item"><div class="activity-icon"><i class="fas fa-upload"></i></div><div class="activity-info"><p>تم رفع شهادة البكالوريوس</p><span>2026-07-18</span></div></div>
+                                            <div class="activity-item"><div class="activity-icon"><i class="fas fa-check"></i></div><div class="activity-info"><p>تم قبول الطلب من اللجنة الأولية</p><span>2026-07-15</span></div></div>
+                                            <div class="activity-item"><div class="activity-icon"><i class="fas fa-paper-plane"></i></div><div class="activity-info"><p>تم إرسال طلب الالتحاق</p><span>2026-07-10</span></div></div>
+                                            <div class="activity-item"><div class="activity-icon"><i class="fas fa-user-plus"></i></div><div class="activity-info"><p>تم إنشاء الحساب بنجاح</p><span>2026-07-10</span></div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dash-box">
+                                    <div class="dash-box-header">الرسائل الأخيرة</div>
+                                    <div class="dash-box-body">
+                                        <div class="msg-item"><div class="msg-icon"><i class="fas fa-envelope"></i></div><div><div class="msg-content"><h5>طلب استكمال المستندات</h5><p>يرجى رفع خطاب التوصية الثاني</p></div><span class="msg-date">2026-07-18</span></div></div>
+                                        <div class="msg-item"><div class="msg-icon"><i class="fas fa-check-circle"></i></div><div><div class="msg-content"><h5>تم قبول طلبك من اللجنة الأولية</h5><p>نأسعد بإبلاغك بالقبول الأولي</p></div><span class="msg-date">2026-07-15</span></div></div>
+                                        <div class="msg-item"><div class="msg-icon"><i class="fas fa-hand-sparkles"></i></div><div><div class="msg-content"><h5>مرحباً بك في بوابة الباحث</h5><p>تم إنشاء حسابك بنجاح</p></div><span class="msg-date">2026-07-10</span></div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Apply -->
+                        <div class="dashboard-tab" id="dashboard-apply">
+                            <h3>تقديم طلب دراسة عليا</h3>
+                            <div id="portalApplyContainer"></div>
+                        </div>
+
+                        <!-- Documents -->
+                        <div class="dashboard-tab" id="dashboard-documents">
+                            <h3>المستندات</h3>
+                            <div id="portalDocsContainer"></div>
+                        </div>
+
+                        <!-- Messages -->
+                        <div class="dashboard-tab" id="dashboard-messages">
+                            <h3>الرسائل</h3>
+                            <div class="dash-box">
+                                <div class="dash-box-body">
+                                    <div class="msg-item"><div class="msg-icon"><i class="fas fa-envelope"></i></div><div style="flex:1"><div class="msg-content"><h5>طلب استكمال المستندات</h5><p>يرجى رفع خطاب التوصية الثاني المطلوب.</p></div><span class="msg-date">2026-07-18</span></div></div>
+                                    <div class="msg-item"><div class="msg-icon"><i class="fas fa-check-circle"></i></div><div style="flex:1"><div class="msg-content"><h5>تم قبول طلبك من اللجنة الأولية</h5><p>نأسعد بإبلاغك بقبول طلبك من اللجنة المراجعة الأولية.</p></div><span class="msg-date">2026-07-15</span></div></div>
+                                    <div class="msg-item"><div class="msg-icon"><i class="fas fa-hand-sparkles"></i></div><div style="flex:1"><div class="msg-content"><h5>مرحباً بك في بوابة الباحث</h5><p>تم إنشاء حسابك بنجاح. يمكنك الآن البدء في عملية التقديم.</p></div><span class="msg-date">2026-07-10</span></div></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-top"><div class="container"><div class="footer-grid">
+                <div class="footer-col"><div class="footer-brand"><div class="brand-icon"><i class="fas fa-graduation-cap"></i></div><div class="brand-text"><span class="brand-title">كلية علوم الرياضة</span><span class="brand-subtitle">الدراسات العليا</span></div></div><p class="footer-desc">نلتزم بتقديم تعليم عالي الجودة في مجال علوم الرياضة.</p><div class="footer-social"><a href="https://twitter.com/FayUniversity" class="social-link"><i class="fab fa-twitter"></i></a><a href="https://www.facebook.com/FayoumSS" class="social-link"><i class="fab fa-facebook-f"></i></a><a href="https://www.youtube.com/channel/UCIMr3Jd-B6QErtTE9Xmmkcg" class="social-link"><i class="fab fa-youtube"></i></a></div></div>
+                <div class="footer-col"><h4>روابط سريعة</h4><ul class="footer-links"><li><a href="../index.html">الرئيسية</a></li><li><a href="about.html">عن الكلية</a></li><li><a href="documents.html">الأوراق المطلوبة</a></li></ul></div>
+                <div class="footer-col"><h4>الخدمات</h4><ul class="footer-links"><li><a href="portal.html">بوابة الباحث</a></li></ul></div>
+                <div class="footer-col"><h4>تواصل معنا</h4><div class="footer-contact"><div class="contact-item"><i class="fas fa-university"></i><span>جمهورية مصر العربية - الفيوم - كلية علوم الرياضة</span></div><div class="contact-item"><i class="fas fa-phone-alt"></i><span>د/ وليد عبد الرحمن</span></div><div class="contact-item"><i class="fab fa-whatsapp" style="color:#25D366;"></i><a href="https://wa.me/201002882441" target="_blank" dir="ltr" style="color:inherit;text-decoration:none;">+20 100 288 2441</a></div><div class="contact-item"><i class="fas fa-envelope"></i><a href="https://mail.google.com/mail/?view=cm&fs=1&to=waa11@fayoum.edu.eg" target="_blank" style="color:inherit;text-decoration:none;">waa11@fayoum.edu.eg</a></div></div></div>
+            </div></div></div>
+            <div class="footer-bottom"><div class="container"><p>&copy; 2026 كلية علوم الرياضة - الدراسات العليا. جميع الحقوق محفوظة.</p></div></div>
+        </footer>
+        <button class="back-to-top" id="backToTop"><i class="fas fa-chevron-up"></i></button>
+    </div>
+    <script src="../js/app.js"></script>
+</body>
+</html>

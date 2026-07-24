@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كلية علوم الرياضة - الدراسات العليا</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <div id="preloader">
+            <div class="loader">
+                <div class="loader-ring"></div>
+                <div class="loader-ring"></div>
+                <div class="loader-ring"></div>
+                <div class="loader-text">الدراسات العليا</div>
+                <div class="loader-subtext">كلية علوم الرياضة - جامعة الفيوم</div>
+            </div>
+        </div>
+        <div class="page-transition" id="pageTransition">
+            <div class="loader">
+                <div class="loader-ring"></div>
+                <div class="loader-ring"></div>
+                <div class="loader-ring"></div>
+            </div>
+            <div class="loader-text">الدراسات العليا</div>
+            <div class="loader-subtext">كلية علوم الرياضة - جامعة الفيوم</div>
+        </div>
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <div class="brand-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <div class="brand-text">
+                        <span class="brand-title">كلية علوم الرياضة</span>
+                        <span class="brand-subtitle">الدراسات العليا</span>
+                    </div>
+                </div>
+                <div class="nav-menu" id="navMenu">
+                    <a href="index.html" class="nav-link active">الرئيسية</a>
+                    <a href="pages/about.html" class="nav-link">عن الكلية</a>
+
+
+                    <a href="pages/documents.html" class="nav-link">الأوراق المطلوبة</a>
+
+
+                    <a href="pages/portal.html" class="nav-link">بوابة الباحث</a>
+                </div>
+                <div class="nav-actions">
+                    <button class="btn-nav-action" id="themeToggle"><i class="fas fa-moon"></i></button>
+                    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+                </div>
+            </div>
+        </nav>
+        <section id="home" class="hero-section">
+            <div class="hero-particles" id="heroParticles"></div>
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <div class="hero-badge"><i class="fas fa-award"></i><span>برامج متميزة بمعايير عالمية</span></div>
+                <h1 class="hero-title">
+                    <span class="title-line">كلية علوم الرياضة</span>
+                    <span class="title-highlight">برامج الدراسات العليا</span>
+                </h1>
+                <p class="hero-description">نقدم لك بيئة أكاديمية متميزة لتطوير معارفك وخبراتك في مجال علوم الرياضة عبر برامج الماجستير والدكتوراه المعتمدة دولياً</p>
+                <div class="hero-stats">
+                    <div class="stat-item"><div class="stat-number" data-count="250">0</div><div class="stat-label">باحث مسجل</div></div>
+                    <div class="stat-item"><div class="stat-number" data-count="45">0</div><div class="stat-label">عضو هيئة تدريسية</div></div>
+                    <div class="stat-item"><div class="stat-number" data-count="120">0</div><div class="stat-label">بحث منشور</div></div>
+                    <div class="stat-item"><div class="stat-number" data-count="8">0</div><div class="stat-label">برنامج دراسي</div></div>
+                </div>
+                <div class="hero-actions">
+                    <button class="btn btn-primary btn-glow" id="heroPortalBtn" onclick="handleHeroPortal()"><i class="fas fa-user-graduate"></i><span>بوابة الباحث</span></button>
+                </div>
+            </div>
+            <div class="scroll-indicator"><div class="mouse"><div class="wheel"></div></div><span>اسحب للأسفل</span></div>
+        </section>
+        <section class="section quick-links-section">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">الخدمات</span>
+                    <h2 class="section-title">خدماتنا الرئيسية</h2>
+                    <div class="title-divider"><span></span><i class="fas fa-th-large"></i><span></span></div>
+                </div>
+                <div class="quick-links-grid">
+                    <a href="pages/about.html" class="quick-link-card"><div class="quick-link-icon"><i class="fas fa-info-circle"></i></div><h3>عن الكلية</h3><p>تعرف على رؤيتنا ورسالتنا وأهدافنا</p></a>
+
+
+                    <a href="pages/documents.html" class="quick-link-card"><div class="quick-link-icon"><i class="fas fa-folder-open"></i></div><h3>الأوراق المطلوبة</h3><p>المستندات والمستندات المطلوبة</p></a>
+
+
+                    <a href="pages/portal.html" class="quick-link-card"><div class="quick-link-icon"><i class="fas fa-user-lock"></i></div><h3>بوابة الباحث</h3><p>تتبع طلبك وإدارة حسابك</p></a>
+                </div>
+            </div>
+        </section>
+        <footer class="footer">
+            <div class="footer-top">
+                <div class="container">
+                    <div class="footer-grid">
+                        <div class="footer-col">
+                            <div class="footer-brand"><div class="brand-icon"><i class="fas fa-graduation-cap"></i></div><div class="brand-text"><span class="brand-title">كلية علوم الرياضة</span><span class="brand-subtitle">الدراسات العليا</span></div></div>
+                            <p class="footer-desc">نلتزم بتقديم تعليم عالي الجودة في مجال علوم الرياضة وإعداد باحثين مؤهلين للمساهمة في تطوير المعرفة العلمية.</p>
+                            <div class="footer-social">
+                                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-snapchat-ghost"></i></a>
+                            </div>
+                        </div>
+                        <div class="footer-col">
+                            <h4>روابط سريعة</h4>
+                            <ul class="footer-links">
+                                <li><a href="index.html">الرئيسية</a></li>
+                                <li><a href="pages/about.html">عن الكلية</a></li>
+
+
+                                <li><a href="pages/documents.html">الأوراق المطلوبة</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-col">
+                            <h4>الخدمات</h4>
+                            <ul class="footer-links">
+
+                                <li><a href="pages/portal.html">بوابة الباحث</a></li>
+                                <li><a href="#">الأسئلة الشائعة</a></li>
+                                <li><a href="#">تواصل معنا</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-col">
+                            <h4>تواصل معنا</h4>
+                            <div class="footer-contact">
+                                <div class="contact-item"><i class="fas fa-university"></i><span>جمهورية مصر العربية - الفيوم - كلية علوم الرياضة - قسم الدراسات العليا</span></div>
+                                <div class="contact-item"><i class="fas fa-phone-alt"></i><span>د/ وليد عبد الرحمن</span></div>
+                                <div class="contact-item"><i class="fab fa-whatsapp" style="color:#25D366;"></i><a href="https://wa.me/201002882441" target="_blank" dir="ltr" style="color:inherit;text-decoration:none;">+20 100 288 2441</a></div>
+                                <div class="contact-item"><i class="fas fa-envelope"></i><a href="https://mail.google.com/mail/?view=cm&fs=1&to=waa11@fayoum.edu.eg" target="_blank" style="color:inherit;text-decoration:none;">waa11@fayoum.edu.eg</a></div>
+                                <div class="contact-item"><i class="fas fa-clock"></i><span>الأحد إلى الخميس: 9 صباحاً - 3 مساءً</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="container">
+                    <div class="footer-bottom-content">
+                        <p>&copy; 2026 كلية علوم الرياضة - الدراسات العليا. جميع الحقوق محفوظة.</p>
+                        <div class="footer-bottom-links">
+                            <a href="#">سياسة الخصوصية</a>
+                            <a href="#">الشروط والأحكام</a>
+                            <a href="#">خريطة الموقع</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <button class="back-to-top" id="backToTop"><i class="fas fa-chevron-up"></i></button>
+    </div>
+    <script src="js/app.js"></script>
+</body>
+</html>
