@@ -470,36 +470,21 @@
                 <!-- DASHBOARD VIEW -->
                 <div class="view-section active" id="view-dashboard">
                     <div class="stats-grid">
-                        <div class="stat-card stat-primary animate-in animate-delay-1"><div class="stat-header"><div class="stat-icon"><i class="fas fa-file-alt"></i></div><span class="stat-change up"><i class="fas fa-arrow-up"></i> 12%</span></div><div class="stat-value">156</div><div class="stat-label">إجمالي الطلبات</div><div class="stat-progress"><div class="progress-bar" style="width:100%"></div></div></div>
-                        <div class="stat-card stat-warning animate-in animate-delay-2"><div class="stat-header"><div class="stat-icon"><i class="fas fa-clock"></i></div><span class="stat-change up"><i class="fas fa-arrow-up"></i> 8%</span></div><div class="stat-value">42</div><div class="stat-label">قيد المراجعة</div><div class="stat-progress"><div class="progress-bar" style="width:27%"></div></div></div>
-                        <div class="stat-card stat-success animate-in animate-delay-3"><div class="stat-header"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><span class="stat-change up"><i class="fas fa-arrow-up"></i> 15%</span></div><div class="stat-value">89</div><div class="stat-label">مقبولة</div><div class="stat-progress"><div class="progress-bar" style="width:57%"></div></div></div>
-                        <div class="stat-card stat-danger animate-in animate-delay-4"><div class="stat-header"><div class="stat-icon"><i class="fas fa-times-circle"></i></div><span class="stat-change down"><i class="fas fa-arrow-down"></i> 3%</span></div><div class="stat-value">25</div><div class="stat-label">مرفوضة</div><div class="stat-progress"><div class="progress-bar" style="width:16%"></div></div></div>
-                    </div>
-
-                    <div class="grid-2">
-                        <div class="admin-card animate-in animate-delay-2">
-                            <div class="card-header"><h3><i class="fas fa-chart-pie"></i> توزيع حالات الطلبات</h3><button class="btn btn-sm btn-outline"><i class="fas fa-download"></i> تصدير</button></div>
-                            <div class="card-body"><div class="chart-container" id="pieChartContainer"><canvas id="pieChart"></canvas></div></div>
-                        </div>
-                        <div class="admin-card animate-in animate-delay-3">
-                            <div class="card-header"><h3><i class="fas fa-chart-bar"></i> حمل عمل اللجان</h3><button class="btn btn-sm btn-outline"><i class="fas fa-download"></i> تصدير</button></div>
-                            <div class="card-body"><div class="chart-container" id="barChartContainer"><canvas id="barChart"></canvas></div></div>
-                        </div>
+                        <div class="stat-card stat-primary animate-in animate-delay-1"><div class="stat-header"><div class="stat-icon"><i class="fas fa-file-alt"></i></div></div><div class="stat-value" id="dashTotal">0</div><div class="stat-label">إجمالي الباحثين</div></div>
+                        <div class="stat-card stat-warning animate-in animate-delay-2"><div class="stat-header"><div class="stat-icon"><i class="fas fa-graduation-cap"></i></div></div><div class="stat-value" id="dashMasters">0</div><div class="stat-label">ماجستير</div></div>
+                        <div class="stat-card stat-success animate-in animate-delay-3"><div class="stat-header"><div class="stat-icon"><i class="fas fa-award"></i></div></div><div class="stat-value" id="dashPhd">0</div><div class="stat-label">دكتوراه</div></div>
+                        <div class="stat-card stat-danger animate-in animate-delay-4"><div class="stat-header"><div class="stat-icon"><i class="fas fa-check-circle"></i></div></div><div class="stat-value" id="dashWithDocs">0</div><div class="stat-label">لديهم مستندات</div></div>
                     </div>
 
                     <div class="grid-3-1">
                         <div class="admin-card animate-in animate-delay-3">
-                            <div class="card-header"><h3><i class="fas fa-file-alt"></i> أحدث الطلبات</h3><button class="btn btn-sm btn-primary" onclick="switchView('applications',document.querySelector('[data-view=applications]'))">عرض الكل</button></div>
+                            <div class="card-header"><h3><i class="fas fa-file-alt"></i> أحدث الباحثين</h3><button class="btn btn-sm btn-primary" onclick="switchView('applications',document.querySelector('[data-view=applications]'))">عرض الكل</button></div>
                             <div class="card-body no-padding">
                                 <div style="overflow-x:auto;">
                                     <table class="admin-table">
-                                        <thead><tr><th>رقم الطلب</th><th>اسم الباحث</th><th>البرنامج</th><th>الحالة</th><th>التاريخ</th><th>إجراءات</th></tr></thead>
-                                        <tbody>
-                                            <tr><td><strong>#GS-2026-0156</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#1a73e8,#1557b0);">أ ح</div><div><div class="user-name">أحمد حسن</div><div class="user-email">ahmed@email.com</div></div></div></td><td>ماجستير تدريب رياضي</td><td><span class="status-badge status-new"><i class="fas fa-circle"></i> جديد</span></td><td>2026-07-20</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-edit"></i></button></div></td></tr>
-                                            <tr><td><strong>#GS-2026-0155</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#00c853,#009624);">س ع</div><div><div class="user-name">سارة علي</div><div class="user-email">sara@email.com</div></div></div></td><td>دكتوراه علوم الرياضة</td><td><span class="status-badge status-review"><i class="fas fa-circle"></i> قيد المراجعة</span></td><td>2026-07-19</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-edit"></i></button></div></td></tr>
-                                            <tr><td><strong>#GS-2026-0154</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#ff6d00,#c43e00);">خ م</div><div><div class="user-name">خالد محمد</div><div class="user-email">khaled@email.com</div></div></div></td><td>ماجستير علم التغذية</td><td><span class="status-badge status-approved"><i class="fas fa-circle"></i> مقبولا</span></td><td>2026-07-18</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-edit"></i></button></div></td></tr>
-                                            <tr><td><strong>#GS-2026-0153</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#e53935,#c62828);">ف ع</div><div><div class="user-name">فاطمة عبدالله</div><div class="user-email">fatma@email.com</div></div></div></td><td>ماجستير تأهيل رياضي</td><td><span class="status-badge status-rejected"><i class="fas fa-circle"></i> مرفوض</span></td><td>2026-07-17</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-edit"></i></button></div></td></tr>
-                                            <tr><td><strong>#GS-2026-0152</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#00bcd4,#0097a7);">ع ر</div><div><div class="user-name">عمر رشدي</div><div class="user-email">omar@email.com</div></div></div></td><td>دكتوراه تدريب رياضي</td><td><span class="status-badge status-pending"><i class="fas fa-circle"></i> معلق</span></td><td>2026-07-16</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-edit"></i></button></div></td></tr>
+                                        <thead><tr><th>الباحث</th><th>الرقم القومي</th><th>الدرجة</th><th>التخصص</th><th>التاريخ</th></tr></thead>
+                                        <tbody id="dashLatestBody">
+                                            <tr><td colspan="5" style="text-align:center;padding:30px;color:var(--ats);">جاري التحميل...</td></tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -510,23 +495,10 @@
                                 <div class="card-header"><h3><i class="fas fa-bolt"></i> إجراءات سريعة</h3></div>
                                 <div class="card-body">
                                     <div class="quick-actions">
-                                        <button class="quick-action-btn" onclick="switchView('applications',document.querySelector('[data-view=applications]'))"><div class="qa-icon qa-primary"><i class="fas fa-plus-circle"></i></div><div><div class="qa-text">طلب جديد</div><div class="qa-desc">إضافة طلب بحثي</div></div></button>
-                                        <button class="quick-action-btn" onclick="openModal('assignReviewerModal')"><div class="qa-icon qa-success"><i class="fas fa-user-check"></i></div><div><div class="qa-text">تكليف مراجع</div><div class="qa-desc">إسناد طلب لمراجع</div></div></button>
-                                        <button class="quick-action-btn" onclick="exportToExcel()"><div class="qa-icon qa-warning"><i class="fas fa-file-export"></i></div><div><div class="qa-text">تصدير البيانات</div><div class="qa-desc">تحميل كـ CSV</div></div></button>
+                                        <button class="quick-action-btn" onclick="exportToExcel()"><div class="qa-icon qa-warning"><i class="fas fa-file-export"></i></div><div><div class="qa-text">تصدير البيانات</div><div class="qa-desc">تحميل كـ Excel</div></div></button>
                                         <button class="quick-action-btn" onclick="printResearcherReport()"><div class="qa-icon qa-primary"><i class="fas fa-print"></i></div><div><div class="qa-text">طباعة تقرير</div><div class="qa-desc">تقرير الباحثين</div></div></button>
-                                        <button class="quick-action-btn" onclick="switchView('committees',document.querySelector('[data-view=committees]'))"><div class="qa-icon qa-danger"><i class="fas fa-users-cog"></i></div><div><div class="qa-text">إدارة اللجان</div><div class="qa-desc">عرض وإدارة</div></div></button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="admin-card animate-in animate-delay-4">
-                                <div class="card-header"><h3><i class="fas fa-history"></i> النشاط الأخير</h3></div>
-                                <div class="card-body">
-                                    <div class="activity-timeline">
-                                        <div class="timeline-item"><div class="timeline-dot dot-primary"><i class="fas fa-file-alt"></i></div><div class="timeline-content"><div class="timeline-text">تم إضافة طلب جديد من <strong>أحمد حسن</strong></div><div class="timeline-time">منذ 5 دقائق</div></div></div>
-                                        <div class="timeline-item"><div class="timeline-dot dot-success"><i class="fas fa-check"></i></div><div class="timeline-content"><div class="timeline-text">تم اعتماد طلب <strong>خالد محمد</strong> من لجنة المراجعة</div><div class="timeline-time">منذ 30 دقيقة</div></div></div>
-                                        <div class="timeline-item"><div class="timeline-dot dot-warning"><i class="fas fa-user-plus"></i></div><div class="timeline-content"><div class="timeline-text">تم تعيين <strong>د. سعد الراشد</strong> كمراجع للطلب #0155</div><div class="timeline-time">منذ ساعة</div></div></div>
-                                        <div class="timeline-item"><div class="timeline-dot dot-danger"><i class="fas fa-times"></i></div><div class="timeline-content"><div class="timeline-text">تم رفض طلب <strong>فاطمة عبدالله</strong> - مستندات ناقصة</div><div class="timeline-time">منذ ساعتين</div></div></div>
-                                        <div class="timeline-item"><div class="timeline-dot dot-primary"><i class="fas fa-award"></i></div><div class="timeline-content"><div class="timeline-text">تم تعيين منحة دراسية لـ <strong>عمر رشدي</strong></div><div class="timeline-time">منذ 3 ساعات</div></div></div>
+                                        <button class="quick-action-btn" onclick="switchView('documents',document.querySelector('[data-view=documents]'))"><div class="qa-icon qa-success"><i class="fas fa-folder-open"></i></div><div><div class="qa-text">المستندات</div><div class="qa-desc">عرض الملفات</div></div></button>
+                                        <button class="quick-action-btn" onclick="switchView('permissions',document.querySelector('[data-view=permissions]'))"><div class="qa-icon qa-danger"><i class="fas fa-user-shield"></i></div><div><div class="qa-text">الصلاحيات</div><div class="qa-desc">إدارة المستخدمين</div></div></button>
                                     </div>
                                 </div>
                             </div>
@@ -537,82 +509,25 @@
                 <!-- APPLICATIONS VIEW -->
                 <div class="view-section" id="view-applications">
                     <div class="content-header"><div><h1>إدارة الطلبات</h1></div><div class="header-actions"><button class="btn btn-outline" onclick="exportToExcel()"><i class="fas fa-file-export"></i> تصدير</button><button class="btn btn-outline" onclick="printResearcherReport()"><i class="fas fa-print"></i> طباعة تقرير</button></div></div>
-                    <div class="filter-bar">
-                        <div class="bulk-actions" id="bulkActions"><span>تم تحديد <strong id="selectedCount">0</strong> طلبات</span><button class="btn btn-sm btn-success"><i class="fas fa-check"></i> قبول</button><button class="btn btn-sm btn-danger"><i class="fas fa-times"></i> رفض</button><button class="btn btn-sm btn-outline"><i class="fas fa-trash"></i> حذف</button></div>
-                        <div class="filter-separator"></div>
-                        <div class="filter-group"><label>الحالة:</label><select id="filterStatus"><option value="">جميع الحالات</option><option value="new">جديد</option><option value="pending">معلق</option><option value="review">قيد المراجعة</option><option value="approved">مقبول</option><option value="rejected">مرفوض</option></select></div>
-                        <div class="filter-group"><label>البرنامج:</label><select id="filterProgram"><option value="">جميع البرامج</option><option value="master-training">ماجستير تدريب رياضي</option><option value="master-nutrition">ماجستير علم التغذية</option><option value="master-rehab">ماجستير تأهيل رياضي</option><option value="phd-training">دكتوراه تدريب رياضي</option><option value="phd-sports">دكتوراه علوم الرياضة</option></select></div>
-                        <div class="filter-group"><label>من:</label><input type="date" id="filterDateFrom"></div>
-                        <div class="filter-group"><label>إلى:</label><input type="date" id="filterDateTo"></div>
-                        <button class="btn btn-sm btn-primary" id="applyFilters"><i class="fas fa-filter"></i> تطبيق</button>
-                        <button class="btn btn-sm btn-outline" id="clearFilters"><i class="fas fa-times"></i> مسح</button>
-                    </div>
                     <div class="admin-card">
                         <div class="card-body no-padding">
                             <div style="overflow-x:auto;">
                                 <table class="admin-table" id="applicationsTable">
-                                    <thead><tr><th style="width:40px;"><input type="checkbox" class="admin-checkbox" id="selectAll"></th><th onclick="sortTable(1)">رقم الطلب <i class="fas fa-sort sort-icon"></i></th><th onclick="sortTable(2)">اسم الباحث <i class="fas fa-sort sort-icon"></i></th><th onclick="sortTable(3)">البرنامج <i class="fas fa-sort sort-icon"></i></th><th onclick="sortTable(4)">الحالة <i class="fas fa-sort sort-icon"></i></th><th onclick="sortTable(5)">التاريخ <i class="fas fa-sort sort-icon"></i></th><th>إجراءات</th></tr></thead>
+                                    <thead><tr><th>#</th><th>الباحث</th><th>الرقم القومي</th><th>الدرجة</th><th>التخصص</th><th>نوع الدرجة</th><th>تاريخ التقديم</th><th>حالة التسجيل</th><th>حالة التشكيل</th><th>حالة المنح</th></tr></thead>
                                     <tbody id="applicationsBody">
-                                        <tr><td><input type="checkbox" class="admin-checkbox row-check"></td><td><strong>#GS-2026-0156</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#1a73e8,#1557b0);">أ ح</div><div><div class="user-name">أحمد حسن</div><div class="user-email">ahmed@email.com</div></div></div></td><td>ماجستير تدريب رياضي</td><td><span class="status-badge status-new"><i class="fas fa-circle"></i> جديد</span></td><td>2026-07-20</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض" onclick="openModal('viewApplicationModal')"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة" onclick="openModal('assignReviewerModal')"><i class="fas fa-clipboard-check"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button><button class="btn btn-icon btn-outline" title="حذف" style="color:var(--ad);" onclick="confirmDelete(this)"><i class="fas fa-trash"></i></button></div></td></tr>
-                                        <tr><td><input type="checkbox" class="admin-checkbox row-check"></td><td><strong>#GS-2026-0155</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#00c853,#009624);">س ع</div><div><div class="user-name">سارة علي</div><div class="user-email">sara@email.com</div></div></div></td><td>دكتوراه علوم الرياضة</td><td><span class="status-badge status-review"><i class="fas fa-circle"></i> قيد المراجعة</span></td><td>2026-07-19</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض" onclick="openModal('viewApplicationModal')"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-clipboard-check"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button><button class="btn btn-icon btn-outline" title="حذف" style="color:var(--ad);" onclick="confirmDelete(this)"><i class="fas fa-trash"></i></button></div></td></tr>
-                                        <tr><td><input type="checkbox" class="admin-checkbox row-check"></td><td><strong>#GS-2026-0154</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#ff6d00,#c43e00);">خ م</div><div><div class="user-name">خالد محمد</div><div class="user-email">khaled@email.com</div></div></div></td><td>ماجستير علم التغذية</td><td><span class="status-badge status-approved"><i class="fas fa-circle"></i> مقبولا</span></td><td>2026-07-18</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-clipboard-check"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button><button class="btn btn-icon btn-outline" title="حذف" style="color:var(--ad);" onclick="confirmDelete(this)"><i class="fas fa-trash"></i></button></div></td></tr>
-                                        <tr><td><input type="checkbox" class="admin-checkbox row-check"></td><td><strong>#GS-2026-0153</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#e53935,#c62828);">ف ع</div><div><div class="user-name">فاطمة عبدالله</div><div class="user-email">fatma@email.com</div></div></div></td><td>ماجستير تأهيل رياضي</td><td><span class="status-badge status-rejected"><i class="fas fa-circle"></i> مرفوض</span></td><td>2026-07-17</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-clipboard-check"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button><button class="btn btn-icon btn-outline" title="حذف" style="color:var(--ad);" onclick="confirmDelete(this)"><i class="fas fa-trash"></i></button></div></td></tr>
-                                        <tr><td><input type="checkbox" class="admin-checkbox row-check"></td><td><strong>#GS-2026-0152</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#00bcd4,#0097a7);">ع ر</div><div><div class="user-name">عمر رشدي</div><div class="user-email">omar@email.com</div></div></div></td><td>دكتوراه تدريب رياضي</td><td><span class="status-badge status-pending"><i class="fas fa-circle"></i> معلق</span></td><td>2026-07-16</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-clipboard-check"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button><button class="btn btn-icon btn-outline" title="حذف" style="color:var(--ad);" onclick="confirmDelete(this)"><i class="fas fa-trash"></i></button></div></td></tr>
-                                        <tr><td><input type="checkbox" class="admin-checkbox row-check"></td><td><strong>#GS-2026-0151</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#9c27b0,#7b1fa2);">ن ح</div><div><div class="user-name">نورة حسين</div><div class="user-email">noura@email.com</div></div></div></td><td>ماجستير تدريب رياضي</td><td><span class="status-badge status-approved"><i class="fas fa-circle"></i> مقبولا</span></td><td>2026-07-15</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-clipboard-check"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button><button class="btn btn-icon btn-outline" title="حذف" style="color:var(--ad);" onclick="confirmDelete(this)"><i class="fas fa-trash"></i></button></div></td></tr>
-                                        <tr><td><input type="checkbox" class="admin-checkbox row-check"></td><td><strong>#GS-2026-0150</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#795548,#5d4037);">ي س</div><div><div class="user-name">يوسف سعيد</div><div class="user-email">youssef@email.com</div></div></div></td><td>دكتوراه علوم الرياضة</td><td><span class="status-badge status-review"><i class="fas fa-circle"></i> قيد المراجعة</span></td><td>2026-07-14</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-clipboard-check"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button><button class="btn btn-icon btn-outline" title="حذف" style="color:var(--ad);" onclick="confirmDelete(this)"><i class="fas fa-trash"></i></button></div></td></tr>
-                                        <tr><td><input type="checkbox" class="admin-checkbox row-check"></td><td><strong>#GS-2026-0149</strong></td><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#3f51b5,#303f9f);">م ب</div><div><div class="user-name">مريم بنت علي</div><div class="user-email">mariam@email.com</div></div></div></td><td>ماجستير تأهيل رياضي</td><td><span class="status-badge status-pending"><i class="fas fa-circle"></i> معلق</span></td><td>2026-07-13</td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="مراجعة"><i class="fas fa-clipboard-check"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button><button class="btn btn-icon btn-outline" title="حذف" style="color:var(--ad);" onclick="confirmDelete(this)"><i class="fas fa-trash"></i></button></div></td></tr>
+                                        <tr><td colspan="10" style="text-align:center;padding:40px;color:var(--ats);"><i class="fas fa-spinner fa-spin" style="margin-left:8px;"></i> جاري تحميل الطلبات...</td></tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div class="table-footer"><div class="table-info">عرض 1-8 من 156 طلب</div><div class="pagination"><button disabled><i class="fas fa-chevron-right"></i></button><button class="active">1</button><button>2</button><button>3</button><button>...</button><button>20</button><button><i class="fas fa-chevron-left"></i></button></div></div>
                     </div>
                 </div>
 
                 <!-- COMMITTEES VIEW -->
                 <div class="view-section" id="view-committees">
-                    <div class="content-header"><div><h1>إدارة اللجان</h1></div><div class="header-actions"><button class="btn btn-primary"><i class="fas fa-plus"></i> إضافة لجنة</button></div></div>
-                    <div class="committee-grid">
-                        <div class="committee-card">
-                            <div class="committee-header"><div class="committee-name"><i class="fas fa-users-cog"></i> لجنة المراجعة العلمية</div><span class="member-count">5 أعضاء</span></div>
-                            <div class="committee-members"><div class="member-avatar" style="background:#1a73e8;">م أ</div><div class="member-avatar" style="background:#00c853;">س ر</div><div class="member-avatar" style="background:#ff6d00;">خ ع</div><div class="member-avatar" style="background:#e53935;">ف ح</div><div class="member-avatar" style="background:#9c27b0;">ع م</div><div class="member-more">+2</div></div>
-                            <div class="committee-stats"><div class="cs-item"><div class="cs-value">32</div><div class="cs-label">طلبات مسندة</div></div><div class="cs-item"><div class="cs-value">18</div><div class="cs-label">قيد المراجعة</div></div><div class="cs-item"><div class="cs-value">14</div><div class="cs-label">مكتملة</div></div></div>
-                            <div class="committee-actions"><button class="btn btn-sm btn-primary" onclick="openModal('assignReviewerModal')"><i class="fas fa-user-plus"></i> تعيين مراجع</button><button class="btn btn-sm btn-outline"><i class="fas fa-cog"></i> إدارة</button></div>
-                        </div>
-                        <div class="committee-card">
-                            <div class="committee-header"><div class="committee-name"><i class="fas fa-clipboard-check"></i> لجنة القبول</div><span class="member-count">4 أعضاء</span></div>
-                            <div class="committee-members"><div class="member-avatar" style="background:#00bcd4;">خ م</div><div class="member-avatar" style="background:#795548;">ن ع</div><div class="member-avatar" style="background:#3f51b5;">ع ر</div><div class="member-avatar" style="background:#ff9800;">س ب</div></div>
-                            <div class="committee-stats"><div class="cs-item"><div class="cs-value">28</div><div class="cs-label">طلبات مسندة</div></div><div class="cs-item"><div class="cs-value">12</div><div class="cs-label">قيد المراجعة</div></div><div class="cs-item"><div class="cs-value">16</div><div class="cs-label">مكتملة</div></div></div>
-                            <div class="committee-actions"><button class="btn btn-sm btn-primary"><i class="fas fa-user-plus"></i> تعيين مراجع</button><button class="btn btn-sm btn-outline"><i class="fas fa-cog"></i> إدارة</button></div>
-                        </div>
-                        <div class="committee-card">
-                            <div class="committee-header"><div class="committee-name"><i class="fas fa-gavel"></i> لجنة المناقشة</div><span class="member-count">6 أعضاء</span></div>
-                            <div class="committee-members"><div class="member-avatar" style="background:#e53935;">أ س</div><div class="member-avatar" style="background:#4caf50;">م ح</div><div class="member-avatar" style="background:#2196f3;">ن ف</div><div class="member-avatar" style="background:#ff5722;">س ع</div><div class="member-more">+3</div></div>
-                            <div class="committee-stats"><div class="cs-item"><div class="cs-value">15</div><div class="cs-label">طلبات مسندة</div></div><div class="cs-item"><div class="cs-value">5</div><div class="cs-label">قيد المراجعة</div></div><div class="cs-item"><div class="cs-value">10</div><div class="cs-label">مكتملة</div></div></div>
-                            <div class="committee-actions"><button class="btn btn-sm btn-primary"><i class="fas fa-user-plus"></i> تعيين مراجع</button><button class="btn btn-sm btn-outline"><i class="fas fa-cog"></i> إدارة</button></div>
-                        </div>
-                        <div class="committee-card">
-                            <div class="committee-header"><div class="committee-name"><i class="fas fa-file-contract"></i> لجنة المستندات</div><span class="member-count">3 أعضاء</span></div>
-                            <div class="committee-members"><div class="member-avatar" style="background:#9c27b0;">ل ح</div><div class="member-avatar" style="background:#607d8b;">ر م</div><div class="member-avatar" style="background:#009688;">ي ع</div></div>
-                            <div class="committee-stats"><div class="cs-item"><div class="cs-value">42</div><div class="cs-label">طلبات مسندة</div></div><div class="cs-item"><div class="cs-value">15</div><div class="cs-label">قيد المراجعة</div></div><div class="cs-item"><div class="cs-value">27</div><div class="cs-label">مكتملة</div></div></div>
-                            <div class="committee-actions"><button class="btn btn-sm btn-primary"><i class="fas fa-user-plus"></i> تعيين مراجع</button><button class="btn btn-sm btn-outline"><i class="fas fa-cog"></i> إدارة</button></div>
-                        </div>
-                    </div>
-                    <div class="admin-card">
-                        <div class="card-header"><h3><i class="fas fa-list"></i> آخر التعيينات</h3></div>
-                        <div class="card-body no-padding">
-                            <div style="overflow-x:auto;">
-                                <table class="admin-table">
-                                    <thead><tr><th>رقم الطلب</th><th>الباحث</th><th>اللجنة</th><th>المراجع</th><th>التاريخ</th><th>الحالة</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><strong>#GS-2026-0156</strong></td><td>أحمد حسن</td><td>لجنة المراجعة العلمية</td><td>د. سعد الراشد</td><td>2026-07-20</td><td><span class="status-badge status-pending"><i class="fas fa-circle"></i> معلق</span></td></tr>
-                                        <tr><td><strong>#GS-2026-0155</strong></td><td>سارة علي</td><td>لجنة القبول</td><td>د. نورة العتيبي</td><td>2026-07-19</td><td><span class="status-badge status-review"><i class="fas fa-circle"></i> قيد المراجعة</span></td></tr>
-                                        <tr><td><strong>#GS-2026-0154</strong></td><td>خالد محمد</td><td>لجنة المراجعة العلمية</td><td>د. فاطمة الحربي</td><td>2026-07-18</td><td><span class="status-badge status-approved"><i class="fas fa-circle"></i> مكتمل</span></td></tr>
-                                        <tr><td><strong>#GS-2026-0152</strong></td><td>عمر رشدي</td><td>لجنة المناقشة</td><td>د. عادل مشعل</td><td>2026-07-17</td><td><span class="status-badge status-review"><i class="fas fa-circle"></i> قيد المراجعة</span></td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                    <div class="content-header"><div><h1>إدارة اللجان</h1></div></div>
+                    <div id="committeesContainer">
+                        <div style="text-align:center;padding:60px 20px;color:var(--ats);"><i class="fas fa-users-cog" style="font-size:48px;margin-bottom:16px;opacity:0.3;display:block;"></i>لا توجد لجان مسجلة بعد</div>
                     </div>
                 </div>
 
@@ -651,65 +566,9 @@
 
                 <!-- SCHOLARSHIPS VIEW -->
                 <div class="view-section" id="view-scholarships">
-                    <div class="content-header"><div><h1>المنح الدراسية</h1></div><div class="header-actions"><button class="btn btn-primary" onclick="openModal('assignScholarshipModal')"><i class="fas fa-plus"></i> إضافة منحة</button></div></div>
-                    <div class="stats-grid">
-                        <div class="stat-card stat-primary"><div class="stat-header"><div class="stat-icon"><i class="fas fa-award"></i></div></div><div class="stat-value">12</div><div class="stat-label">إجمالي المنح</div></div>
-                        <div class="stat-card stat-success"><div class="stat-header"><div class="stat-icon"><i class="fas fa-user-check"></i></div></div><div class="stat-value">38</div><div class="stat-label">مستفيدون</div></div>
-                        <div class="stat-card stat-warning"><div class="stat-header"><div class="stat-icon"><i class="fas fa-clock"></i></div></div><div class="stat-value">7</div><div class="stat-label">أماكن متاحة</div></div>
-                        <div class="stat-card stat-danger"><div class="stat-header"><div class="stat-icon"><i class="fas fa-hourglass-half"></i></div></div><div class="stat-value">3</div><div class="stat-label">تنتهي قريباً</div></div>
-                    </div>
-                    <div class="scholarship-grid">
-                        <div class="scholarship-card">
-                            <div class="scholarship-banner" style="background:linear-gradient(90deg,#1a73e8,#4a9af5);"></div>
-                            <div class="scholarship-body">
-                                <div class="scholarship-title">منحة الملك عبدالله للتميز الأكاديمي</div>
-                                <div class="scholarship-desc">منحة كاملة للطلاب المتميزين في برامج الدكتوراه تشمل الرسوم الدراسية والمعيشة.</div>
-                                <div class="scholarship-meta"><div class="meta-item"><i class="fas fa-money-bill-wave"></i> 50,000 ر.س/سنة</div><div class="meta-item"><i class="fas fa-calendar"></i> حتى 2027-06-30</div><div class="meta-item"><i class="fas fa-users"></i> 8/12</div></div>
-                                <div class="scholarship-footer"><div style="display:flex;align-items:center;"><div class="recipient-avatars"><div class="r-avatar" style="background:#1a73e8;">أ ح</div><div class="r-avatar" style="background:#00c853;">س ع</div><div class="r-avatar" style="background:#ff6d00;">خ م</div></div><span class="r-count">+5 مستفيد</span></div><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="openModal('assignScholarshipModal')"><i class="fas fa-user-plus"></i> تعيين</button><button class="btn btn-sm btn-outline"><i class="fas fa-cog"></i></button></div></div>
-                            </div>
-                        </div>
-                        <div class="scholarship-card">
-                            <div class="scholarship-banner" style="background:linear-gradient(90deg,#00c853,#5efc82);"></div>
-                            <div class="scholarship-body">
-                                <div class="scholarship-title">منحة البحث العلمي - كلية علوم الرياضة</div>
-                                <div class="scholarship-desc">دعم مالي للباحثين في مجالات التدريب الرياضي والتأهيل والعلوم التربوية.</div>
-                                <div class="scholarship-meta"><div class="meta-item"><i class="fas fa-money-bill-wave"></i> 30,000 ر.س/سنة</div><div class="meta-item"><i class="fas fa-calendar"></i> حتى 2027-12-31</div><div class="meta-item"><i class="fas fa-users"></i> 15/20</div></div>
-                                <div class="scholarship-footer"><div style="display:flex;align-items:center;"><div class="recipient-avatars"><div class="r-avatar" style="background:#9c27b0;">ن ح</div><div class="r-avatar" style="background:#00bcd4;">ع ر</div></div><span class="r-count">+13 مستفيد</span></div><div class="btn-group"><button class="btn btn-sm btn-primary"><i class="fas fa-user-plus"></i> تعيين</button><button class="btn btn-sm btn-outline"><i class="fas fa-cog"></i></button></div></div>
-                            </div>
-                        </div>
-                        <div class="scholarship-card">
-                            <div class="scholarship-banner" style="background:linear-gradient(90deg,#ff6d00,#ff9e40);"></div>
-                            <div class="scholarship-body">
-                                <div class="scholarship-title">منحة الابتعاث الدولي</div>
-                                <div class="scholarship-desc">منح للدراسات العليا في أرقى الجامعات العالمية في مجالات علوم الرياضة والتغذية.</div>
-                                <div class="scholarship-meta"><div class="meta-item"><i class="fas fa-money-bill-wave"></i> 80,000 ر.س/سنة</div><div class="meta-item"><i class="fas fa-calendar"></i> حتى 2028-06-30</div><div class="meta-item"><i class="fas fa-users"></i> 3/5</div></div>
-                                <div class="scholarship-footer"><div style="display:flex;align-items:center;"><div class="recipient-avatars"><div class="r-avatar" style="background:#e53935;">ف ع</div></div><span class="r-count">+2 مستفيد</span></div><div class="btn-group"><button class="btn btn-sm btn-primary"><i class="fas fa-user-plus"></i> تعيين</button><button class="btn btn-sm btn-outline"><i class="fas fa-cog"></i></button></div></div>
-                            </div>
-                        </div>
-                        <div class="scholarship-card">
-                            <div class="scholarship-banner" style="background:linear-gradient(90deg,#e53935,#ff6f60);"></div>
-                            <div class="scholarship-body">
-                                <div class="scholarship-title">منحة الطالب المتفوق</div>
-                                <div class="scholarship-desc">حوافز مالية للطلاب الحاصلين على معدل تراكمي أعلى من 3.75 في برامج الماجستير.</div>
-                                <div class="scholarship-meta"><div class="meta-item"><i class="fas fa-money-bill-wave"></i> 15,000 ر.س/فصل</div><div class="meta-item"><i class="fas fa-calendar"></i> مستمر</div><div class="meta-item"><i class="fas fa-users"></i> 12/15</div></div>
-                                <div class="scholarship-footer"><div style="display:flex;align-items:center;"><div class="recipient-avatars"><div class="r-avatar" style="background:#3f51b5;">م ب</div><div class="r-avatar" style="background:#795548;">ي س</div></div><span class="r-count">+10 مستفيد</span></div><div class="btn-group"><button class="btn btn-sm btn-primary"><i class="fas fa-user-plus"></i> تعيين</button><button class="btn btn-sm btn-outline"><i class="fas fa-cog"></i></button></div></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="admin-card">
-                        <div class="card-header"><h3><i class="fas fa-list"></i> المستفيدون من المنح</h3><button class="btn btn-sm btn-outline" onclick="exportToExcel()"><i class="fas fa-file-export"></i> تصدير</button></div>
-                        <div class="card-body no-padding">
-                            <div style="overflow-x:auto;">
-                                <table class="admin-table">
-                                    <thead><tr><th>الباحث</th><th>البرنامج</th><th>المنحة</th><th>المبلغ السنوي</th><th>تاريخ البدء</th><th>الحالة</th><th>إجراءات</th></tr></thead>
-                                    <tbody>
-                                        <tr><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#1a73e8,#1557b0);">أ ح</div><div><div class="user-name">أحمد حسن</div><div class="user-email">ماجستير تدريب رياضي</div></div></div></td><td>ماجستير تدريب رياضي</td><td>منحة الملك عبدالله</td><td>50,000 ر.س</td><td>2026-09-01</td><td><span class="status-badge status-approved"><i class="fas fa-circle"></i> نشطة</span></td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button></div></td></tr>
-                                        <tr><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#00c853,#009624);">س ع</div><div><div class="user-name">سارة علي</div><div class="user-email">دكتوراه علوم الرياضة</div></div></div></td><td>دكتوراه علوم الرياضة</td><td>منحة البحث العلمي</td><td>30,000 ر.س</td><td>2026-09-01</td><td><span class="status-badge status-approved"><i class="fas fa-circle"></i> نشطة</span></td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button></div></td></tr>
-                                        <tr><td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#e53935,#c62828);">ف ع</div><div><div class="user-name">فاطمة عبدالله</div><div class="user-email">ماجستير تأهيل رياضي</div></div></div></td><td>ماجستير تأهيل رياضي</td><td>منحة الابتعاث الدولي</td><td>80,000 ر.س</td><td>2027-01-15</td><td><span class="status-badge status-pending"><i class="fas fa-circle"></i> بانتظار البدء</span></td><td><div class="btn-group"><button class="btn btn-icon btn-outline" title="عرض"><i class="fas fa-eye"></i></button><button class="btn btn-icon btn-outline" title="تعديل"><i class="fas fa-pen"></i></button></div></td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                    <div class="content-header"><div><h1>المنح الدراسية</h1></div></div>
+                    <div id="scholarshipsContainer">
+                        <div style="text-align:center;padding:60px 20px;color:var(--ats);"><i class="fas fa-award" style="font-size:48px;margin-bottom:16px;opacity:0.3;display:block;"></i>لا توجد منح مسجلة بعد</div>
                     </div>
                 </div>
 
