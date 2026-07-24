@@ -398,9 +398,9 @@
             <nav class="sidebar-nav" id="sidebarNav">
                 <div class="nav-label"><span>القائمة الرئيسية</span></div>
                 <a href="#" class="active" data-view="dashboard" onclick="switchView('dashboard',this)"><i class="fas fa-th-large"></i><span class="nav-text">لوحة التحكم</span></a>
-                <a href="#" data-view="applications" onclick="switchView('applications',this)"><i class="fas fa-file-alt"></i><span class="nav-text">الطلبات</span><span class="badge badge-warning">42</span></a>
+                <a href="#" data-view="applications" onclick="switchView('applications',this)"><i class="fas fa-file-alt"></i><span class="nav-text">الطلبات</span></a>
                 <a href="#" data-view="committees" onclick="switchView('committees',this)"><i class="fas fa-users-cog"></i><span class="nav-text">اللجان</span></a>
-                <a href="#" data-view="documents" onclick="switchView('documents',this)"><i class="fas fa-folder-open"></i><span class="nav-text">المستندات</span><span class="badge badge-primary">12</span></a>
+                <a href="#" data-view="documents" onclick="switchView('documents',this)"><i class="fas fa-folder-open"></i><span class="nav-text">المستندات</span></a>
                 <a href="#" data-view="scholarships" onclick="switchView('scholarships',this)"><i class="fas fa-award"></i><span class="nav-text">المنح الدراسية</span></a>
                 <div class="nav-label"><span>النظام</span></div>
                 <a href="#" data-view="permissions" class="admin-only" onclick="switchView('permissions',this)"><i class="fas fa-user-shield"></i><span class="nav-text">إدارة الصلاحيات</span></a>
@@ -437,14 +437,10 @@
                 <div class="topbar-left">
                     <div class="topbar-search"><input type="text" placeholder="بحث سريع..." id="globalSearch"><i class="fas fa-search"></i></div>
                     <div class="topbar-avatar" style="position:relative;">
-                        <button class="topbar-icon-btn" id="notifBtn" title="الإشعارات"><i class="fas fa-bell"></i><span class="notification-badge" id="notifBadge">5</span></button>
+                        <button class="topbar-icon-btn" id="notifBtn" title="الإشعارات"><i class="fas fa-bell"></i><span class="notification-badge" id="notifBadge" style="display:none;">0</span></button>
                         <div class="dropdown-menu notifications-dropdown" id="notifDropdown">
-                            <div class="notif-header"><h4>الإشعارات</h4><a href="#">تحديد الكل كمقروء</a></div>
-                            <div class="notif-item unread"><div class="notif-icon notif-primary"><i class="fas fa-file-alt"></i></div><div class="notif-content"><div class="notif-text"><strong>طلب جديد</strong> من أحمد محمد للماجستير في التدريب الرياضي</div><div class="notif-time">منذ 5 دقائق</div></div></div>
-                            <div class="notif-item unread"><div class="notif-icon notif-success"><i class="fas fa-check-circle"></i></div><div class="notif-content"><div class="notif-text">تم <strong>اعتماد</strong> طلب سعيد عبدالله #GS-2026-0089</div><div class="notif-time">منذ 15 دقيقة</div></div></div>
-                            <div class="notif-item unread"><div class="notif-icon notif-warning"><i class="fas fa-exclamation-triangle"></i></div><div class="notif-content"><div class="notif-text"><strong>تنبيه:</strong> موعد تقديم المستندات لـ 8 طلبات ينتهي غداً</div><div class="notif-time">منذ 30 دقيقة</div></div></div>
-                            <div class="notif-item"><div class="notif-icon notif-primary"><i class="fas fa-users"></i></div><div class="notif-content"><div class="notif-text">تم إضافة <strong>د. خالد عمر</strong> إلى لجنة المراجعة العلمية</div><div class="notif-time">منذ ساعة</div></div></div>
-                            <div class="notif-item"><div class="notif-icon notif-danger"><i class="fas fa-times-circle"></i></div><div class="notif-content"><div class="notif-text">تم <strong>رفض</strong> طلب فاطمة علي #GS-2026-0076 - مستندات ناقصة</div><div class="notif-time">منذ ساعتين</div></div></div>
+                            <div class="notif-header"><h4>الإشعارات</h4></div>
+                            <div style="text-align:center;padding:30px;color:var(--ats);font-size:13px;">لا توجد إشعارات</div>
                         </div>
                     </div>
                     <div class="topbar-avatar" id="userDropdownWrapper" style="position:relative;">
@@ -625,19 +621,18 @@
     <!-- MODALS -->
     <div class="modal-overlay" id="viewApplicationModal">
         <div class="modal">
-            <div class="modal-header"><h3><i class="fas fa-file-alt"></i> تفاصيل الطلب #GS-2026-0156</h3><button class="modal-close" onclick="closeModal('viewApplicationModal')"><i class="fas fa-times"></i></button></div>
+            <div class="modal-header"><h3><i class="fas fa-file-alt"></i> تفاصيل الطلب</h3><button class="modal-close" onclick="closeModal('viewApplicationModal')"><i class="fas fa-times"></i></button></div>
             <div class="modal-body">
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-                    <div class="form-group"><label>رقم الطلب</label><input type="text" class="form-control" value="#GS-2026-0156" readonly></div>
-                    <div class="form-group"><label>تاريخ التقديم</label><input type="text" class="form-control" value="2026-07-20" readonly></div>
-                    <div class="form-group"><label>اسم الباحث</label><input type="text" class="form-control" value="أحمد حسن" readonly></div>
-                    <div class="form-group"><label>البريد الإلكتروني</label><input type="text" class="form-control" value="ahmed@email.com" readonly></div>
-                    <div class="form-group" style="grid-column:span 2;"><label>البرنامج المطلوب</label><input type="text" class="form-control" value="ماجستير تدريب رياضي" readonly></div>
-                    <div class="form-group" style="grid-column:span 2;"><label>المستندات المرفقة</label><div style="display:flex;gap:8px;flex-wrap:wrap;"><span style="padding:6px 12px;background:var(--ahbg);border-radius:6px;font-size:12px;"><i class="fas fa-file-pdf" style="color:#e53935;margin-left:4px;"></i> شهادة البكالوريس</span><span style="padding:6px 12px;background:var(--ahbg);border-radius:6px;font-size:12px;"><i class="fas fa-file-pdf" style="color:#e53935;margin-left:4px;"></i> السيرة الذاتية</span><span style="padding:6px 12px;background:var(--ahbg);border-radius:6px;font-size:12px;"><i class="fas fa-file-word" style="color:#1a73e8;margin-left:4px;"></i> رسالة البحث</span><span style="padding:6px 12px;background:var(--ahbg);border-radius:6px;font-size:12px;"><i class="fas fa-file-image" style="color:#ff6d00;margin-left:4px;"></i> الصورة الشخصية</span></div></div>
+                    <div class="form-group"><label>رقم الطلب</label><input type="text" class="form-control" id="modalAppNumber" readonly></div>
+                    <div class="form-group"><label>تاريخ التقديم</label><input type="text" class="form-control" id="modalAppDate" readonly></div>
+                    <div class="form-group"><label>اسم الباحث</label><input type="text" class="form-control" id="modalAppName" readonly></div>
+                    <div class="form-group"><label>البريد الإلكتروني</label><input type="text" class="form-control" id="modalAppEmail" readonly></div>
+                    <div class="form-group" style="grid-column:span 2;"><label>البرنامج المطلوب</label><input type="text" class="form-control" id="modalAppProgram" readonly></div>
                     <div class="form-group" style="grid-column:span 2;"><label>ملاحظات</label><textarea class="form-control" rows="3" placeholder="إضافة ملاحظات..."></textarea></div>
                 </div>
             </div>
-            <div class="modal-footer"><button class="btn btn-success"><i class="fas fa-check"></i> قبول</button><button class="btn btn-danger"><i class="fas fa-times"></i> رفض</button><button class="btn btn-primary" onclick="closeModal('viewApplicationModal')"><i class="fas fa-times"></i> إغلاق</button></div>
+            <div class="modal-footer"><button class="btn btn-primary" onclick="closeModal('viewApplicationModal')"><i class="fas fa-times"></i> إغلاق</button></div>
         </div>
     </div>
 
@@ -645,9 +640,8 @@
         <div class="modal">
             <div class="modal-header"><h3><i class="fas fa-user-check"></i> تكليف مراجع</h3><button class="modal-close" onclick="closeModal('assignReviewerModal')"><i class="fas fa-times"></i></button></div>
             <div class="modal-body">
-                <div class="form-group"><label>رقم الطلب</label><select class="form-control"><option value="">اختر الطلب...</option><option>#GS-2026-0156 - أحمد حسن</option><option>#GS-2026-0155 - سارة علي</option><option>#GS-2026-0152 - عمر رشدي</option></select></div>
-                <div class="form-group"><label>اللجنة</label><select class="form-control"><option value="">اختر اللجنة...</option><option>لجنة المراجعة العلمية</option><option>لجنة القبول</option><option>لجنة المناقشة</option><option>لجنة المستندات</option></select></div>
-                <div class="form-group"><label>المراجع</label><select class="form-control"><option value="">اختر المراجع...</option><option>د. سعد الراشد</option><option>د. نورة العتيبي</option><option>د. فاطمة الحربي</option><option>د. عادل مشعل</option><option>د. خالد عمر</option></select></div>
+                <div class="form-group"><label>رقم الطلب</label><input type="text" class="form-control" placeholder="أدخل رقم الطلب" id="assignAppNumber"></div>
+                <div class="form-group"><label>المراجع</label><input type="text" class="form-control" placeholder="أدخل اسم المراجع" id="assignReviewer"></div>
                 <div class="form-group"><label>ملاحظات</label><textarea class="form-control" rows="3" placeholder="إضافة تعليمات أو ملاحظات للمراجع..."></textarea></div>
             </div>
             <div class="modal-footer"><button class="btn btn-primary" onclick="closeModal('assignReviewerModal')"><i class="fas fa-check"></i> تأكيد التعيين</button><button class="btn btn-outline" onclick="closeModal('assignReviewerModal')"><i class="fas fa-times"></i> إلغاء</button></div>
@@ -658,10 +652,8 @@
         <div class="modal">
             <div class="modal-header"><h3><i class="fas fa-award"></i> تعيين منحة دراسية</h3><button class="modal-close" onclick="closeModal('assignScholarshipModal')"><i class="fas fa-times"></i></button></div>
             <div class="modal-body">
-                <div class="form-group"><label>الباحث</label><select class="form-control"><option value="">اختر الباحث...</option><option>أحمد حسن - ماجستير تدريب رياضي</option><option>سارة علي - دكتوراه علوم الرياضة</option><option>خالد محمد - ماجستير علم التغذية</option><option>فاطمة عبدالله - ماجستير تأهيل رياضي</option><option>عمر رشدي - دكتوراه تدريب رياضي</option></select></div>
-                <div class="form-group"><label>المنحة</label><select class="form-control"><option value="">اختر المنحة...</option><option>منحة الملك Abdullah للتميز الأكاديمي</option><option>منحة البحث العلمي</option><option>منحة الابتعاث الدولي</option><option>منحة الطالب المتفوق</option></select></div>
-                <div class="form-group"><label>المبلغ السنوي (ر.س)</label><input type="number" class="form-control" placeholder="أدخل المبلغ"></div>
-                <div class="form-group"><label>تاريخ البدء</label><input type="date" class="form-control"></div>
+                <div class="form-group"><label>الباحث</label><input type="text" class="form-control" placeholder="أدخل اسم الباحث" id="scholarshipResearcher"></div>
+                <div class="form-group"><label>المنحة</label><input type="text" class="form-control" placeholder="أدخل اسم المنحة" id="scholarshipName"></div>
                 <div class="form-group"><label>ملاحظات</label><textarea class="form-control" rows="3" placeholder="إضافة ملاحظات..."></textarea></div>
             </div>
             <div class="modal-footer"><button class="btn btn-primary" onclick="closeModal('assignScholarshipModal')"><i class="fas fa-check"></i> تأكيد التعيين</button><button class="btn btn-outline" onclick="closeModal('assignScholarshipModal')"><i class="fas fa-times"></i> إلغاء</button></div>
