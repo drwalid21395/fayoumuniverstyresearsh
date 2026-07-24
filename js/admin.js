@@ -22,7 +22,7 @@
     staffUser: "gs_staff_user",
   };
 
-  var GSCRIPT_URL = "https://script.google.com/macros/s/AKfycbzRfytN2_nnLUf-_RUYm8m3coeL86Sy2XHtGIoso81r0OuOqkUps8ehddtDfyCcb8yj/exec";
+  var GSCRIPT_URL = "https://script.google.com/macros/s/AKfycbxNo90NRbCnTPtUUWmpkF-snFcZ_kIafBdD7d3tEkgKjg38lA8ag9s6XiLDFEspZ3w/exec";
 
   var ROLE_LABELS = { admin: "مدير النظام", employee: "موظف", vice_dean: "وكيل الكلية" };
   var ROLE_ICONS = { admin: "fas fa-crown", employee: "fas fa-user-tie", vice_dean: "fas fa-user-shield" };
@@ -658,6 +658,8 @@
     if (viewName === "documents" && typeof window.loadDocuments === "function") {
       window.loadDocuments();
     }
+    if (viewName === "dashboard") loadDashboard();
+    if (viewName === "applications") loadApplicationsFromSheet();
 
     var sidebar = $("#adminSidebar");
     var overlay = $("#sidebarOverlay");
@@ -2385,6 +2387,155 @@
   };
 
   /* ----------------------------------------------------------
+     DYNAMIC DASHBOARD & APPLICATIONS (from Google Sheet)
+  ---------------------------------------------------------- */
+  var _cachedResearchers = null;
+
+  function fetchResearchersData(callback) {
+    if (_cachedResearchers) { callback(_cachedResearchers); return; }
+    var url = GSCRIPT_URL + "?action=exportResearchers";
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(res) {
+        if (res.success && res.headers && res.rows) {
+          _cachedResearchers = { headers: res.headers, rows: res.rows };
+          callback(_cachedResearchers);
+        } else {
+          callback(null);
+        }
+      })
+      .catch(function() { callback(null); });
+  }
+
+  function getCellValue(row, headers, colName) {
+    var idx = headers.indexOf(colName);
+    return idx !== -1 ? (row[idx] || "") : "";
+  }
+
+  function loadDashboard() {
+    var dashTotal = document.getElementById("dashTotal");
+    var dashMasters = document.getElementById("dashMasters");
+    var dashPhd = document.getElementById("dashPhd");
+    var dashWithDocs = document.getElementById("dashWithDocs");
+    var latestBody = document.getElementById("dashLatestBody");
+
+    fetchResearchersData(function(data) {
+      if (!data) {
+        if (dashTotal) dashTotal.textContent = "0";
+        if (dashMasters) dashMasters.textContent = "0";
+        if (dashPhd) dashPhd.textContent = "0";
+        if (dashWithDocs) dashWithDocs.textContent = "0";
+        if (latestBody) latestBody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:30px;color:var(--ats);">لا توجد بيانات</td></tr>';
+        return;
+      }
+
+      var h = data.headers;
+      var rows = data.rows;
+      var total = rows.length;
+      var masters = 0, phd = 0, withDocs = 0;
+      var degTypeIdx = h.indexOf("نوع الدرجة");
+      var regDocIdx = h.indexOf("مستندات التسجيل");
+
+      rows.forEach(function(row) {
+        if (degTypeIdx !== -1) {
+          var deg = row[degTypeIdx] || "";
+          if (deg.indexOf("ماجستير") !== -1) masters++;
+          if (deg.indexOf("دكتوراه") !== -1) phd++;
+        }
+        if (regDocIdx !== -1 && row[regDocIdx] && row[regDocIdx] !== "") withDocs++;
+      });
+
+      if (dashTotal) dashTotal.textContent = total;
+      if (dashMasters) dashMasters.textContent = masters;
+      if (dashPhd) dashPhd.textContent = phd;
+      if (dashWithDocs) dashWithDocs.textContent = withDocs;
+
+      if (latestBody) {
+        if (rows.length === 0) {
+          latestBody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:30px;color:var(--ats);">لا توجد بيانات</td></tr>';
+          return;
+        }
+        var recent = rows.slice().reverse().slice(0, 5);
+        var nameIdx = h.indexOf("الاسم الكامل");
+        var natIdx = h.indexOf("الرقم القومي");
+        var degLvlIdx = h.indexOf("الدرجة الحالية");
+        var specIdx = h.indexOf("التخصص");
+        var dateIdx = h.indexOf("تاريخ التقديم");
+
+        latestBody.innerHTML = recent.map(function(row) {
+          var name = nameIdx !== -1 ? row[nameIdx] : "";
+          var natId = natIdx !== -1 ? row[natIdx] : "";
+          var degLvl = degLvlIdx !== -1 ? row[degLvlIdx] : "";
+          var spec = specIdx !== -1 ? row[specIdx] : "";
+          var date = dateIdx !== -1 ? row[dateIdx] : "";
+          var initials = (name || "").split(" ").map(function(w){return w[0]}).join("").substring(0, 2);
+          var colors = ["#1a73e8","#00c853","#ff6d00","#e53935","#9c27b0","#00bcd4","#795548"];
+          var color = colors[Math.abs(name.length) % colors.length];
+          return '<tr><td><div class="user-cell"><div class="user-avatar-sm" style="background:' + color + ';">' + escapeHTML(initials) + '</div><div><div class="user-name">' + escapeHTML(name) + '</div></div></div></td>'
+            + '<td>' + escapeHTML(natId) + '</td>'
+            + '<td>' + escapeHTML(degLvl) + '</td>'
+            + '<td>' + escapeHTML(spec) + '</td>'
+            + '<td>' + escapeHTML(date) + '</td></tr>';
+        }).join("");
+      }
+    });
+  }
+
+  function loadApplicationsFromSheet() {
+    var tbody = document.getElementById("applicationsBody");
+    if (!tbody) return;
+    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:40px;color:var(--ats);"><i class="fas fa-spinner fa-spin" style="margin-left:8px;"></i> جاري تحميل الطلبات...</td></tr>';
+
+    fetchResearchersData(function(data) {
+      if (!data || data.rows.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:40px;color:var(--ats);">لا توجد طلبات مسجلة بعد</td></tr>';
+        return;
+      }
+
+      var h = data.headers;
+      var rows = data.rows;
+      var nameIdx = h.indexOf("الاسم الكامل");
+      var natIdx = h.indexOf("الرقم القومي");
+      var degLvlIdx = h.indexOf("الدرجة الحالية");
+      var specIdx = h.indexOf("التخصص");
+      var degTypeIdx = h.indexOf("نوع الدرجة");
+      var dateIdx = h.indexOf("تاريخ التقديم");
+      var statusIdx = h.indexOf("حالة الطلب");
+      var regDocIdx = h.indexOf("مستندات التسجيل");
+      var formDocIdx = h.indexOf("مستندات التشكيل");
+      var degDocIdx = h.indexOf("مستندات المنح");
+      var appNumIdx = h.indexOf("رقم الطلب");
+
+      tbody.innerHTML = rows.map(function(row, i) {
+        var name = nameIdx !== -1 ? row[nameIdx] : "";
+        var natId = natIdx !== -1 ? row[natIdx] : "";
+        var degLvl = degLvlIdx !== -1 ? row[degLvlIdx] : "";
+        var spec = specIdx !== -1 ? row[specIdx] : "";
+        var degType = degTypeIdx !== -1 ? row[degTypeIdx] : "";
+        var date = dateIdx !== -1 ? row[dateIdx] : "";
+        var regStatus = regDocIdx !== -1 && row[regDocIdx] && row[regDocIdx] !== "" ? "مكتمل" : "ناقص";
+        var formStatus = formDocIdx !== -1 && row[formDocIdx] && row[formDocIdx] !== "" ? "مكتمل" : "ناقص";
+        var degStatus = degDocIdx !== -1 && row[degDocIdx] && row[degDocIdx] !== "" ? "مكتمل" : "ناقص";
+
+        function badgeClass(s) { return s === "مكتمل" ? "status-approved" : "status-pending"; }
+
+        return '<tr>'
+          + '<td>' + (i + 1) + '</td>'
+          + '<td><div class="user-cell"><div class="user-avatar-sm" style="background:linear-gradient(135deg,#1a73e8,#1557b0);">' + escapeHTML((name || "").split(" ").map(function(w){return w[0]}).join("").substring(0, 2)) + '</div><div><div class="user-name">' + escapeHTML(name) + '</div></div></div></td>'
+          + '<td>' + escapeHTML(natId) + '</td>'
+          + '<td>' + escapeHTML(degLvl) + '</td>'
+          + '<td>' + escapeHTML(spec) + '</td>'
+          + '<td>' + escapeHTML(degType) + '</td>'
+          + '<td>' + escapeHTML(date) + '</td>'
+          + '<td><span class="status-badge ' + badgeClass(regStatus) + '"><i class="fas fa-circle"></i> ' + regStatus + '</span></td>'
+          + '<td><span class="status-badge ' + badgeClass(formStatus) + '"><i class="fas fa-circle"></i> ' + formStatus + '</span></td>'
+          + '<td><span class="status-badge ' + badgeClass(degStatus) + '"><i class="fas fa-circle"></i> ' + degStatus + '</span></td>'
+          + '</tr>';
+      }).join("");
+    });
+  }
+
+  /* ----------------------------------------------------------
      INIT
   ---------------------------------------------------------- */
   function init() {
@@ -2454,10 +2605,11 @@
     if (staffUser.role === "admin" && bootPerms.length === 0) bootPerms = Object.keys(PERM_LABELS);
     applyRolePermissions(bootPerms);
     if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", function () { init(); loadStaffList(); });
+      document.addEventListener("DOMContentLoaded", function () { init(); loadStaffList(); loadDashboard(); });
     } else {
       init();
       loadStaffList();
+      loadDashboard();
     }
   } else {
     if (document.readyState === "loading") {
