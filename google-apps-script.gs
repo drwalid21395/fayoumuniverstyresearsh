@@ -26,6 +26,7 @@ var STAGE_FOLDERS = {
 
 var SHEET_NAME = "بيانات الباحثين";
 var USERS_SHEET_NAME = "بيانات_المستخدمين";
+var MESSAGES_SHEET_NAME = "الرسائل";
 
 function doPost(e) {
   try {
@@ -42,6 +43,9 @@ function doPost(e) {
     if (action === "deleteStaff") return handleDeleteStaff(data);
     if (action === "exportResearchers") return handleExportResearchers(data);
     if (action === "listAllFiles") return handleListAllFiles(data);
+    if (action === "sendMessage") return handleSendMessage(data);
+    if (action === "getMessages") return handleGetMessages(data);
+    if (action === "replyMessage") return handleReplyMessage(data);
     return ContentService.createTextOutput(
       JSON.stringify({ success: false, message: "إجراء غير معروف" })
     ).setMimeType(ContentService.MimeType.JSON);
@@ -657,5 +661,90 @@ function handleListAllFiles(data) {
 
   return ContentService.createTextOutput(
     JSON.stringify({ success: true, files: allFiles, total: allFiles.length })
+  ).setMimeType(ContentService.MimeType.JSON);
+}
+
+function getOrCreateMessagesSheet() {
+  var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sheet = ss.getSheetByName(MESSAGES_SHEET_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(MESSAGES_SHEET_NAME);
+    sheet.appendRow(["رقم الرسالة", "اسم المرسل", "الرقم القومي", "البريد الإلكتروني", "العنوان", "الرسالة", "التاريخ", "الحالة", "رد الموظف", "تاريخ الرد", "الرد من"]);
+    sheet.getRange("1:1").setFontWeight("bold").setBackground("#1a73e8").setFontColor("#ffffff");
+    sheet.setFrozenRows(1);
+    sheet.setColumnWidth(1, 120);
+    sheet.setColumnWidth(5, 200);
+    sheet.setColumnWidth(6, 350);
+    sheet.setColumnWidth(9, 350);
+  }
+  return sheet;
+}
+
+function handleSendMessage(data) {
+  var sheet = getOrCreateMessagesSheet();
+  var msgId = "MSG-" + new Date().getTime();
+  var now = new Date().toISOString();
+  sheet.appendRow([
+    msgId,
+    data.senderName || "",
+    data.nationalId || "",
+    data.email || "",
+    data.subject || "",
+    data.message || "",
+    now,
+    "جديدة",
+    "",
+    "",
+    ""
+  ]);
+  return ContentService.createTextOutput(
+    JSON.stringify({ success: true, messageId: msgId })
+  ).setMimeType(ContentService.MimeType.JSON);
+}
+
+function handleGetMessages(data) {
+  var sheet = getOrCreateMessagesSheet();
+  var allData = sheet.getDataRange().getValues();
+  var headers = allData[0];
+  var rows = [];
+  for (var i = 1; i < allData.length; i++) {
+    var row = {};
+    for (var j = 0; j < headers.length; j++) {
+      row[headers[j]] = String(allData[i][j]);
+    }
+    row.rowIndex = i + 1;
+    rows.push(row);
+  }
+  if (data.nationalId) {
+    rows = rows.filter(function(r) { return r["الرقم القومي"] === data.nationalId; });
+  }
+  rows.reverse();
+  return ContentService.createTextOutput(
+    JSON.stringify({ success: true, messages: rows, total: rows.length })
+  ).setMimeType(ContentService.MimeType.JSON);
+}
+
+function handleReplyMessage(data) {
+  var sheet = getOrCreateMessagesSheet();
+  var allData = sheet.getDataRange().getValues();
+  var headers = allData[0];
+  var msgIdIdx = headers.indexOf("رقم الرسالة");
+  for (var i = 1; i < allData.length; i++) {
+    if (String(allData[i][msgIdIdx]) === data.messageId) {
+      var replyIdx = headers.indexOf("رد الموظف");
+      var replyDateIdx = headers.indexOf("تاريخ الرد");
+      var replyByIdx = headers.indexOf("الرد من");
+      var statusIdx = headers.indexOf("الحالة");
+      sheet.getRange(i + 1, replyIdx + 1).setValue(data.reply || "");
+      sheet.getRange(i + 1, replyDateIdx + 1).setValue(new Date().toISOString());
+      sheet.getRange(i + 1, replyByIdx + 1).setValue(data.replyBy || "الموظف");
+      sheet.getRange(i + 1, statusIdx + 1).setValue("تم الرد");
+      return ContentService.createTextOutput(
+        JSON.stringify({ success: true, message: "تم إرسال الرد بنجاح" })
+      ).setMimeType(ContentService.MimeType.JSON);
+    }
+  }
+  return ContentService.createTextOutput(
+    JSON.stringify({ success: false, message: "الرسالة غير موجودة" })
   ).setMimeType(ContentService.MimeType.JSON);
 }

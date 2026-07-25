@@ -821,6 +821,7 @@
         item.classList.add("active");
         var tab = $("#" + tabId);
         if (tab) tab.classList.add("active");
+        if (tabId === "dashboard-messages") loadStudentMessages();
       });
     });
 
@@ -1483,6 +1484,91 @@
         }
       });
     });
+  }
+
+  /* ===== STUDENT MESSAGING ===== */
+  window.sendStudentMessage = function () {
+    var subjectEl = document.getElementById("msgSubject");
+    var bodyEl = document.getElementById("msgBody");
+    if (!subjectEl || !bodyEl) return;
+    var subject = subjectEl.value.trim();
+    var message = bodyEl.value.trim();
+    if (!subject || !message) {
+      alert("يرجى ملء العنوان والرسالة");
+      return;
+    }
+    var user = null;
+    try { user = JSON.parse(localStorage.getItem("gs_student_user")); } catch (e) {}
+    if (!user) {
+      alert("يجب تسجيل الدخول أولاً");
+      return;
+    }
+    var payload = {
+      action: "sendMessage",
+      senderName: user.fullNameAr || user.name || "",
+      nationalId: user.nationalId || "",
+      email: user.email || "",
+      subject: subject,
+      message: message
+    };
+    fetch(GSCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=UTF-8" },
+      body: JSON.stringify(payload)
+    }).then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res.success) {
+          subjectEl.value = "";
+          bodyEl.value = "";
+          alert("تم إرسال الرسالة بنجاح");
+          loadStudentMessages();
+        } else {
+          alert("خطأ: " + (res.message || "حدث خطأ"));
+        }
+      }).catch(function () {
+        alert("خطأ في الاتصال بالخادم");
+      });
+  };
+
+  function loadStudentMessages() {
+    var listEl = document.getElementById("studentMessagesList");
+    var countEl = document.getElementById("dashMsgCount");
+    if (!listEl) return;
+    var user = null;
+    try { user = JSON.parse(localStorage.getItem("gs_student_user")); } catch (e) {}
+    if (!user) return;
+    var url = GSCRIPT_URL + "?action=getMessages&nationalId=" + encodeURIComponent(user.nationalId || "");
+    fetch(url).then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (!res.success || !res.messages || res.messages.length === 0) {
+          listEl.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-secondary);">لا توجد رسائل</div>';
+          if (countEl) countEl.textContent = "0";
+          return;
+        }
+        var msgs = res.messages;
+        if (countEl) countEl.textContent = msgs.length;
+        listEl.innerHTML = msgs.map(function (m) {
+          var hasReply = m["رد الموظف"] && m["رد الموظف"] !== "";
+          var icon = hasReply ? "fas fa-reply" : "fas fa-envelope";
+          var iconColor = hasReply ? "color:#00c853;" : "color:#ff6d00;";
+          var date = (m["التاريخ"] || "").substring(0, 10);
+          var html = '<div class="msg-item" style="margin-bottom:12px;padding:14px;background:var(--bg-secondary);border-radius:10px;">'
+            + '<div class="msg-icon" style="' + iconColor + '"><i class="' + icon + '"></i></div>'
+            + '<div style="flex:1"><div class="msg-content"><h5>' + escapeHTML(m["العنوان"] || "") + '</h5><p>' + escapeHTML(m["الرسالة"] || "") + '</p></div>'
+            + '<span class="msg-date">' + date + '</span>';
+          if (hasReply) {
+            html += '<div style="margin-top:10px;padding:10px;background:rgba(0,200,83,0.08);border-radius:8px;border-right:3px solid #00c853;">'
+              + '<div style="font-size:12px;font-weight:600;color:#00c853;margin-bottom:4px;"><i class="fas fa-reply" style="margin-left:4px;"></i>رد الموظف:</div>'
+              + '<p style="font-size:13px;color:var(--text-primary);margin:0;">' + escapeHTML(m["رد الموظف"] || "") + '</p>'
+              + '<span style="font-size:11px;color:var(--text-secondary);">' + (m["تاريخ الرد"] || "").substring(0, 10) + '</span>'
+              + '</div>';
+          }
+          html += '</div></div>';
+          return html;
+        }).join("");
+      }).catch(function () {
+        listEl.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-secondary);">خطأ في تحميل الرسائل</div>';
+      });
   }
 
   /* ===== BOOT ===== */

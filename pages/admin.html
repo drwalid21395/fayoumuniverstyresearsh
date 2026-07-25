@@ -401,6 +401,7 @@
                 <a href="#" data-view="applications" onclick="switchView('applications',this)"><i class="fas fa-file-alt"></i><span class="nav-text">الطلبات</span></a>
                 <a href="#" data-view="committees" onclick="switchView('committees',this)"><i class="fas fa-users-cog"></i><span class="nav-text">اللجان</span></a>
                 <a href="#" data-view="documents" onclick="switchView('documents',this)"><i class="fas fa-folder-open"></i><span class="nav-text">المستندات</span></a>
+                <a href="#" data-view="admin-messages" onclick="switchView('admin-messages',this)"><i class="fas fa-envelope"></i><span class="nav-text">الرسائل</span></a>
                 <a href="#" data-view="scholarships" onclick="switchView('scholarships',this)"><i class="fas fa-award"></i><span class="nav-text">المنح الدراسية</span></a>
                 <div class="nav-label"><span>النظام</span></div>
                 <a href="#" data-view="permissions" class="admin-only" onclick="switchView('permissions',this)"><i class="fas fa-user-shield"></i><span class="nav-text">إدارة الصلاحيات</span></a>
@@ -560,6 +561,29 @@
                     </div>
                 </div>
 
+                <!-- MESSAGES VIEW -->
+                <div class="view-section" id="view-admin-messages">
+                    <div class="content-header"><div><h1>الرسائل</h1><p style="font-size:13px;color:var(--ats);margin-top:4px;">إدارة رسائل الباحثين والرد عليها</p></div></div>
+                    <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);">
+                        <div class="stat-card stat-primary"><div class="stat-header"><div class="stat-icon"><i class="fas fa-envelope"></i></div></div><div class="stat-value" id="totalMsgsCount">0</div><div class="stat-label">إجمالي الرسائل</div></div>
+                        <div class="stat-card stat-warning"><div class="stat-header"><div class="stat-icon"><i class="fas fa-envelope-open"></i></div></div><div class="stat-value" id="unreadMsgsCount">0</div><div class="stat-label">بانتظار الرد</div></div>
+                        <div class="stat-card stat-success"><div class="stat-header"><div class="stat-icon"><i class="fas fa-reply"></i></div></div><div class="stat-value" id="repliedMsgsCount">0</div><div class="stat-label">تم الرد عليها</div></div>
+                    </div>
+                    <div class="admin-card">
+                        <div class="card-header"><h3><i class="fas fa-envelope"></i> صندوق الوارد</h3></div>
+                        <div class="card-body no-padding">
+                            <div style="overflow-x:auto;">
+                                <table class="admin-table">
+                                    <thead><tr><th>من</th><th>الرقم القومي</th><th>العنوان</th><th>الرسالة</th><th>التاريخ</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+                                    <tbody id="adminMessagesBody">
+                                        <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--ats);"><i class="fas fa-spinner fa-spin" style="margin-left:8px;"></i> جاري تحميل الرسائل...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- SCHOLARSHIPS VIEW -->
                 <div class="view-section" id="view-scholarships">
                     <div class="content-header"><div><h1>المنح الدراسية</h1></div></div>
@@ -667,6 +691,20 @@
                 <p style="font-size:14px;text-align:center;">هل أنت متأكد من حذف هذا العنصر؟ لا يمكن التراجع عن هذا الإجراء.</p>
             </div>
             <div class="modal-footer" style="justify-content:center;"><button class="btn btn-danger" id="confirmDeleteBtn"><i class="fas fa-trash"></i> نعم، حذف</button><button class="btn btn-outline" onclick="closeModal('deleteConfirmModal')"><i class="fas fa-times"></i> إلغاء</button></div>
+        </div>
+    </div>
+
+    <!-- REPLY MESSAGE MODAL -->
+    <div class="modal-overlay" id="replyMessageModal">
+        <div class="modal" style="max-width:560px;">
+            <div class="modal-header"><h3><i class="fas fa-reply"></i> الرد على الرسالة</h3><button class="modal-close" onclick="closeModal('replyMessageModal')"><i class="fas fa-times"></i></button></div>
+            <div class="modal-body">
+                <div class="form-group"><label>من:</label><input type="text" class="form-control" id="replyFrom" readonly></div>
+                <div class="form-group"><label>العنوان:</label><input type="text" class="form-control" id="replySubject" readonly></div>
+                <div class="form-group"><label>الرسالة الأصلية:</label><textarea class="form-control" id="replyOriginal" rows="3" readonly></textarea></div>
+                <div class="form-group"><label>ردك:</label><textarea class="form-control" id="replyText" rows="4" placeholder="اكتب ردك هنا..."></textarea></div>
+            </div>
+            <div class="modal-footer"><button class="btn btn-primary" id="sendReplyBtn"><i class="fas fa-paper-plane"></i> إرسال الرد</button><button class="btn btn-outline" onclick="closeModal('replyMessageModal')"><i class="fas fa-times"></i> إلغاء</button></div>
         </div>
     </div>
 

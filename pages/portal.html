@@ -351,29 +351,18 @@
                         <div class="dashboard-tab active" id="dashboard-overview">
                             <h3>نظرة عامة</h3>
                             <div class="dash-grid">
-                                <div class="dash-card"><div class="dash-card-icon"><i class="fas fa-file-alt"></i></div><div class="dash-card-info"><h4>حالة الطلب</h4><p class="status-badge status-review">قيد المراجعة</p></div></div>
-                                <div class="dash-card"><div class="dash-card-icon"><i class="fas fa-percent"></i></div><div class="dash-card-info"><h4>نسبة الإكمال</h4><p>75%</p></div></div>
-                                <div class="dash-card"><div class="dash-card-icon"><i class="fas fa-award"></i></div><div class="dash-card-info"><h4>المنحة</h4><p>بانتظار المراجعة</p></div></div>
-                                <div class="dash-card"><div class="dash-card-icon"><i class="fas fa-envelope"></i></div><div class="dash-card-info"><h4>الرسائل</h4><p>3 جديدة</p></div></div>
+                                <div class="dash-card"><div class="dash-card-icon"><i class="fas fa-file-alt"></i></div><div class="dash-card-info"><h4>حالة الطلب</h4><p id="dashAppStatus">بانتظار التقديم</p></div></div>
+                                <div class="dash-card"><div class="dash-card-icon"><i class="fas fa-check-circle"></i></div><div class="dash-card-info"><h4>المستندات</h4><p id="dashDocsCount">0 من 10</p></div></div>
+                                <div class="dash-card"><div class="dash-card-icon"><i class="fas fa-graduation-cap"></i></div><div class="dash-card-info"><h4>الدرجة</h4><p id="dashDegreeType">—</p></div></div>
+                                <div class="dash-card"><div class="dash-card-icon"><i class="fas fa-envelope"></i></div><div class="dash-card-info"><h4>الرسائل</h4><p id="dashMsgCount">0</p></div></div>
                             </div>
                             <div class="dash-row">
                                 <div class="dash-box">
                                     <div class="dash-box-header">النشاط الأخير</div>
                                     <div class="dash-box-body">
-                                        <div class="activity-list">
-                                            <div class="activity-item"><div class="activity-icon"><i class="fas fa-upload"></i></div><div class="activity-info"><p>تم رفع شهادة البكالوريوس</p><span>2026-07-18</span></div></div>
-                                            <div class="activity-item"><div class="activity-icon"><i class="fas fa-check"></i></div><div class="activity-info"><p>تم قبول الطلب من اللجنة الأولية</p><span>2026-07-15</span></div></div>
-                                            <div class="activity-item"><div class="activity-icon"><i class="fas fa-paper-plane"></i></div><div class="activity-info"><p>تم إرسال طلب الالتحاق</p><span>2026-07-10</span></div></div>
-                                            <div class="activity-item"><div class="activity-icon"><i class="fas fa-user-plus"></i></div><div class="activity-info"><p>تم إنشاء الحساب بنجاح</p><span>2026-07-10</span></div></div>
+                                        <div class="activity-list" id="portalActivity">
+                                            <div class="activity-item"><div class="activity-icon"><i class="fas fa-info-circle"></i></div><div class="activity-info"><p>لم تقم بأي نشاط بعد</p><span>—</span></div></div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="dash-box">
-                                    <div class="dash-box-header">الرسائل الأخيرة</div>
-                                    <div class="dash-box-body">
-                                        <div class="msg-item"><div class="msg-icon"><i class="fas fa-envelope"></i></div><div><div class="msg-content"><h5>طلب استكمال المستندات</h5><p>يرجى رفع خطاب التوصية الثاني</p></div><span class="msg-date">2026-07-18</span></div></div>
-                                        <div class="msg-item"><div class="msg-icon"><i class="fas fa-check-circle"></i></div><div><div class="msg-content"><h5>تم قبول طلبك من اللجنة الأولية</h5><p>نأسعد بإبلاغك بالقبول الأولي</p></div><span class="msg-date">2026-07-15</span></div></div>
-                                        <div class="msg-item"><div class="msg-icon"><i class="fas fa-hand-sparkles"></i></div><div><div class="msg-content"><h5>مرحباً بك في بوابة الباحث</h5><p>تم إنشاء حسابك بنجاح</p></div><span class="msg-date">2026-07-10</span></div></div>
                                     </div>
                                 </div>
                             </div>
@@ -394,11 +383,20 @@
                         <!-- Messages -->
                         <div class="dashboard-tab" id="dashboard-messages">
                             <h3>الرسائل</h3>
-                            <div class="dash-box">
+                            <div class="dash-box" style="margin-bottom:20px;">
+                                <div class="dash-box-header">إرسال رسالة جديدة</div>
                                 <div class="dash-box-body">
-                                    <div class="msg-item"><div class="msg-icon"><i class="fas fa-envelope"></i></div><div style="flex:1"><div class="msg-content"><h5>طلب استكمال المستندات</h5><p>يرجى رفع خطاب التوصية الثاني المطلوب.</p></div><span class="msg-date">2026-07-18</span></div></div>
-                                    <div class="msg-item"><div class="msg-icon"><i class="fas fa-check-circle"></i></div><div style="flex:1"><div class="msg-content"><h5>تم قبول طلبك من اللجنة الأولية</h5><p>نأسعد بإبلاغك بقبول طلبك من اللجنة المراجعة الأولية.</p></div><span class="msg-date">2026-07-15</span></div></div>
-                                    <div class="msg-item"><div class="msg-icon"><i class="fas fa-hand-sparkles"></i></div><div style="flex:1"><div class="msg-content"><h5>مرحباً بك في بوابة الباحث</h5><p>تم إنشاء حسابك بنجاح. يمكنك الآن البدء في عملية التقديم.</p></div><span class="msg-date">2026-07-10</span></div></div>
+                                    <div class="form-group" style="margin-bottom:12px;"><label style="font-size:13px;font-weight:600;margin-bottom:6px;display:block;">العنوان</label><input type="text" id="msgSubject" class="form-control" placeholder="عنوان الرسالة" style="width:100%;height:40px;padding:0 14px;border:1px solid var(--border-color);border-radius:8px;font-size:14px;"></div>
+                                    <div class="form-group" style="margin-bottom:12px;"><label style="font-size:13px;font-weight:600;margin-bottom:6px;display:block;">الرسالة</label><textarea id="msgBody" class="form-control" rows="4" placeholder="اكتب رسالتك هنا..." style="width:100%;padding:10px 14px;border:1px solid var(--border-color);border-radius:8px;font-size:14px;resize:vertical;"></textarea></div>
+                                    <button class="btn btn-primary" onclick="sendStudentMessage()" style="display:inline-flex;align-items:center;gap:8px;"><i class="fas fa-paper-plane"></i> إرسال</button>
+                                </div>
+                            </div>
+                            <div class="dash-box">
+                                <div class="dash-box-header">صندوق الوارد</div>
+                                <div class="dash-box-body">
+                                    <div id="studentMessagesList">
+                                        <div style="text-align:center;padding:30px;color:var(--text-secondary);">لا توجد رسائل</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

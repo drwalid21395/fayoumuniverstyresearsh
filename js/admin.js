@@ -660,6 +660,7 @@
     }
     if (viewName === "dashboard") loadDashboard();
     if (viewName === "applications") loadApplicationsFromSheet();
+    if (viewName === "admin-messages") loadAdminMessages();
 
     var sidebar = $("#adminSidebar");
     var overlay = $("#sidebarOverlay");
@@ -2532,6 +2533,114 @@
           + '<td><span class="status-badge ' + badgeClass(degStatus) + '"><i class="fas fa-circle"></i> ' + degStatus + '</span></td>'
           + '</tr>';
       }).join("");
+    });
+  }
+
+  /* ----------------------------------------------------------
+     ADMIN MESSAGING
+  ---------------------------------------------------------- */
+  function loadAdminMessages() {
+    var tbody = document.getElementById("adminMessagesBody");
+    if (!tbody) return;
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--ats);"><i class="fas fa-spinner fa-spin" style="margin-left:8px;"></i> جاري تحميل الرسائل...</td></tr>';
+
+    var url = GSCRIPT_URL + "?action=getMessages";
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(res) {
+        if (!res.success || !res.messages || res.messages.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--ats);">لا توجد رسائل</td></tr>';
+          document.getElementById("totalMsgsCount").textContent = "0";
+          document.getElementById("unreadMsgsCount").textContent = "0";
+          document.getElementById("repliedMsgsCount").textContent = "0";
+          return;
+        }
+        var msgs = res.messages;
+        var total = msgs.length;
+        var unread = msgs.filter(function(m) { return m["الحالة"] === "جديدة" || m["الحالة"] === "مقروءة"; }).length;
+        var replied = msgs.filter(function(m) { return m["الحالة"] === "تم الرد"; }).length;
+        document.getElementById("totalMsgsCount").textContent = total;
+        document.getElementById("unreadMsgsCount").textContent = unread;
+        document.getElementById("repliedMsgsCount").textContent = replied;
+
+        tbody.innerHTML = msgs.map(function(m) {
+          var hasReply = m["رد الموظف"] && m["رد الموظف"] !== "";
+          var statusBadge = hasReply
+            ? '<span class="status-badge status-approved"><i class="fas fa-circle"></i> تم الرد</span>'
+            : '<span class="status-badge status-pending"><i class="fas fa-circle"></i> بانتظار الرد</span>';
+          var date = (m["التاريخ"] || "").substring(0, 10);
+          var msgId = escapeHTML(m["رقم الرسالة"] || "");
+          var msgPreview = (m["الرسالة"] || "").substring(0, 80);
+          if ((m["الرسالة"] || "").length > 80) msgPreview += "...";
+
+          return '<tr>'
+            + '<td><strong>' + escapeHTML(m["اسم المرسل"] || "غير معروف") + '</strong></td>'
+            + '<td>' + escapeHTML(m["الرقم القومي"] || "") + '</td>'
+            + '<td><strong>' + escapeHTML(m["العنوان"] || "") + '</strong></td>'
+            + '<td style="max-width:250px;font-size:12px;color:var(--ats);">' + escapeHTML(msgPreview) + '</td>'
+            + '<td>' + date + '</td>'
+            + '<td>' + statusBadge + '</td>'
+            + '<td><button class="btn btn-sm btn-primary" onclick="openReplyModal(\'' + msgId + '\')" ' + (hasReply ? 'title="عرض الرد"' : 'title="رد على الرسالة"') + '><i class="fas ' + (hasReply ? 'fa-eye' : 'fa-reply') + '"></i></button></td>'
+            + '</tr>';
+        }).join("");
+      }).catch(function() {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--ats);">خطأ في تحميل الرسائل</td></tr>';
+      });
+  }
+
+  window.openReplyModal = function(msgId) {
+    var url = GSCRIPT_URL + "?action=getMessages";
+    fetch(url)
+      .then(function(r) { return r.json(); })
+      .then(function(res) {
+        if (!res.success || !res.messages) return;
+        var msg = res.messages.find(function(m) { return m["رقم الرسالة"] === msgId; });
+        if (!msg) return;
+        document.getElementById("replyFrom").value = msg["اسم المرسل"] || "";
+        document.getElementById("replySubject").value = msg["العنوان"] || "";
+        document.getElementById("replyOriginal").value = msg["الرسالة"] || "";
+        var replyText = document.getElementById("replyText");
+        if (msg["رد الموظف"] && msg["رد الموظف"] !== "") {
+          replyText.value = msg["رد الموظف"];
+          replyText.readOnly = true;
+          document.getElementById("sendReplyBtn").style.display = "none";
+        } else {
+          replyText.value = "";
+          replyText.readOnly = false;
+          document.getElementById("sendReplyBtn").style.display = "";
+        }
+        replyText.setAttribute("data-msg-id", msgId);
+        openModal("replyMessageModal");
+      });
+  };
+
+  var sendReplyBtn = document.getElementById("sendReplyBtn");
+  if (sendReplyBtn) {
+    sendReplyBtn.addEventListener("click", function() {
+      var replyText = document.getElementById("replyText");
+      var msgId = replyText.getAttribute("data-msg-id");
+      var reply = replyText.value.trim();
+      if (!reply) {
+        alert("يرجى كتابة الرد");
+        return;
+      }
+      var user = getStaffUser();
+      staffApiCall({
+        action: "replyMessage",
+        messageId: msgId,
+        reply: reply,
+        replyBy: user ? user.name : "الموظف"
+      }).then(function(res) {
+        if (res.success) {
+          closeModal("replyMessageModal");
+          loadAdminMessages();
+          showToast("تم إرسال الرد بنجاح", "success");
+        } else {
+          alert(res.message || "حدث خطأ");
+        }
+      }).catch(function() {
+        alert("خطأ في الاتصال بالخادم");
+      });
     });
   }
 
