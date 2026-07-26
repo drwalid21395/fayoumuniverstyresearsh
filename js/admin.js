@@ -1806,6 +1806,14 @@
      14b. EXPORT & REPORTS
   ---------------------------------------------------------- */
   window.exportToExcel = function () {
+    var eu = getStaffUser();
+    var ep = []; try { ep = JSON.parse(eu.permissions || "[]"); } catch(e) { ep = []; }
+    var euIsAdmin = eu && (eu.role === "admin" || eu.roleName === "admin" || eu.role === "مدير النظام" || eu.roleName === "مدير النظام");
+    if (euIsAdmin && ep.length === 0) ep = Object.keys(PERM_LABELS);
+    if (ep.indexOf("download_excel") === -1 && ep.indexOf("upload_pdfs") === -1) {
+      showToast("ليس لديك صلاحية تحميل ملفات Excel", "error");
+      return;
+    }
     showToast("جاري تحميل البيانات...", "info");
     var exportUrl = GSCRIPT_URL + "?action=exportResearchers";
     fetch(exportUrl)
@@ -2013,6 +2021,14 @@
           resEl.textContent = Object.keys(uniqueResearchers).length;
         }
 
+        var currentUser = getStaffUser();
+        var currentUserPerms = [];
+        try { currentUserPerms = JSON.parse(currentUser.permissions || "[]"); } catch(e) { currentUserPerms = []; }
+        var isAdmin = currentUser && (currentUser.role === "admin" || currentUser.roleName === "admin" || currentUser.role === "مدير النظام" || currentUser.roleName === "مدير النظام");
+        if (isAdmin && currentUserPerms.length === 0) currentUserPerms = Object.keys(PERM_LABELS);
+        var canDownload = isAdmin || currentUserPerms.indexOf("download_excel") !== -1 || currentUserPerms.indexOf("upload_pdfs") !== -1;
+        var canView = isAdmin || currentUserPerms.indexOf("view_pdfs") !== -1;
+
         if (files.length === 0) {
           if (tbody) tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--ats);">لا توجد مستندات</td></tr>';
           return;
@@ -2029,16 +2045,18 @@
             var iconColor = iconColors[f.icon] || "#6c757d";
             var stageColor = stageColors[f.stage] || "#6c757d";
 
+            var actions = '<div class="btn-group">';
+            if (canView) actions += '<button class="btn btn-icon btn-outline" title="عرض" onclick="viewFile(\'' + f.id + '\')"><i class="fas fa-eye"></i></button>';
+            if (canDownload) actions += '<button class="btn btn-icon btn-outline" title="تحميل" onclick="downloadFile(\'' + f.id + '\',\'' + escapeHTML(f.name).replace(/'/g, "\\'") + '\')"><i class="fas fa-download"></i></button>';
+            actions += '</div>';
+
             return '<tr>' +
               '<td><i class="fas ' + f.icon + '" style="color:' + iconColor + ';margin-left:8px;"></i><strong>' + escapeHTML(f.name) + '</strong></td>' +
               '<td>' + escapeHTML(f.researcherName) + '</td>' +
               '<td><span style="display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;color:#fff;background:' + stageColor + ';">' + escapeHTML(f.stage) + '</span></td>' +
               '<td>' + sizeStr + '</td>' +
               '<td>' + date + '</td>' +
-              '<td><div class="btn-group">' +
-              '<button class="btn btn-icon btn-outline" title="عرض" onclick="viewFile(\'' + f.id + '\')"><i class="fas fa-eye"></i></button>' +
-              '<button class="btn btn-icon btn-outline" title="تحميل" onclick="downloadFile(\'' + f.id + '\',\'' + escapeHTML(f.name).replace(/'/g, "\\'") + '\')"><i class="fas fa-download"></i></button>' +
-              '</div></td></tr>';
+              '<td>' + actions + '</td></tr>';
           }).join("");
         }
       })
@@ -2204,6 +2222,11 @@
     var viceDeanOnly = $$(".vice-dean-only");
     viceDeanOnly.forEach(function (el) {
       el.style.display = perms.indexOf("generate_reports") !== -1 ? "" : "none";
+    });
+
+    var downloadExcelOnly = $$(".download-excel-only");
+    downloadExcelOnly.forEach(function (el) {
+      el.style.display = (perms.indexOf("download_excel") !== -1 || perms.indexOf("upload_pdfs") !== -1) ? "" : "none";
     });
 
     var userNameEl = document.querySelector(".user-name");
