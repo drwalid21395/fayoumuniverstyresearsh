@@ -1,22 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <circle cx="32" cy="32" r="32" fill="#1a73e8"/>
-  <!-- Swimmer body -->
-  <g fill="white" transform="translate(12,14)">
-    <!-- Head -->
-    <circle cx="18" cy="8" r="5"/>
-    <!-- Body -->
-    <path d="M10,16 Q18,12 26,16 L28,22 Q18,18 8,22 Z"/>
-    <!-- Front arm -->
-    <path d="M26,16 Q32,10 38,14 L36,16 Q31,13 26,18 Z"/>
-    <!-- Back arm -->
-    <path d="M10,16 Q4,12 2,16 L4,18 Q7,14 12,18 Z"/>
-    <!-- Legs -->
-    <path d="M12,22 Q8,28 4,30 L6,32 Q10,29 14,24 Z"/>
-    <path d="M24,22 Q28,28 32,30 L30,32 Q26,29 22,24 Z"/>
-  </g>
-  <!-- Waves -->
-  <g fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" stroke-linecap="round">
-    <path d="M6,38 Q12,35 18,38 Q24,41 30,38 Q36,35 42,38 Q48,41 54,38"/>
-    <path d="M6,44 Q12,41 18,44 Q24,47 30,44 Q36,41 42,44 Q48,47 54,44"/>
+  <!-- Graduation Cap -->
+  <g fill="white" transform="translate(32,30)">
+    <!-- Cap top (diamond) -->
+    <polygon points="0,-14 22,0 0,8 -22,0" fill="white"/>
+    <!-- Cap base -->
+    <rect x="-12" y="2" width="24" height="3" rx="1" fill="white"/>
+    <!-- Tassel -->
+    <line x1="18" y1="0" x2="22" y2="12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="22" cy="14" r="2.5" fill="white"/>
   </g>
 </svg>
