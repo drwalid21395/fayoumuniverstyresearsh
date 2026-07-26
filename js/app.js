@@ -15,7 +15,7 @@
 
   // ==================== Google Apps Script URL ====================
   // بعد نشر Apps Script، الصق الرابط هنا
-  var GSCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-hF1MlFqgIlvWVCD-jr_IEGbD2Khcpj6gD5WoeiMEn_fj0fj3JVnlRrHUhPI-RzZy/exec";
+  var GSCRIPT_URL = "https://script.google.com/macros/s/AKfycbxGLjz6_BOjM89e-hSvSx5iK9cQjZg6gWvoDXhyztmuewtknXvp3dMJBElnuhho8Wo/exec";
 
   const $ = (sel, ctx = document) => ctx.querySelector(sel);
   const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];

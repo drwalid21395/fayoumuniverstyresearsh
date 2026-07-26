@@ -22,7 +22,7 @@
     staffUser: "gs_staff_user",
   };
 
-  var GSCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-hF1MlFqgIlvWVCD-jr_IEGbD2Khcpj6gD5WoeiMEn_fj0fj3JVnlRrHUhPI-RzZy/exec";
+  var GSCRIPT_URL = "https://script.google.com/macros/s/AKfycbxGLjz6_BOjM89e-hSvSx5iK9cQjZg6gWvoDXhyztmuewtknXvp3dMJBElnuhho8Wo/exec";
 
   var ROLE_LABELS = { admin: "مدير النظام", employee: "موظف", vice_dean: "وكيل الكلية" };
   var ROLE_ICONS = { admin: "fas fa-crown", employee: "fas fa-user-tie", vice_dean: "fas fa-user-shield" };
