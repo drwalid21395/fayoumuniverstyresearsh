@@ -636,6 +636,11 @@
   var currentView = "dashboard";
 
   function showView(viewName) {
+    if (viewName === "permissions") {
+      var sUser = getStaffUser();
+      var sIsAdmin = sUser && (sUser.role === "مدير النظام" || sUser.roleName === "مدير النظام" || sUser.role === "admin" || sUser.roleName === "admin");
+      if (!sIsAdmin) return;
+    }
     var views = $$(".view-section");
     var navItems = $$(".sidebar-nav a[data-view]");
 

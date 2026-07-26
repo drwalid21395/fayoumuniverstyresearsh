@@ -404,7 +404,7 @@
                 <a href="#" data-view="admin-messages" onclick="switchView('admin-messages',this)"><i class="fas fa-envelope"></i><span class="nav-text">الرسائل</span></a>
                 <a href="#" data-view="scholarships" onclick="switchView('scholarships',this)"><i class="fas fa-award"></i><span class="nav-text">المنح الدراسية</span></a>
                 <div class="nav-label"><span>النظام</span></div>
-                <a href="#" data-view="permissions" class="admin-only" onclick="switchView('permissions',this)"><i class="fas fa-user-shield"></i><span class="nav-text">إدارة الصلاحيات</span></a>
+                <a href="#" data-view="permissions" class="admin-only" style="display:none" onclick="switchView('permissions',this)"><i class="fas fa-user-shield"></i><span class="nav-text">إدارة الصلاحيات</span></a>
                 <a href="#" data-view="settings" onclick="switchView('settings',this)"><i class="fas fa-cog"></i><span class="nav-text">الإعدادات</span></a>
                 <a href="../index.html"><i class="fas fa-external-link-alt"></i><span class="nav-text">الموقع الرئيسي</span></a>
             </nav>
@@ -619,7 +619,7 @@
                 </div>
 
                 <!-- PERMISSIONS MANAGEMENT (ADMIN ONLY) -->
-                <div class="view-section" id="view-permissions">
+                <div class="view-section admin-only" id="view-permissions" style="display:none">
                     <div class="content-header"><div><h1>إدارة الصلاحيات</h1><p style="font-size:13px;color:var(--ats);margin-top:4px;">إضافة وتعديل وحذف مستخدمي النظام</p></div><div class="header-actions"><button class="btn btn-outline" onclick="printResearcherReport()"><i class="fas fa-print"></i> طباعة تقرير</button><button class="btn btn-primary" id="addStaffBtn"><i class="fas fa-plus"></i> إضافة مستخدم</button></div></div>
                     <div class="stats-grid" style="grid-template-columns:repeat(2,1fr);">
                         <div class="stat-card stat-primary"><div class="stat-header"><div class="stat-icon"><i class="fas fa-users"></i></div></div><div class="stat-value" id="totalStaffCount">0</div><div class="stat-label">إجمالي المستخدمين</div></div>
