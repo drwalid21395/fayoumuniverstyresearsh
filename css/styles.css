@@ -4309,17 +4309,25 @@ h6 { font-size: var(--font-size-md); }
 
 [data-theme="dark"] .form-input,
 [data-theme="dark"] .form-select,
-[data-theme="dark"] .form-textarea {
-  background: #ffffff;
-  border-color: #e0e0e0;
-  color: #111111;
+[data-theme="dark"] .form-textarea,
+[data-theme="dark"] .form-control,
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  background: #ffffff !important;
+  border-color: #e0e0e0 !important;
+  color: #111111 !important;
 }
 
 [data-theme="dark"] .form-input:focus,
 [data-theme="dark"] .form-select:focus,
-[data-theme="dark"] .form-textarea:focus {
-  background: #ffffff;
-  border-color: var(--color-primary);
+[data-theme="dark"] .form-textarea:focus,
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] input:focus,
+[data-theme="dark"] textarea:focus,
+[data-theme="dark"] select:focus {
+  background: #ffffff !important;
+  border-color: var(--color-primary) !important;
 }
 
 [data-theme="dark"] .accordion-item {
