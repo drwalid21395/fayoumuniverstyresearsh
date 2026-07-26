@@ -2428,9 +2428,7 @@
 
   function fetchResearchersData(callback) {
     if (_cachedResearchers) { callback(_cachedResearchers); return; }
-    var url = GSCRIPT_URL + "?action=exportResearchers";
-    fetch(url)
-      .then(function(r) { return r.json(); })
+    staffApiCall({ action: "exportResearchers" })
       .then(function(res) {
         if (res.success && res.headers && res.rows) {
           _cachedResearchers = { headers: res.headers, rows: res.rows };
