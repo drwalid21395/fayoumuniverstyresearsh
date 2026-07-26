@@ -2242,7 +2242,11 @@
           if (res.success) {
             localStorage.setItem(STORAGE_KEYS.staffUser, JSON.stringify(res.user));
             showStaffDashboard();
-            applyRolePermissions(res.user.permissions || (res.user.role === "admin" ? Object.keys(PERM_LABELS) : []));
+            var loginPerms = res.user.permissions || [];
+            if (typeof loginPerms === "string") { try { loginPerms = JSON.parse(loginPerms); } catch(e) { loginPerms = []; } }
+            var loginIsAdmin = res.user.role === "admin" || res.user.roleName === "admin" || res.user.role === "مدير النظام" || res.user.roleName === "مدير النظام";
+            if (loginIsAdmin && (!loginPerms || loginPerms.length === 0)) loginPerms = Object.keys(PERM_LABELS);
+            applyRolePermissions(loginPerms);
             init();
           } else {
             if (errorEl) { errorEl.textContent = res.message; errorEl.style.display = "block"; }
@@ -2296,7 +2300,7 @@
 
         var manageUsersC = users.filter(function(u){
           var p = []; try { p = JSON.parse(u.permissions || "[]"); } catch(e){}
-          return p.indexOf("manage_users") !== -1 || u.role === "admin";
+          return p.indexOf("manage_users") !== -1 || u.role === "admin" || u.role === "مدير النظام";
         }).length;
         var totalEl = document.getElementById("totalStaffCount");
         var adminEl = document.getElementById("adminCount");
@@ -2711,7 +2715,8 @@
     showStaffDashboard();
     var bootPerms = [];
     try { bootPerms = JSON.parse(staffUser.permissions || "[]"); } catch(e) { bootPerms = []; }
-    if (staffUser.role === "admin" && bootPerms.length === 0) bootPerms = Object.keys(PERM_LABELS);
+    var isAdmin = staffUser.role === "admin" || staffUser.roleName === "admin" || staffUser.role === "مدير النظام" || staffUser.roleName === "مدير النظام";
+    if (isAdmin && bootPerms.length === 0) bootPerms = Object.keys(PERM_LABELS);
     applyRolePermissions(bootPerms);
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", function () { init(); loadStaffList(); loadDashboard(); });
