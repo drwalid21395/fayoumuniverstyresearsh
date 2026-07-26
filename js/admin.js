@@ -2215,8 +2215,10 @@
     }
 
     var adminOnly = $$(".admin-only");
+    var user = getStaffUser();
+    var isRealAdmin = user && (user.role === "مدير النظام" || user.roleName === "مدير النظام" || user.role === "admin" || user.roleName === "admin");
     adminOnly.forEach(function (el) {
-      el.style.display = perms.indexOf("manage_users") !== -1 ? "" : "none";
+      el.style.display = isRealAdmin ? "" : "none";
     });
 
     var viceDeanOnly = $$(".vice-dean-only");
