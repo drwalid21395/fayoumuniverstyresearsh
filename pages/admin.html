@@ -493,9 +493,9 @@
                                 <div class="card-body">
                                     <div class="quick-actions">
                                         <button class="quick-action-btn download-excel-only" onclick="exportToExcel()"><div class="qa-icon qa-warning"><i class="fas fa-file-export"></i></div><div><div class="qa-text">تصدير البيانات</div><div class="qa-desc">تحميل كـ Excel</div></div></button>
-                                        <button class="quick-action-btn" onclick="printResearcherReport()"><div class="qa-icon qa-primary"><i class="fas fa-print"></i></div><div><div class="qa-text">طباعة تقرير</div><div class="qa-desc">تقرير الباحثين</div></div></button>
+                                        <button class="quick-action-btn vice-dean-only" onclick="printResearcherReport()"><div class="qa-icon qa-primary"><i class="fas fa-print"></i></div><div><div class="qa-text">طباعة تقرير</div><div class="qa-desc">تقرير الباحثين</div></div></button>
                                         <button class="quick-action-btn" onclick="switchView('documents',document.querySelector('[data-view=documents]'))"><div class="qa-icon qa-success"><i class="fas fa-folder-open"></i></div><div><div class="qa-text">المستندات</div><div class="qa-desc">عرض الملفات</div></div></button>
-                                        <button class="quick-action-btn" onclick="switchView('permissions',document.querySelector('[data-view=permissions]'))"><div class="qa-icon qa-danger"><i class="fas fa-user-shield"></i></div><div><div class="qa-text">الصلاحيات</div><div class="qa-desc">إدارة المستخدمين</div></div></button>
+                                        <button class="quick-action-btn admin-only" style="display:none" onclick="switchView('permissions',document.querySelector('[data-view=permissions]'))"><div class="qa-icon qa-danger"><i class="fas fa-user-shield"></i></div><div><div class="qa-text">الصلاحيات</div><div class="qa-desc">إدارة المستخدمين</div></div></button>
                                     </div>
                                 </div>
                             </div>
