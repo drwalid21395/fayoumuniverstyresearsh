@@ -166,26 +166,26 @@
    2. DARK THEME
    ------------------------------------------------------------ */
 [data-theme="dark"] {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --bg-card: #ffffff;
-  --bg-nav: rgba(255,255,255,0.95);
-  --text-primary: #111111;
-  --text-secondary: #444444;
-  --text-muted: #777777;
-  --border-color: #e0e0e0;
-  --card-border: rgba(0,0,0,0.08);
+  --bg-primary: var(--color-dark);
+  --bg-secondary: var(--color-dark-lighter);
+  --bg-card: var(--color-dark-card);
+  --bg-nav: rgba(13,17,23,0.88);
+  --text-primary: var(--color-gray-100);
+  --text-secondary: var(--color-gray-400);
+  --text-muted: var(--color-gray-500);
+  --border-color: var(--color-dark-border);
+  --card-border: rgba(255,255,255,0.06);
 
-  --glass-bg: rgba(255,255,255,0.8);
-  --glass-bg-light: rgba(255,255,255,0.9);
-  --glass-border: rgba(0,0,0,0.08);
+  --glass-bg: rgba(255,255,255,0.05);
+  --glass-bg-light: rgba(255,255,255,0.08);
+  --glass-border: rgba(255,255,255,0.1);
 
-  --shadow-xs: 0 1px 2px rgba(0,0,0,0.06);
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.08);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
-  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
-  --shadow-xl: 0 12px 40px rgba(0,0,0,0.15);
-  --shadow-2xl: 0 20px 60px rgba(0,0,0,0.18);
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.25);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.35);
+  --shadow-xl: 0 12px 40px rgba(0,0,0,0.4);
+  --shadow-2xl: 0 20px 60px rgba(0,0,0,0.5);
 }
 
 /* ------------------------------------------------------------
@@ -4304,7 +4304,7 @@ h6 { font-size: var(--font-size-md); }
    25. DARK THEME SPECIFIC OVERRIDES
    ------------------------------------------------------------ */
 [data-theme="dark"] .hero-section {
-  background: linear-gradient(135deg, #f0f4f8 0%, #e8ecf0 50%, #f0f4f8 100%);
+  background: linear-gradient(135deg, #0a0e14 0%, #0f1923 50%, #0a0e14 100%);
 }
 
 [data-theme="dark"] .form-input,
@@ -4312,68 +4312,72 @@ h6 { font-size: var(--font-size-md); }
 [data-theme="dark"] .form-textarea {
   background: #ffffff;
   border-color: #e0e0e0;
+  color: #111111;
 }
 
 [data-theme="dark"] .form-input:focus,
 [data-theme="dark"] .form-select:focus,
 [data-theme="dark"] .form-textarea:focus {
-  background: #f8f9fa;
+  background: #ffffff;
+  border-color: var(--color-primary);
 }
 
 [data-theme="dark"] .accordion-item {
-  background: #ffffff;
+  background: var(--color-dark-card);
 }
 
 [data-theme="dark"] .skeleton {
-  background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+  background: linear-gradient(90deg, var(--color-dark-border) 25%, rgba(255,255,255,0.04) 50%, var(--color-dark-border) 75%);
   background-size: 200% 100%;
 }
 
 [data-theme="dark"] .hamburger-line {
-  background: #111111;
+  background: var(--color-white);
 }
 
 [data-theme="dark"] .toast {
-  background: #ffffff;
-  border-color: #e0e0e0;
+  background: var(--color-dark-card);
+  border-color: var(--color-dark-border);
 }
 
 [data-theme="dark"] .table th {
-  background: #f8f9fa;
+  background: var(--color-dark-lighter);
 }
 
 [data-theme="dark"] .modal {
-  background: #ffffff;
-  border: 1px solid #e0e0e0;
+  background: var(--color-dark-card);
+  border: 1px solid var(--color-dark-border);
 }
 
 [data-theme="dark"] ::selection {
-  background-color: rgba(var(--color-primary-rgb), 0.2);
-  color: #111111;
+  background-color: rgba(var(--color-primary-rgb), 0.3);
+  color: var(--color-white);
 }
 
 [data-theme="dark"] .form-file-upload {
   background: #ffffff;
+  border-color: #e0e0e0;
+  color: #111111;
 }
 
 [data-theme="dark"] .alert-success {
-  background: rgba(0,200,83,0.08);
-  border-color: rgba(0,200,83,0.2);
+  background: rgba(0,200,83,0.06);
+  border-color: rgba(0,200,83,0.15);
 }
 
 [data-theme="dark"] .alert-danger {
-  background: rgba(229,57,53,0.08);
-  border-color: rgba(229,57,53,0.2);
+  background: rgba(229,57,53,0.06);
+  border-color: rgba(229,57,53,0.15);
 }
 
 [data-theme="dark"] .alert-warning {
-  background: rgba(255,109,0,0.08);
-  border-color: rgba(255,109,0,0.2);
+  background: rgba(255,109,0,0.06);
+  border-color: rgba(255,109,0,0.15);
 }
 
 [data-theme="dark"] .alert-info {
-  background: rgba(var(--color-primary-rgb), 0.08);
-  border-color: rgba(var(--color-primary-rgb), 0.2);
+  background: rgba(var(--color-primary-rgb), 0.06);
+  border-color: rgba(var(--color-primary-rgb), 0.15);
 }
 
 /* ============================================================
@@ -4640,12 +4644,12 @@ h6 { font-size: var(--font-size-md); }
 }
 
 [data-theme="dark"] .quick-link-card {
-  background: #ffffff;
-  border-color: #e0e0e0;
+  background: var(--color-dark-card);
+  border-color: var(--color-dark-border);
 }
 
 [data-theme="dark"] .quick-link-card:hover {
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
   border-color: var(--color-primary);
 }
 

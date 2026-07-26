@@ -29,11 +29,11 @@
             --af:'Cairo','Tajawal',sans-serif
         }
         body.dark-mode{
-            --abg:#f5f5f5;--asbg:#ffffff;--acbg:#ffffff;--acb:#e0e0e0;
-            --atx:#111111;--ats:#555555;--atsx:#111111;
-            --atsa:#1a73e8;--ahbg:#f0f0f0;--atsr:#ffffff;
-            --ashs:0 1px 3px rgba(0,0,0,.06);--ashm:0 4px 12px rgba(0,0,0,.08);
-            --ashl:0 8px 30px rgba(0,0,0,.1);--ashx:0 12px 40px rgba(0,0,0,.12)
+            --abg:#0d1117;--asbg:#161b22;--acbg:#1c2128;--acb:#30363d;
+            --atx:#e6edf3;--ats:#8b949e;--atsx:#8b949e;
+            --atsa:#58a6ff;--ahbg:#1c2128;--atsr:#161b22;
+            --ashs:0 1px 3px rgba(0,0,0,.3);--ashm:0 4px 12px rgba(0,0,0,.3);
+            --ashl:0 8px 30px rgba(0,0,0,.4);--ashx:0 12px 40px rgba(0,0,0,.5)
         }
         body{font-family:var(--af);background:var(--abg);color:var(--atx);line-height:1.6;overflow-x:hidden;transition:background var(--atrans),color var(--atrans)}
         .admin-wrapper{display:flex;min-height:100vh}
@@ -337,6 +337,8 @@
         .form-group .form-control{width:100%;height:40px;padding:0 14px;border:1px solid var(--acb);border-radius:var(--ars);font-family:var(--af);font-size:13px;background:var(--abg);color:var(--atx);transition:all var(--atrans)}
         .form-group .form-control:focus{outline:none;border-color:var(--ap);box-shadow:0 0 0 3px rgba(var(--apr),.1)}
         .form-group textarea.form-control{height:auto;padding:10px 14px;resize:vertical;min-height:80px}
+        body.dark-mode .form-control{background:#ffffff !important;color:#111111 !important;border-color:#e0e0e0 !important}
+        body.dark-mode .form-control:focus{border-color:var(--ap) !important}
 
         .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999}
         .sidebar-overlay.show{display:block}
