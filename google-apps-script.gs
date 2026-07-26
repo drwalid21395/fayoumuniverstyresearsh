@@ -130,6 +130,11 @@ function doGet(e) {
         JSON.stringify({ success: true, files: allFiles, total: allFiles.length })
       ).setMimeType(ContentService.MimeType.JSON);
     }
+    if (action === "getMessages") {
+      var natId = e.parameter.nationalId || "";
+      var fakeData = { nationalId: natId };
+      return handleGetMessages(fakeData);
+    }
     var sheet = getOrCreateSheet();
     var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
     return ContentService.createTextOutput(
