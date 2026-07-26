@@ -1498,14 +1498,14 @@
       return;
     }
     var user = null;
-    try { user = JSON.parse(localStorage.getItem("gs_student_user")); } catch (e) {}
+    try { user = JSON.parse(localStorage.getItem(STORAGE_KEYS.portalUser)); } catch (e) {}
     if (!user) {
       alert("يجب تسجيل الدخول أولاً");
       return;
     }
     var payload = {
       action: "sendMessage",
-      senderName: user.fullNameAr || user.name || "",
+      senderName: user.fullNameAr || user.fullName || user.name || "",
       nationalId: user.nationalId || "",
       email: user.email || "",
       subject: subject,
@@ -1535,7 +1535,7 @@
     var countEl = document.getElementById("dashMsgCount");
     if (!listEl) return;
     var user = null;
-    try { user = JSON.parse(localStorage.getItem("gs_student_user")); } catch (e) {}
+    try { user = JSON.parse(localStorage.getItem(STORAGE_KEYS.portalUser)); } catch (e) {}
     if (!user) return;
     var url = GSCRIPT_URL + "?action=getMessages&nationalId=" + encodeURIComponent(user.nationalId || "");
     fetch(url).then(function (r) { return r.json(); })
