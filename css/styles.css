@@ -1029,6 +1029,11 @@ h6 { font-size: var(--font-size-md); }
 /* ------------------------------------------------------------
    9. BUTTONS
    ------------------------------------------------------------ */
+.scroll-indicator-inline{display:inline-flex;align-items:center;gap:8px;color:rgba(255,255,255,.6);font-size:13px;animation:heroScrollBounce 2s ease-in-out infinite;cursor:pointer;margin-right:16px}
+.scroll-indicator-inline .mouse{width:20px;height:32px;border:2px solid rgba(255,255,255,.4);border-radius:10px;position:relative}
+.scroll-indicator-inline .wheel{width:3px;height:6px;background:rgba(255,255,255,.6);border-radius:3px;position:absolute;top:6px;left:50%;transform:translateX(-50%);animation:scrollWheel 2s ease-in-out infinite}
+@keyframes heroScrollBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+@keyframes scrollWheel{0%{opacity:1;transform:translateX(-50%) translateY(0)}100%{opacity:0;transform:translateX(-50%) translateY(8px)}}
 .btn {
   display: inline-flex;
   align-items: center;
